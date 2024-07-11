@@ -1,0 +1,174 @@
+.controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: #202020;
+    color: #a4a4a4;
+    row-gap: 5%;
+    column-gap: 1%;
+    height: 250px;
+    padding: 25px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    z-index: 4;
+    margin-top: 100%;
+
+    bottom: 0px;
+    position: fixed;
+}
+
+#input-group-from {
+    grid-column: span 3;
+}
+
+#input-group-to {
+    grid-column: span 4;
+}
+
+#input-group-entrance {
+    grid-column: span 1;
+}
+
+.input-group {
+    display: flex;
+    align-items: center
+}
+
+.input-icon {
+    height: 2.8vh;
+    width: 4vw;
+    object-fit: contain;
+    position: absolute;
+    padding-right: 2vw;
+    padding-left: 2vw;
+}
+
+.input-icon {
+    height: 2.8vh;
+    width: 4vw;
+    object-fit: contain;
+    position: absolute;
+}
+
+.input-group label {
+    display: none;
+}
+
+#entrance_from {
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    text-align: center;
+}
+
+.list-group {
+    padding: 0;
+    grid-column: span 2;
+    width: 100%;
+    height: 100%;
+}
+
+.list-group form {
+    width: 100%;
+    height: 100%;
+}
+
+.list-group select {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    font-size: 16px;
+    background-color: #3E3E3E;
+    color: #A4A4A4;
+    border: none;
+    border-radius: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    padding-left: 8vw;
+    font-size: 16px;
+    background-color: #3E3E3E;
+    color: #A4A4A4;
+    border: none;
+    border-radius: 15px;
+}
+
+.input-group input::placeholder {
+    color: #A4A4A4;
+}
+
+.button-edit-price {
+    justify-content: space-between;
+    grid-column: span 2;
+    width: 100%;
+    height: 100%;
+}
+
+.button-icon {
+    height: 100%;
+    width: 6vw;
+    object-fit: contain;
+    position: relative;
+}
+
+.button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    font-size: 16px;
+    background-color: #3E3E3E;
+    color: #A4A4A4;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button:hover {
+    background-color: #3E3E3E;
+}
+
+.button-setting {
+    justify-content: center;
+    grid-column: span 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+
+    display: flex
+}
+
+.button-setting button {
+    border-radius: 20px;
+    width: 70%;
+}
+
+.button-setting img {
+    height: 3vh;
+    width: 8vw;
+}
+
+.order {
+    text-align: center;
+    grid-column: span 2;
+}
+
+.order-button {
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    background-color: #EB8D00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.order-button:hover {
+    background-color: #e6c800;
+}

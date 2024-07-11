@@ -1,0 +1,17 @@
+.geo-block {
+    bottom: 250px;
+    position: fixed;
+    width: 100%;
+    margin-bottom: 50px;
+
+    z-index: 3;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.geo-icon {
+    margin-right: 25px;
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+}

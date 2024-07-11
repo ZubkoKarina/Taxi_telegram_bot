@@ -1,0 +1,4 @@
+Ваші дані
+
+Імя: {{data.get('name')}}
+Номер телефону: {{data.get('phone_number')}}

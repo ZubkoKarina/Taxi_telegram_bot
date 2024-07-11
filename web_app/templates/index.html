@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&loading=async&libraries=places&callback=initMap">
+    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles/controls_menu_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles/main_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles/address_search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles/other_style.css') }}">
+    <title>Taxi Service</title>
+</head>
+<body>
+    <script>
+        fetch('/get-api-key', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => console.log(response.status))
+        .catch((error) => console.error('There was a problem with the fetch operation:', error));
+    </script>
+    <div id="addressModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="searchInput" placeholder="Введіть адресу">
+            <ul id="suggestions"></ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="map" id="map"></div>
+        <div class="geo-block">
+            <a id="geo">
+                <img class="geo-icon" src="{{ url_for('static', path='images/geo.svg') }}">
+            </a>
+        </div>
+        <div class="controls">
+            <div class="input-group" id="input-group-from">
+                <label for="from">Звідки їдемо?</label>
+                <img class="input-icon" src="{{ url_for('static', path='images/marker.png') }}">
+                <input type="text" id="from" placeholder="Звідки їдемо?" autocomplete="off">
+                <input type="hidden" id="from_lat">
+                <input type="hidden" id="from_lng">
+            </div>
+            <div class="input-group" id="input-group-entrance">
+                <label for="from">Під'їзд</label>
+                <input type="text" id="entrance_from" placeholder="Під'їзд" autocomplete="off">
+            </div>
+            <div class="input-group" id="input-group-to">
+                <label for="to">Куди їдемо?</label>
+                <img class="input-icon" src="{{ url_for('static', path='images/to.png') }}">
+                <input type="text" id="to" placeholder="Куди їдемо?" autocomplete="off">
+                <input type="hidden" id="to_lat">
+                <input type="hidden" id="to_lng">
+            </div>
+            <div class="list-group">
+                <form>
+                    <select name="class" id="class">
+                        <option value="standard">Стандарт</option>
+                        <option value="comfort">Комфорт</option>
+                        <option value="delivery">Доставка</option>
+                    </select>
+                </form>
+            </div>
+            <div class="button-edit-price">
+                <button class="button" id="edit_price" value="cash">
+                    <img class="button-icon" src="{{ url_for('static', path='images/price-growth.png') }}">
+                    Змінити ціну
+                </button>
+            </div>
+            <div class="button-setting">
+                <button class="button" id="method_pay" value="cash">
+                    <img class="button-icon" src="{{ url_for('static', path='images/money.png') }}" id="payImage">
+                </button>
+            </div>
+            <div class="order">
+                <button class="order-button">Замовити</button>
+            </div>
+            <div class="button-setting">
+                <button class="button" id="other" value="cash">
+                    <img class="button-icon" src="{{ url_for('static', path='images/setting-lines.png') }}">
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='scripts/map.js') }}"></script>
+    <script src="{{ url_for('static', path='scripts/other.js') }}"></script>
+    <script src="{{ url_for('static', path='scripts/address_search.js') }}"></script>
+    <script src="{{ url_for('static', path='scripts/tg_web_scripts.js') }}"></script>
+</body>
+</html>
