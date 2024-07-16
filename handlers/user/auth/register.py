@@ -29,12 +29,13 @@ async def save_name(message: types.Message, state: FSMContext):
 
 async def save_city(message: types.Message, state: FSMContext):
     city = message.text
-    await state.update_data(City=city)
+    await state.update_data(сity=city)
     data = await state.get_data()
 
     response = await HttpUser.register_user(data={
         'name': data.get('Name'),
         'phone_number': data.get('Phone'),
+        'city': data.get('City'),
         'chat_id': message.chat.id,
     })
 

@@ -1,10 +1,11 @@
 from keyboards.default.consts import DefaultConstructor
-from texts.keyboards import OPEN_MENU, EDIT_NAME
+from texts.keyboards import OPEN_MENU, EDIT_NAME, EDIT_CITY
 
 edit_user = DefaultConstructor.create_kb(
     actions=[
-        OPEN_MENU,
         EDIT_NAME,
-    ], schema=[2])
+        EDIT_CITY,
+        OPEN_MENU,
+    ], schema=[2, 1])
 
 

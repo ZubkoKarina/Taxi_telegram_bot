@@ -24,7 +24,8 @@ class HttpClient:
         # print(resource.content)
         async with aiohttp.ClientSession(headers=headers) as session:
             print(headers)
-            print(f'DATA: {encoded_data}')
+            print(f'encoded DATA: {encoded_data}')
+            print(f'DATA: {data}')
             async with session.post(url=full_url, data=data) as resp:
                 response = await resp.json()
                 print(f'RESP RESULT: {response}')
@@ -32,7 +33,6 @@ class HttpClient:
 
     @staticmethod
     async def get(**kwargs) -> dict[str, int | Any]:
-
         full_url = f'{kwargs.get("service")}{kwargs.get("path")}'
         print(f'ENDPOINT: {full_url}')
 
@@ -118,5 +118,9 @@ class HttpOrder(HttpClient):
         return await HttpOrder.request('/getUserOrder', data)
 
     @staticmethod
-    async def get_user_driver(data: dict):
+    async def get_driver_order(data: dict):
         return await HttpOrder.request('/getDriverOrder', data)
+
+    @staticmethod
+    async def get_order_price(data: dict):
+        return await HttpOrder.request('/cost_calculation', data)

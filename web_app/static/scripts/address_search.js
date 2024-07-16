@@ -2,6 +2,8 @@ const addressModal = document.getElementById("addressModal");
 const searchInput = document.getElementById("searchInput");
 const suggestions = document.getElementById("suggestions");
 let currentInputId = '';
+let userCity = '';
+let userCityCoordinates = null;
 
 function openAddressModal(inputId) {
     currentInputId = inputId;
@@ -16,15 +18,14 @@ var ToInputElement = document.getElementById('to');
 
 if (FromInputElement) {
     FromInputElement.addEventListener('click', (e) => {
-        openAddressModal(e.target.id)
+        openAddressModal(e.target.id);
     });
 }
 if (ToInputElement) {
     ToInputElement.addEventListener('click', (e) => {
-        openAddressModal(e.target.id)
+        openAddressModal(e.target.id);
     });
 }
-
 
 document.querySelector('.close').onclick = function() {
     addressModal.style.display = "none";
@@ -36,18 +37,58 @@ window.onclick = function(event) {
     }
 }
 
+function getUserCity() {
+    const chat_id = tg.initDataUnsafe.user.id
+    return fetch(`/get-user-city?chat_id=${chat_id}`)
+        .then(response => response.text())
+        .catch(error => {
+            console.error('Error:', error);
+            return null;
+        });
+}
+
+function geocodeCity(city, callback) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': city }, function(results, status) {
+        if (status === 'OK') {
+            const location = results[0].geometry.location;
+            console.log(`Geocoded City: ${city}, Location: ${location.lat()}, ${location.lng()}`);
+            callback(location);
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+getUserCity().then(city => {
+    userCity = city;
+    console.log(`User City stored in variable: ${userCity}`);
+    geocodeCity(userCity, function(location) {
+        userCityCoordinates = {
+            lat: location.lat(),
+            lng: location.lng()
+        };
+        console.log(`User City Coordinates: ${JSON.stringify(userCityCoordinates)}`);
+    });
+});
+
 searchInput.addEventListener('input', function() {
     const query = this.value;
-    if (query.length > 2) {
+    if (query.length > 2 && userCityCoordinates) {
+        console.log(`Searching for: ${query}, Near: ${userCity}`);
         const service = new google.maps.places.AutocompleteService();
         service.getPlacePredictions({
             input: query,
             componentRestrictions: { country: 'UA' },
             types: ['address'],
-            location: new google.maps.LatLng(50.7472, 25.3254),
-            radius: 50000
+            locationBias: new google.maps.Circle({
+                center: new google.maps.LatLng(userCityCoordinates.lat, userCityCoordinates.lng),
+                radius: 20000
+            }).getBounds(),
+            language: 'uk',
         }, (predictions, status) => {
             if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
+                console.log(`Autocomplete failed: ${status}`);
                 return;
             }
 
@@ -74,5 +115,10 @@ function handleAddressSelection(address, isDestination) {
     geocodeAddress(address, isDestination, (location) => {
         document.getElementById(currentInputId + '_lat').value = location.lat();
         document.getElementById(currentInputId + '_lng').value = location.lng();
+        placeMarker(location, isDestination);
+        if (isDestination) {
+            calculateAndDisplayRoute();
+        }
     });
 }
+

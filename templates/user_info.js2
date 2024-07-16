@@ -2,3 +2,4 @@
 
 Імя: {{data.get('name')}}
 Номер телефону: {{data.get('phone_number')}}
+Місто: {{ data.get('city') }}

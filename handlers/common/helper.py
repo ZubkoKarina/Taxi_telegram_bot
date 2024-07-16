@@ -24,7 +24,7 @@ async def user_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
     print(f'USER DATA: {await state.get_data()}')
 
     return await independent_message(
-        text=texts.ASKING_SUCCESSFUL_REG, reply_markup=user_menu_kb, **kwargs
+        text=texts.ASKING_MENU, reply_markup=user_menu_kb, **kwargs
     )
 
 

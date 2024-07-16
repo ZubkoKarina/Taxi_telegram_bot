@@ -29,7 +29,7 @@ async def main_handlers(message: types.Message, state: FSMContext):
         await message.answer(text=template, reply_markup=edit_user)
         await state.set_state(EditUserInfo.waiting_edit_info)
     elif bt_text == user_menu_text['order_taxi']:
-        await message.answer(text=f'Ви бажаєте замовити таксі в {data.get('City')}?', reply_markup=yes_no_kb)
+        await message.answer(text=f'Ви бажаєте замовити таксі в {data.get("city")}?', reply_markup=yes_no_kb)
         await state.set_state(OrderTaxi.waiting_accept_city)
     elif bt_text == user_menu_text['history_order']:
         await message.answer(text='Тут ви сможите переглаянути історію ваших поїздок та їх деталі', reply_markup=ReplyKeyboardRemove())

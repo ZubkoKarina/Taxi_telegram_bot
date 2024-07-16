@@ -52,7 +52,7 @@ async def delete_updates(bot: Bot):
 
 
 async def run_uvicorn():
-    config = uvicorn.Config("web_app.web_app:web_app", host=WEB_APP_HOST, port=WEB_APP_PORT, log_level="info")
+    config = uvicorn.Config("web_app.web_app:web_app", host=WEB_APP_HOST, port=WEB_APP_PORT, log_level="info", reload=True)
     server = uvicorn.Server(config)
     await server.serve()
 

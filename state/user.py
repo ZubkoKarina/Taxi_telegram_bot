@@ -9,6 +9,7 @@ class UserCabinetStates(StatesGroup):
 class EditUserInfo(StatesGroup):
     waiting_edit_info = State()
     waiting_name = State()
+    waiting_city = State()
 
 
 class OtherFun(StatesGroup):

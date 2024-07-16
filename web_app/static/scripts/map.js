@@ -337,6 +337,7 @@ function initMap() {
     });
 }
 
+
 function placeMarker(location, isDestination) {
     if (isDestination) {
         directionsRenderer.setDirections({ routes: [] });
@@ -355,7 +356,7 @@ function placeMarker(location, isDestination) {
         map: map,
         title: isDestination ? 'Destination' : 'Start',
         icon: {
-            url: isDestination ? 'static/images/destination.svg' : 'static/images/destination.svg',
+            url: isDestination ? '../static/images/destination.svg' : '../static/images/destination.svg',
             scaledSize: new google.maps.Size(20, 20)
         }
     });
@@ -380,6 +381,24 @@ function geocodeAddress(address, isDestination, callback) {
     });
 }
 
+function calculatePriceOrder(distance, duration) {
+    const orderButton = document.querySelector('.order-button');
+    orderButton.textContent = `Замовити (${0.00} грн)`;
+    orderButton.value = `0.00`;
+//    const taxiClass = document.getElementById('class').value;
+//    fetch(`/get-order-price?distance=${distance}&taxi_class=${taxiClass}&duration=${duration}`)
+//        .then(response => response.json())
+//        .then(data => {
+//            if (data && data.price) {
+//                const orderButton = document.querySelector('.order-button');
+//                orderButton.textContent = `Замовити (${data.cost} грн)`;
+//            }
+//        })
+//        .catch(error => {
+//            console.error('Error:', error);
+//        });
+}
+
 function calculateAndDisplayRoute() {
     const start = markers[0].getPosition();
     const end = markers[1].getPosition();
@@ -390,9 +409,23 @@ function calculateAndDisplayRoute() {
         travelMode: 'DRIVING'
     };
 
+
     directionsService.route(request, function(result, status) {
         if (status === 'OK') {
+            console.log(result)
             directionsRenderer.setDirections(result);
+
+            const route = result.routes[0];
+            const leg = route.legs[0];
+
+            const distance = leg.distance.value;
+            const duration = leg.duration.value;
+
+
+            console.log('Відстань:', distance);
+            console.log('Час подорожі:', duration);
+
+            calculatePriceOrder(distance, duration)
         } else {
             alert('Directions request failed due to ' + status);
         }
