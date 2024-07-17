@@ -5,6 +5,56 @@ let currentInputId = '';
 let userCity = '';
 let userCityCoordinates = null;
 
+function requestUserLocation() {
+    if ("geolocation" in navigator) {
+        console.log(navigator)
+        navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 1000 });
+    } else {
+        alert("Для отримання вашого місцезнаходження, увімкніть геопозицію на телефоні");
+    }
+}
+
+function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    document.getElementById('from_lat').value = lat;
+    document.getElementById('from_lng').value = lng;
+    const latlng = new google.maps.LatLng(lat, lng);
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'location': latlng }, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                document.getElementById('from').value = results[0].formatted_address;
+                placeMarker(latlng, false);
+            } else {
+                alert('No results found');
+            }
+        } else {
+            alert('Geocoder failed due to: ' + status);
+        }
+    });
+}
+
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("Користувач відхилив запит на геолокацію.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Інформація про місцезнаходження недоступна.");
+            break;
+        case error.TIMEOUT:
+            alert("Для отримання вашого місцезнаходження, увімкніть геопозицію на телефоні");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("Сталася невідома помилка.");
+            break;
+    }
+}
+
+window.addEventListener('load', requestUserLocation);
+
 function openAddressModal(inputId) {
     currentInputId = inputId;
     addressModal.style.display = "block";
@@ -38,6 +88,7 @@ window.onclick = function(event) {
 }
 
 function getUserCity() {
+    console.log(tg.initDataUnsafe)
     const chat_id = tg.initDataUnsafe.user.id
     return fetch(`/get-user-city?chat_id=${chat_id}`)
         .then(response => response.text())

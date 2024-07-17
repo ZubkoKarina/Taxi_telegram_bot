@@ -101,6 +101,10 @@ class HttpDriver(HttpClient):
     async def set_deactive_driver(data: dict):
         return await HttpDriver.request('/setActiveDriver', data)
 
+    @staticmethod
+    async def get_class_taxi():
+        return await HttpDriver.request_get('/getCarType')
+
 
 class HttpOrder(HttpClient):
     BASE_URL = f'{API_URL}/order'

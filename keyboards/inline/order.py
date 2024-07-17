@@ -3,7 +3,7 @@ from aiogram.types import WebAppInfo
 from data.config import WEB_APP_ADDRESS
 from texts.keyboards import TO_MENU
 
-open_web_app_order_kb = InlineConstructor.create_kb(
+order_kb_inline = InlineConstructor.create_kb(
     actions=[{
         'text': 'Замовити таксі 🚕',
         'web_app': WebAppInfo(url=WEB_APP_ADDRESS),

@@ -35,7 +35,7 @@ async def save_city(message: types.Message, state: FSMContext):
     response = await HttpUser.register_user(data={
         'name': data.get('Name'),
         'phone_number': data.get('Phone'),
-        'city': data.get('City'),
+        'city': data.get('city'),
         'chat_id': message.chat.id,
     })
 

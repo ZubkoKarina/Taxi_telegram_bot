@@ -1,6 +1,6 @@
 Замовлення ❗️
 
-Клас: {{ data.get('taxiClass') }}
+Клас: {{ data.get('taxiClass').get('name') }}
 Адреса вітправки: {{ data.get('addressFrom') }}
 Адреса прибуття: {{ data.get('addressTo') }}
 Метод оплати: {{ data.get('payMethod') }}

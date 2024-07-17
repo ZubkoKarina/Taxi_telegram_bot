@@ -1,8 +1,8 @@
 .controls {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    background-color: #202020;
-    color: #a4a4a4;
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
     row-gap: 5%;
     column-gap: 1%;
     height: 250px;
@@ -40,14 +40,10 @@
     position: absolute;
     padding-right: 2vw;
     padding-left: 2vw;
+
+    color: var(--tg-theme-hint-color);
 }
 
-.input-icon {
-    height: 2.8vh;
-    width: 4vw;
-    object-fit: contain;
-    position: absolute;
-}
 
 .input-group label {
     display: none;
@@ -77,8 +73,8 @@
     height: 100%;
     padding: 0;
     font-size: 16px;
-    background-color: #3E3E3E;
-    color: #A4A4A4;
+    background-color: var(--tg-theme-secondary-bg-color);
+    color: var(--tg-theme-text-color);
     border: none;
     border-radius: 15px;
 }
@@ -89,14 +85,13 @@
     padding: 0;
     padding-left: 8vw;
     font-size: 16px;
-    background-color: #3E3E3E;
-    color: #A4A4A4;
+    background-color: var(--tg-theme-secondary-bg-color);
     border: none;
     border-radius: 15px;
 }
 
 .input-group input::placeholder {
-    color: #A4A4A4;
+    color: var(--tg-theme-hint-color);
 }
 
 .button-edit-price {
@@ -107,10 +102,11 @@
 }
 
 .button-icon {
-    height: 100%;
     width: 6vw;
     object-fit: contain;
     position: relative;
+
+    fill: var(--tg-theme-text-color);
 }
 
 .button {
@@ -118,20 +114,16 @@
     height: 100%;
     padding: 0;
     font-size: 16px;
-    background-color: #3E3E3E;
-    color: #A4A4A4;
+    background-color: var(--tg-theme-secondary-bg-color);
     border: none;
     cursor: pointer;
     border-radius: 15px;
-
+    color: var(--tg-theme-text-color);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.button:hover {
-    background-color: #3E3E3E;
-}
 
 .button-setting {
     justify-content: center;
@@ -162,8 +154,8 @@
     width: 100%;
     height: 100%;
     font-size: 20px;
-    background-color: #EB8D00;
-    color: white;
+    background-color: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
     border: none;
     cursor: pointer;
     border-radius: 15px;

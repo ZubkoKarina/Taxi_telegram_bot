@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<!--    <link rel="stylesheet" href="{{ url_for('static', path='styles/controls_menu_style.css') }}">-->
     <link rel="stylesheet" href="../static/styles/controls_menu_style.css">
     <link rel="stylesheet" href="../static/styles/main_styles.css">
     <link rel="stylesheet" href="../static/styles/address_search.css">
     <link rel="stylesheet" href="../static/styles/other_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Taxi Service</title>
 </head>
 <body>
@@ -23,13 +23,13 @@
         <div class="map" id="map"></div>
         <div class="geo-block">
             <a id="geo">
-                <img class="geo-icon" src="../static/images/geo.svg">
+                <i class="bi bi-geo-alt"></i>
             </a>
         </div>
         <div class="controls">
             <div class="input-group" id="input-group-from">
                 <label for="from">Звідки їдемо?</label>
-                <img class="input-icon" src="../static/images/marker.png">
+                <i class="fa-regular fa-circle-dot input-icon"></i>
                 <input type="text" id="from" placeholder="Звідки їдемо?" autocomplete="off">
                 <input type="hidden" id="from_lat">
                 <input type="hidden" id="from_lng">
@@ -40,29 +40,25 @@
             </div>
             <div class="input-group" id="input-group-to">
                 <label for="to">Куди їдемо?</label>
-                <img class="input-icon" src="../static/images/to.png">
+                <i class="fas fa-arrow-right input-icon"></i>
                 <input type="text" id="to" placeholder="Куди їдемо?" autocomplete="off">
                 <input type="hidden" id="to_lat">
                 <input type="hidden" id="to_lng">
             </div>
             <div class="list-group">
                 <form>
-                    <select name="class" id="class">
-                        <option value="1">Стандарт</option>
-                        <option value="2">Комфорт</option>
-                        <option value="3">Доставка</option>
-                    </select>
+                    <select name="class" id="class"></select>
                 </form>
             </div>
             <div class="button-edit-price">
                 <button class="button" id="edit_price" value="Карта">
-                    <img class="button-icon" src="../static/images/price-growth.png">
+                    <i class="fa-solid fa-chart-line button-icon"></i>
                     Змінити ціну
                 </button>
             </div>
             <div class="button-setting">
                 <button class="button" id="method_pay" value="Налічні">
-                    <img class="button-icon" src="../static/images/money.png" id="payImage">
+                    <i class="fas fa-money-bill-wave button-icon" id="payIco"></i>
                 </button>
             </div>
             <div class="order">
@@ -70,17 +66,16 @@
             </div>
             <div class="button-setting">
                 <button class="button" id="other" value="cash">
-                    <img class="button-icon" src="../static/images/setting-lines.png">
+                    <i class="fa-solid fa-sliders button-icon"></i>
                 </button>
             </div>
         </div>
     </div>
+    <script src="../static/scripts/mapStyles.js"></script>
     <script src="../static/scripts/map.js"></script>
     <script src="../static/scripts/other.js"></script>
     <script src="../static/scripts/tg_web_scripts.js"></script>
     <script src="../static/scripts/address_search.js"></script>
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&loading=async&libraries=places&callback=initMap">
-    </script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&loading=async&libraries=places&callback=initMap"></script>
 </body>
 </html>

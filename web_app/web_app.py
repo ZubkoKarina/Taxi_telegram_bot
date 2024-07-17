@@ -4,7 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 import os
-from services.http_client import HttpUser, HttpOrder
+from services.http_client import HttpUser, HttpOrder, HttpDriver
+from handlers.user.cabinet.order.handlers import accept_order_data
 
 web_app = FastAPI()
 
@@ -21,6 +22,12 @@ templates = Jinja2Templates(directory='web_app/templates')
 @web_app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@web_app.get('/get-taxi-class')
+async def get_api_key():
+    response = await HttpDriver.get_class_taxi()
+    return response.get('response_data').get('data')
 
 
 @web_app.get('/get-user-city')
@@ -41,11 +48,23 @@ async def get_order_price(distance: int, duration: int, taxi_class):
 
     response = await HttpOrder.get_order_price(data={
         "kilometers": distance,
-        "is_city": True,
-        "is_route_made_by_air": False,
+        "is_city": 1,
+        "is_route_made_by_air": 0,
         "time": duration,
         "car_type_id": taxi_class
     })
 
     price_data = response.get('response_data').get('data')
     return price_data.get('cost')
+
+
+@web_app.post("/send_order_data")
+async def send_order_data(request: Request):
+    order_data = await request.json()
+    await accept_order_data(order_data)
+    return JSONResponse(content={"message": "Order data received successfully"})
+
+
+@web_app.get('/log')
+async def get_api_key(message: str):
+    print(f"INFO: {message}")

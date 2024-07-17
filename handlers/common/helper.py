@@ -86,5 +86,4 @@ async def get_drivers():
                     drivers.append(driver_info)
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON for state: {state}")
-    print(drivers)
     return drivers
