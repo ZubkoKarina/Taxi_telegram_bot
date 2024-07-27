@@ -8,6 +8,7 @@ from keyboards.default.auth.register import phone_share_kb
 from handlers.common.helper import user_cabinet_menu
 from bot import bot
 from services.http_client import HttpUser
+from services.google_maps import find_city, find_region
 
 
 async def save_phone(message: types.Message, state: FSMContext):
@@ -23,19 +24,34 @@ async def save_name(message: types.Message, state: FSMContext):
     await state.update_data(Name=name)
     data = await state.get_data()
 
+    await message.answer(text=texts.ASKING_REGION)
+    await state.set_state(RegisterState.waiting_region)
+
+
+async def save_region(message: types.Message, state: FSMContext):
+    not_formatted_region = message.text
+    region = await find_region(not_formatted_region)
+    await state.update_data(region=region)
+    data = await state.get_data()
+
     await message.answer(text=texts.ASKING_CITY)
     await state.set_state(RegisterState.waiting_city)
 
 
 async def save_city(message: types.Message, state: FSMContext):
-    city = message.text
-    await state.update_data(сity=city)
+    not_formatted_city = message.text
+    data = await state.get_data()
+    region = data.get('region')
+    city = await find_city(not_formatted_city, region)
+    await state.update_data(city=city)
+
     data = await state.get_data()
 
     response = await HttpUser.register_user(data={
         'name': data.get('Name'),
         'phone_number': data.get('Phone'),
         'city': data.get('city'),
+        'region': data.get('region'),
         'chat_id': message.chat.id,
     })
 

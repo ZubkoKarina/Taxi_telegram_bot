@@ -69,6 +69,10 @@ class HttpUser(HttpClient):
     async def update_user(data: dict):
         return await HttpUser.request('/updateUser', data)
 
+    @staticmethod
+    async def rete_user(data: dict):
+        return await HttpDriver.request('/insertRate', data)
+
 
 class HttpDriver(HttpClient):
     BASE_URL = f'{API_URL}/driver'
@@ -90,8 +94,8 @@ class HttpDriver(HttpClient):
         return await HttpDriver.request('/getDriver', data)
 
     @staticmethod
-    async def get_active_drivers():
-        return await HttpDriver.request_get('/getActiveDriver')
+    async def get_active_drivers(data: dict):
+        return await HttpDriver.request('/getActiveDriver', data)
 
     @staticmethod
     async def set_active_driver(data: dict):
@@ -99,7 +103,11 @@ class HttpDriver(HttpClient):
 
     @staticmethod
     async def set_deactive_driver(data: dict):
-        return await HttpDriver.request('/setActiveDriver', data)
+        return await HttpDriver.request('/setDeactiveDriver', data)
+
+    @staticmethod
+    async def rete_driver(data: dict):
+        return await HttpDriver.request('/insertRate', data)
 
     @staticmethod
     async def get_class_taxi():
@@ -118,6 +126,14 @@ class HttpOrder(HttpClient):
         return await HttpOrder.request('/createOrder', data)
 
     @staticmethod
+    async def update_order(data: dict):
+        return await HttpOrder.request('/updateOrder', data)
+
+    @staticmethod
+    async def get_order(data: dict):
+        return await HttpOrder.request('/getOrder', data)
+
+    @staticmethod
     async def get_user_order(data: dict):
         return await HttpOrder.request('/getUserOrder', data)
 
@@ -128,3 +144,15 @@ class HttpOrder(HttpClient):
     @staticmethod
     async def get_order_price(data: dict):
         return await HttpOrder.request('/cost_calculation', data)
+
+    @staticmethod
+    async def accept_order(data: dict):
+        return await HttpOrder.request('/acceptOrder', data)
+
+    @staticmethod
+    async def complete_order(data: dict):
+        return await HttpOrder.request('/completeOrder', data)
+
+    @staticmethod
+    async def cancel_order(data: dict):
+        return await HttpOrder.request('/deleteOrder', data)

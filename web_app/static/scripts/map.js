@@ -6,13 +6,13 @@ let directionsService;
 let directionsRenderer;
 
 function initMap() {
-    const themeParams = tg.themeParams;
-    console.log(themeParams)
+    const telegramThemeParams = tg.themeParams;
+    console.log(telegramThemeParams)
 
     const mapOptions = {
         center: { lat: 50.4501, lng: 30.5234 },
         zoom: 18,
-        styles: applyThemeToStyle(themeParams),
+        styles: applyThemeToStyle(telegramThemeParams),
         disableDefaultUI: true,
     };
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -22,7 +22,7 @@ function initMap() {
         map: map,
         suppressMarkers: true,
         polylineOptions: {
-            strokeColor: themeParams.text_color,
+            strokeColor: telegramThemeParams.button_color,
             strokeOpacity: 1,
             strokeWeight: 5
         }

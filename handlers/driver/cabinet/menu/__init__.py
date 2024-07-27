@@ -14,7 +14,7 @@ def prepare_router() -> Router:
     ]
 
     edit_message_list = [
-        Handler(handlers.tracking_location, [DriverCabinetStates.waiting_menu, F.location]),
+        Handler(handlers.tracking_location, [F.location]),
     ]
     for message in message_list:
         router.message.register(message.handler, *message.filters)

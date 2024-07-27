@@ -23,3 +23,5 @@ FSM_PASSWORD: str = env.str("FSM_PASSWORD")
 
 API_URL: str = env.str('API_URL')
 API_KEY: str = env.str('API_KEY')
+
+API_KEY_GOOGLE_MAP: str = env.str('API_KEY_GOOGLE_MAPS')

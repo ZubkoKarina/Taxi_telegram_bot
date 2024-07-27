@@ -1,8 +1,28 @@
 Замовлення сформовано ✅
 
 Вибраний клас: {{ data.get('taxiClass').get('name') }}
-Адреса вітправки: {{ data.get('addressFrom') }}
-Адреса прибуття: {{ data.get('addressTo') }}
+Адреса вітправки: {{ data.get('from_dict').get("street") }} {{ data.get('from_dict').get("house") }}, {{ data.get('from_dict').get("city") }}
+Адреса прибуття: {{ data.get('to_dict').get("street") }} {{ data.get('to_dict').get("house") }}, {{ data.get('to_dict').get("city") }}
 Метод оплати: {{ data.get('payMethod') }}
+
+{% if data.get('otherSetting') != None %}
+{% if data.get('otherSetting').get('comment') != None %}
+Коментарій: {{ data.get('otherSetting').get('comment') }}
+{% endif %}
+{% endif %}
+{% if data.get('isOtherSetting') %}
+{% if data.get('otherSetting').get('animals') %}
+Перевезенян тварин ✅
+{% endif %}
+{% if data.get('otherSetting').get('overall_cargo') %}
+Перевезення габаритного вантажу ✅
+{% endif %}
+{% if data.get('otherSetting').get('delivery') %}
+Доставка ✅
+{% endif %}
+{% if data.get('otherSetting').get('baby_chair') %}
+Дитяче крісло ✅
+{% endif %}
+{% endif %}
 
 До оплати: {{ data.get('price') }}

@@ -9,6 +9,7 @@ from keyboards.default.users.setting import edit_user
 from state.user import EditUserInfo
 from utils.template_engine import render_template
 from aiogram.types import ReplyKeyboardRemove
+from services.google_maps import find_city, find_region
 
 import texts
 
@@ -26,7 +27,11 @@ async def edit_city(message: types.Message, state: FSMContext):
 
 
 async def confirm_city(message: types.Message, state: FSMContext):
-    city = message.text
+    not_formatted_city = message.text
+    data = await state.get_data()
+    region = data.get('region')
+    city = await find_city(not_formatted_city, region)
+
     chat_id = message.chat.id
 
     response = await HttpUser.update_user(data={
@@ -38,6 +43,33 @@ async def confirm_city(message: types.Message, state: FSMContext):
         return message.answer(texts.SERVER_ERROR)
     await message.answer(texts.ASKING_EDIT_CITY)
     await state.update_data(city=city)
+    print(await state.get_data())
+
+    await open_setting_menu(message, state)
+
+
+async def edit_region(message: types.Message, state: FSMContext):
+    await message.answer(texts.ASKING_REGION, reply_markup=ReplyKeyboardRemove())
+
+    await state.set_state(EditUserInfo.waiting_region)
+
+
+async def confirm_region(message: types.Message, state: FSMContext):
+    not_formatted_region = message.text
+    region = await find_region(not_formatted_region)
+    data = await state.get_data()
+
+    chat_id = message.chat.id
+
+    response = await HttpUser.update_user(data={
+        'chat_id': chat_id,
+        'region': region,
+    })
+
+    if response.get('response_code') != 200:
+        return message.answer(texts.SERVER_ERROR)
+    await message.answer(texts.ASKING_EDIT_REGION)
+    await state.update_data(region=region)
     print(await state.get_data())
 
     await open_setting_menu(message, state)

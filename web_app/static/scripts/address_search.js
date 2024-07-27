@@ -8,7 +8,7 @@ let userCityCoordinates = null;
 function requestUserLocation() {
     if ("geolocation" in navigator) {
         console.log(navigator)
-        navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 1000 });
+        navigator.geolocation.getCurrentPosition(showPosition, showError, { timeout: 5000 });
     } else {
         alert("Для отримання вашого місцезнаходження, увімкніть геопозицію на телефоні");
     }
@@ -38,14 +38,11 @@ function showPosition(position) {
 
 function showError(error) {
     switch (error.code) {
-        case error.PERMISSION_DENIED:
-            alert("Користувач відхилив запит на геолокацію.");
-            break;
         case error.POSITION_UNAVAILABLE:
             alert("Інформація про місцезнаходження недоступна.");
             break;
         case error.TIMEOUT:
-            alert("Для отримання вашого місцезнаходження, увімкніть геопозицію на телефоні");
+            alert("Не вадось отримати інформацю про  ваше місцезнаходження. Для його отримання, увімкніть геопозицію на телефоні");
             break;
         case error.UNKNOWN_ERROR:
             alert("Сталася невідома помилка.");
@@ -128,39 +125,76 @@ searchInput.addEventListener('input', function() {
     if (query.length > 2 && userCityCoordinates) {
         console.log(`Searching for: ${query}, Near: ${userCity}`);
         const service = new google.maps.places.AutocompleteService();
+
+        // Перший пошук: query + userCity
+        const combinedQuery = `${query}, ${userCity}`;
         service.getPlacePredictions({
-            input: query,
+            input: combinedQuery,
             componentRestrictions: { country: 'UA' },
-            types: ['address'],
             locationBias: new google.maps.Circle({
                 center: new google.maps.LatLng(userCityCoordinates.lat, userCityCoordinates.lng),
-                radius: 20000
-            }).getBounds(),
+                radius: 30000
+            }),
             language: 'uk',
-        }, (predictions, status) => {
-            if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
-                console.log(`Autocomplete failed: ${status}`);
-                return;
+        }, (combinedPredictions, combinedStatus) => {
+            if (combinedStatus !== google.maps.places.PlacesServiceStatus.OK || !combinedPredictions) {
+                console.log(`Autocomplete failed 1: ${combinedStatus}`);
             }
 
-            suggestions.innerHTML = '';
-            predictions.forEach((prediction) => {
-                if (prediction.description.toLowerCase()) {
+            // Другий пошук: просто query
+            service.getPlacePredictions({
+                input: query,
+                componentRestrictions: { country: 'UA' },
+                locationBias: new google.maps.Circle({
+                    center: new google.maps.LatLng(userCityCoordinates.lat, userCityCoordinates.lng),
+                    radius: 30000
+                }),
+                language: 'uk',
+            }, (predictions, status) => {
+                if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
+                    console.log(`Autocomplete failed 2: ${status}`);
+                }
+
+                suggestions.innerHTML = '';
+                let specificAddressResults = [];
+                let uniqueAddresses = new Set();
+                let allPredictions = [];
+
+                if (predictions) {
+                    allPredictions = predictions;
+                }
+                if (combinedPredictions) {
+                    allPredictions = combinedPredictions;
+                }
+                if (predictions && combinedPredictions) {
+                    allPredictions = combinedPredictions.concat(predictions);
+                }
+
+                allPredictions.forEach((prediction) => {
+                    const address = prediction.description.toLowerCase();
+                    if (!uniqueAddresses.has(address)) {
+                        uniqueAddresses.add(address);
+                        specificAddressResults.push(prediction);
+                    }
+                });
+
+                specificAddressResults.forEach((prediction) => {
                     const li = document.createElement('li');
                     li.innerHTML = `<strong>${prediction.terms[0].value} ${prediction.terms[1].value}</strong><br><small>${prediction.terms[2].value}</small>`;
                     li.onclick = () => {
-                        document.getElementById(currentInputId).value = `${prediction.terms[0].value}, ${prediction.terms.slice(1).map(term => term.value).join(', ')}`;
+                        document.getElementById(currentInputId).value = prediction.description;
                         addressModal.style.display = "none";
                         handleAddressSelection(prediction.description, currentInputId === 'to');
                     };
                     suggestions.appendChild(li);
-                }
+                });
             });
         });
     } else {
         suggestions.innerHTML = '';
     }
 });
+
 
 function handleAddressSelection(address, isDestination) {
     geocodeAddress(address, isDestination, (location) => {

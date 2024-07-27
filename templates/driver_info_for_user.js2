@@ -1,0 +1,6 @@
+Водій вже у дорозі ✅
+
+Імя: {{ data.get('driver').get('name') }}!
+Автомобіль: {{data.get('driver').get('car').get('car_name')}} {{data.get('driver').get('car').get('car_number')}}
+
+Прибуде через: {{ data.get('arrival_time') }}

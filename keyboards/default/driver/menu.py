@@ -8,7 +8,7 @@ driver_menu_text = {
     "history_order": 'Історія поїзок 🕔',
     "setting": "Налаштування ⚙️",
     "reference_info": "Інше 🧩",
-    "deactivate": "Зійти з лінії",
+    "deactivate": "Зійти з лінії 🪫",
     "activate": "Стати на лінію 🚖",
 }
 

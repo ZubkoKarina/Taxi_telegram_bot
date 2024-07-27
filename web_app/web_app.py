@@ -15,7 +15,7 @@ if not os.path.isdir(static_dir):
     raise RuntimeError(f"Directory '{static_dir}' does not exist")
 
 web_app.mount("/static", StaticFiles(directory='web_app/static'), name="static")
-
+web_app.mount("/media", StaticFiles(directory='media'), name="media")
 templates = Jinja2Templates(directory='web_app/templates')
 
 

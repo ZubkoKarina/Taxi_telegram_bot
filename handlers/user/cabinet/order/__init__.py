@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from handlers.user.cabinet.order import handlers
-from handlers.common.helper import Handler
+from handlers.common.helper import Handler, CallbackDataContainsKey
 from state.user import OrderTaxi
 from texts.keyboards import YES, NO, OPEN_MENU
 from handlers.user.cabinet.common import callback_open_menu
@@ -15,13 +15,20 @@ def prepare_router() -> Router:
         Handler(handlers.edit_city, [OrderTaxi.waiting_new_city, F.text]),
         Handler(handlers.open_menu, [OrderTaxi.waiting_order_data, F.text == OPEN_MENU]),
         Handler(handlers.accept_order_data, [OrderTaxi.waiting_order_data, F.web_app_data]),
+        Handler(handlers.order_menu, [OrderTaxi.waiting_menu_order]),
+        Handler(handlers.take_price, [OrderTaxi.waiting_new_price]),
     ]
 
     callback_list = [
         Handler(
             callback_open_menu, [OrderTaxi.waiting_order_data, F.data == 'cabinet_menu']
         ),
+        Handler(
+            handlers.rate_driver, [OrderTaxi.waiting_rate_driver, CallbackDataContainsKey('rate')]
+        ),
+
     ]
+
     for callback in callback_list:
         router.callback_query.register(callback.handler, *callback.filters)
 

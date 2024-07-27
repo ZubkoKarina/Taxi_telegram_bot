@@ -10,12 +10,32 @@ from keyboards.default.driver.menu import driver_menu_kb, inactive_driver_menu_k
 from utils.template_engine import render_template
 from services.redis import RedisClient
 from services.http_client import HttpDriver
+from aiogram.fsm.context import FSMContext, StorageKey
+from aiogram.filters import BaseFilter
+from aiogram.types import CallbackQuery
+from bot import dp, bot
 import json
 
 
 class Handler(NamedTuple):
     handler: Callable
     filters: list
+
+
+class CallbackDataContainsKey(BaseFilter):
+    def __init__(self, key: str):
+        self.key = key
+
+    async def __call__(self, callback_query: types.CallbackQuery) -> bool:
+        try:
+            data = callback_query.data
+            data_dict = json.loads(data)
+            if self.key in data_dict:
+                return self.key in data_dict
+            else:
+                return False
+        except (IndexError, json.JSONDecodeError):
+            return False
 
 
 async def user_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
@@ -33,7 +53,7 @@ async def driver_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
     data = await state.get_data()
 
     menu_kb = driver_menu_kb
-    if data.get('status').get('id') == 2 or data.get('status') == 'Неактивний':
+    if data.get('status').get('id') == 2:
         menu_kb = inactive_driver_menu_kb
 
     print(f'DRIVER DATA: {data}')
@@ -56,34 +76,38 @@ async def independent_message(text: str, reply_markup: Optional = None, **kwargs
         return await bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup)
 
 
-async def get_drivers():
-    resp = await HttpDriver.get_active_drivers()
-    drivers_data = resp.get('response_data').get('data')
+async def get_drivers(region: str):
+    resp = await HttpDriver.get_active_drivers(data={'region': region})
+    drivers_resp = resp.get('response_data').get('data')
     drivers = []
-    redis_cli = RedisClient()
-    all_states = redis_cli.get_all_states()
 
-    for driver in drivers_data:
-        chat_id = driver.get('user').get('chat_id')
-        name = driver.get('name')
-        car = driver.get('car')
-        status = driver.get('status').get('id')
+    for driver in drivers_resp:
+        chat_id = driver.get('chat_id')
+        resp = await HttpDriver.get_driver_info(data={'chat_id': chat_id})
+        driver_data = resp.get('response_data').get('data')
+        name = driver_data.get('name')
+        car = driver_data.get('car')
 
-        for state, state_value in all_states.items():
-            type_state = state.split(':')[-1]
-            state_chat_id = state.split(':')[-3]
-            if type_state == 'data' and state_chat_id == chat_id and status == 1:
-                print(state_value)
-                try:
-                    state_data = json.loads(state_value)
-                    geo = state_data.get("geo")
-                    driver_info = {
-                        'chat_id': chat_id,
-                        'name': name,
-                        'car': car,
-                        'geo': geo,
-                    }
-                    drivers.append(driver_info)
-                except json.JSONDecodeError:
-                    print(f"Error decoding JSON for state: {state}")
+        driver_state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=chat_id, user_id=chat_id, bot_id=bot.id))
+        driver_state_data = await driver_state.get_data()
+        geo = driver_state_data.get("geo")
+
+        driver_info = {
+            'chat_id': chat_id,
+            'name': name,
+            'car': car,
+            'geo': geo,
+        }
+        drivers.append(driver_info)
+
     return drivers
+
+
+async def mass_notification_deletion(list_chat_id, list_msg_id):
+    for chat_id in list_chat_id:
+        for msg_id in list_msg_id:
+            try:
+                await bot.delete_message(chat_id, msg_id)
+            except Exception as ex:
+                pass
+    return

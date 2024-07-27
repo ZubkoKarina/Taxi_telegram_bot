@@ -12,7 +12,30 @@ document.querySelector('.order-button').addEventListener('click', () => {
     const taxiClassId = taxiClassSelect.value;
     const taxiClassName = taxiClassSelect.options[taxiClassSelect.selectedIndex].text;
     const button_pay = document.getElementById('method_pay').value;
-    const price = document.querySelector('.order-button').value
+    const price = document.querySelector('.order-button').value;
+
+    const comment = document.getElementById('comment').value;
+    const animals_checkbox = document.getElementById('animals');
+    const overall_cargo_checkbox = document.getElementById('overall_cargo');
+    const delivery_checkbox = document.getElementById('delivery');
+    const baby_chair_checkbox = document.getElementById('animals');
+
+    let animals = false;
+    let overall_cargo = false;
+    let delivery = false;
+    let baby_chair = false;
+    if (animals_checkbox.checked) {
+        animals = true
+    }
+    if (overall_cargo_checkbox.checked) {
+        overall_cargo = true
+    }
+    if (delivery_checkbox.checked) {
+        delivery = true
+    }
+    if (baby_chair_checkbox.checked) {
+        baby_chair = true
+    }
 
     if (!from || !to || !taxiClassId) {
         alert('Будь ласка, заповніть всі поля перед замовленням.');
@@ -30,6 +53,13 @@ document.querySelector('.order-button').addEventListener('click', () => {
         },
         payMethod: button_pay,
         price: price,
+        otherSetting: {
+            animals: animals,
+            overall_cargo: overall_cargo,
+            delivery: delivery,
+            baby_chair: baby_chair,
+            comment: comment,
+        }
     };
 
     console.log('Sending order data:', orderData);

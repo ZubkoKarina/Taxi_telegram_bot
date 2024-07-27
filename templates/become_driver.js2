@@ -1,0 +1,11 @@
+Ваші дані
+
+ПІБ: {{ data.get('full_name') }}
+
+Область: {{ data.get('region') }}
+Місто: {{ data.get('city') }}
+
+Автомобіль: {{ data.get('car_name') }}
+Номер авто: {{ data.get('car_number') }}
+Колір авто: {{ data.get('car_color') }}
+Кількість сидінь: {{ data.get('car_number_of_seats') }}

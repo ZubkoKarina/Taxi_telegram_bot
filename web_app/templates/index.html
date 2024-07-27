@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../static/styles/main_styles.css">
     <link rel="stylesheet" href="../static/styles/address_search.css">
     <link rel="stylesheet" href="../static/styles/other_style.css">
+    <link rel="stylesheet" href="../static/styles/other_setting_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Taxi Service</title>
 </head>
@@ -19,6 +20,39 @@
             <ul id="suggestions"></ul>
         </div>
     </div>
+    <div id="changePrice" class="changePriceModal">
+        <div class="price-modal-content">
+            <span class="change-price-text">Вартість поїздки</span>
+            <span class="change-price-text" id="outputPrice">0 ₴</span>
+            <input type="range" step="10" id="changePriceInput">
+            <button id="savePriceButton">Зберегти</button>
+        </div>
+    </div>
+    <div id="otherSetting" class="settingModal">
+        <div class="other-setting-content">
+            <h1 class="other-setting-text">Інші налаштування</h1>
+            <div>
+                <label class="block-checkbox">
+                    <input type="checkbox" id="animals">
+                    перевезення тварин
+                </label>
+                <label class="block-checkbox">
+                    <input type="checkbox" id="overall_cargo">
+                    перевезення габаритного вантажу
+                </label>
+                <label class="block-checkbox">
+                    <input type="checkbox" id="delivery">
+                    доставка
+                </label>
+                <label class="block-checkbox">
+                    <input type="checkbox" id="baby_chair">
+                    дитяче крісло
+                </label>
+            </div>
+            <input type="text" placeholder="  Коментарій" id="comment">
+            <button id="saveSettingButton">Зберегти</button>
+        </div>
+    </div>
     <div class="container">
         <div class="map" id="map"></div>
         <div class="geo-block">
@@ -26,6 +60,8 @@
                 <i class="bi bi-geo-alt"></i>
             </a>
         </div>
+
+    </div>
         <div class="controls">
             <div class="input-group" id="input-group-from">
                 <label for="from">Звідки їдемо?</label>
@@ -76,6 +112,6 @@
     <script src="../static/scripts/other.js"></script>
     <script src="../static/scripts/tg_web_scripts.js"></script>
     <script src="../static/scripts/address_search.js"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&loading=async&libraries=places&callback=initMap"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&libraries=places&callback=initMap"></script>
 </body>
 </html>

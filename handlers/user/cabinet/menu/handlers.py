@@ -48,7 +48,7 @@ async def show_history_order(callback: types.InlineQuery, state: FSMContext):
 
     def render_func(item: dict):
         print(type(item))
-        shipping_address = item.get('shipping_address')
+        shipping_address = item.get('created_at')
         id = str(item.get('id'))
 
         return types.InlineQueryResultArticle(
