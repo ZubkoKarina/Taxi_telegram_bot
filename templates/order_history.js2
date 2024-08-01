@@ -1,0 +1,9 @@
+#{{ data.get('id') }}
+
+Адреса вітправки: {{ data.get('shipping_address') }} {{ data.get('shipping_number') }}, {{ data.get('shipping_city') }}
+Адреса прибуття: {{ data.get('arrival_address') }} {{ data.get('arrival_number') }}, {{ data.get('arrival_city') }}
+Коментарій: {{ data.get('comment') }}
+Дата: {{ data.get('created_at') }}
+
+Метод оплати: {{ data.get('payment_method') }}
+На суму: {{ data.get('cost') }}

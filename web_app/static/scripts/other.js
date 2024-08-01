@@ -32,7 +32,7 @@ document.getElementById('method_pay').addEventListener('click', function() {
 });
 
 document.getElementById('edit_price').addEventListener('click', function() {
-    const price = parseFloat(document.querySelector('.order-button').value);
+    const price = parseFloat(document.getElementById('output-cost').value);
 
     if (!price) {
         alert('Будь ласка, введіть для початку адресу!');
@@ -41,6 +41,10 @@ document.getElementById('edit_price').addEventListener('click', function() {
 
     const addressModal = document.getElementById("changePrice");
     addressModal.style.display = "block";
+    addressModal.classList.add('fade-in');
+
+    const modalContent = document.querySelector('.price-modal-content');
+    modalContent.classList.add('slide-up');
     const input_change_price = document.getElementById('changePriceInput');
     const output_price = document.getElementById('outputPrice');
 
@@ -61,8 +65,8 @@ document.getElementById('savePriceButton').addEventListener('click', function() 
     const changePriceInput = document.getElementById("changePriceInput");
     const newPrice = changePriceInput.value;
 
-    document.querySelector('.order-button').value = newPrice;
-    document.querySelector('.order-button').textContent = `Замовити<br>(${newPrice} грн)`;
+    document.getElementById('output-cost').value = newPrice;
+    document.getElementById('output-cost').textContent = `${newPrice} грн`;
 
     const addressModal = document.getElementById("changePrice");
     addressModal.style.display = "none";
@@ -71,9 +75,14 @@ document.getElementById('savePriceButton').addEventListener('click', function() 
 document.getElementById('other').addEventListener('click', function() {
     const addressModal = document.getElementById("otherSetting");
     addressModal.style.display = "block";
+    addressModal.classList.add('fade-in');
+
+    const modalContent = document.querySelector('.other-setting-content');
+    modalContent.classList.add('slide-up');
 });
 
 document.getElementById('saveSettingButton').addEventListener('click', function() {
     const addressModal = document.getElementById("otherSetting");
+
     addressModal.style.display = "none";
 });

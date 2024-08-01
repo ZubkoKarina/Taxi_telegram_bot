@@ -1,0 +1,70 @@
+/* CSS for background fade-in animation */
+@keyframes fadeIn {
+    from {
+        background: rgba(0, 0, 0, 0);
+    }
+    to {
+        background: rgba(0, 0, 0, 0.7);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* CSS for slide-up animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.2s ease-out forwards;
+}
+
+/* CSS for slide-up animation */
+@keyframes slideRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.slide-right {
+    animation: slideUp 0.2s ease-out forwards;
+}
+
+/* CSS for background fade-out animation */
+@keyframes fadeOut {
+    from {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    to {
+        background: rgba(0, 0, 0, 0);
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+/* CSS for slide-down animation */
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
+
+.slide-down {
+    animation: slideDown 0.5s ease-out forwards;
+}
+

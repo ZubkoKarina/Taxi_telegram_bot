@@ -5,7 +5,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 import os
 from services.http_client import HttpUser, HttpOrder, HttpDriver
-from handlers.user.cabinet.order.handlers import accept_order_data
+from handlers.user.cabinet.order.handlers import create_order, accept_order
+from services.liqpay import liqpay
+from data.config import LIQPAY_PRIVATE_KEY, LIQPAY_PUBLIC_KEY
 
 web_app = FastAPI()
 
@@ -61,10 +63,28 @@ async def get_order_price(distance: int, duration: int, taxi_class):
 @web_app.post("/send_order_data")
 async def send_order_data(request: Request):
     order_data = await request.json()
-    await accept_order_data(order_data)
+    await create_order(order_data)
     return JSONResponse(content={"message": "Order data received successfully"})
+
+@web_app.post("/callback")
+async def liqpay_callback(request: Request):
+    form = await request.form()
+    data = form['data']
+    signature = form['signature']
+    print(1111111111111111)
+    expected_signature = liqpay.str_to_sign(LIQPAY_PRIVATE_KEY + data + LIQPAY_PRIVATE_KEY)
+    if expected_signature == signature:
+        decoded_data = liqpay.decode_data_from_str(data)
+        print(decoded_data)
+        if decoded_data['status'] == 'success' or decoded_data['status'] == 'sandbox':
+            print(33333333333333)
+            await accept_order(decoded_data['order_id'])
+            return JSONResponse(content={"status": "success"})
+    return JSONResponse(content={"status": "failure"})
+
 
 
 @web_app.get('/log')
 async def get_api_key(message: str):
     print(f"INFO: {message}")
+

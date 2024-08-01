@@ -22,7 +22,7 @@ function initMap() {
         map: map,
         suppressMarkers: true,
         polylineOptions: {
-            strokeColor: telegramThemeParams.button_color,
+            strokeColor: '#edd300',
             strokeOpacity: 1,
             strokeWeight: 5
         }
@@ -73,14 +73,15 @@ function geocodeAddress(address, isDestination, callback) {
 }
 
 function calculatePriceOrder(distance, duration) {
-    const orderButton = document.querySelector('.order-button');
     const taxiClass = document.getElementById('class').value;
     fetch(`/get-order-price?distance=${distance}&taxi_class=${taxiClass}&duration=${duration}`)
         .then(response => response.json())
         .then(data => {
             if (data) {
-                const orderButton = document.querySelector('.order-button');
-                orderButton.textContent = `Замовити (${data} грн)`;
+                const orderButton = document.getElementById('output-cost');
+                orderButton.style.display = "flex";
+                orderButton.classList.add('slide-right');
+                orderButton.textContent = `${data} грн`;
                 orderButton.value = data;
             }
         })

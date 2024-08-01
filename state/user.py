@@ -27,6 +27,10 @@ class OrderTaxi(StatesGroup):
     waiting_new_price = State()
     waiting_rate_driver = State()
 
+    waiting_message_to_driver = State()
+
+    waiting_cancel_order = State()
+
 
 class CreateDriver(StatesGroup):
     waiting_name = State()

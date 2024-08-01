@@ -23,8 +23,6 @@ class HttpClient:
         # resource = requests.post(url=full_url, json=encoded_data, headers=headers)
         # print(resource.content)
         async with aiohttp.ClientSession(headers=headers) as session:
-            print(headers)
-            print(f'encoded DATA: {encoded_data}')
             print(f'DATA: {data}')
             async with session.post(url=full_url, data=data) as resp:
                 response = await resp.json()
@@ -112,6 +110,14 @@ class HttpDriver(HttpClient):
     @staticmethod
     async def get_class_taxi():
         return await HttpDriver.request_get('/getCarType')
+
+    @staticmethod
+    async def update_driver(data: dict):
+        return await HttpDriver.request('/updateDriver', data)
+
+    @staticmethod
+    async def insert_driver_balance(data: dict):
+        return await HttpDriver.request('/insertBalance', data)
 
 
 class HttpOrder(HttpClient):

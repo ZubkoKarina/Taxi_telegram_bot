@@ -12,7 +12,7 @@ document.querySelector('.order-button').addEventListener('click', () => {
     const taxiClassId = taxiClassSelect.value;
     const taxiClassName = taxiClassSelect.options[taxiClassSelect.selectedIndex].text;
     const button_pay = document.getElementById('method_pay').value;
-    const price = document.querySelector('.order-button').value;
+    const price = document.getElementById('output-cost').value;
 
     const comment = document.getElementById('comment').value;
     const animals_checkbox = document.getElementById('animals');

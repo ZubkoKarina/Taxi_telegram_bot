@@ -1,7 +1,7 @@
 from keyboards.inline.consts import InlineConstructor
 from aiogram.types import WebAppInfo
 from data.config import WEB_APP_ADDRESS
-from texts.keyboards import TO_MENU
+from texts.keyboards import TO_MENU, REPLY_THE_MESSAGE
 import json
 
 order_kb_inline = InlineConstructor.create_kb(
@@ -34,6 +34,20 @@ def create_take_order_inline(info_order: dict):
     return take_order_inline
 
 
+def create_kb_for_payment_inline(payment_url: str):
+
+    kb_for_payment_inline = InlineConstructor.create_kb(
+        actions=[{
+            'text': 'Оплатити 💳',
+            'url': payment_url,
+        },
+        ],
+        schema=[1]
+    )
+    
+    return kb_for_payment_inline
+
+
 rate = InlineConstructor.create_kb(
     actions=[{
         'text': '1',
@@ -57,4 +71,12 @@ rate = InlineConstructor.create_kb(
         },
     ],
     schema=[5]
+)
+
+reply_message_to_driver = InlineConstructor.create_kb(
+    actions=[{
+            'text': REPLY_THE_MESSAGE,
+            'callback_data': 'chat_with_driver'
+        }],
+    schema=[1]
 )

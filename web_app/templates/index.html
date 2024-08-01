@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../static/styles/address_search.css">
     <link rel="stylesheet" href="../static/styles/other_style.css">
     <link rel="stylesheet" href="../static/styles/other_setting_style.css">
+    <link rel="stylesheet" href="../static/styles/animation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Taxi Service</title>
 </head>
@@ -53,6 +54,9 @@
             <button id="saveSettingButton">Зберегти</button>
         </div>
     </div>
+    <div id="output-cost">
+        <span>...</span>
+    </div>
     <div class="container">
         <div class="map" id="map"></div>
         <div class="geo-block">
@@ -62,6 +66,7 @@
         </div>
 
     </div>
+
         <div class="controls">
             <div class="input-group" id="input-group-from">
                 <label for="from">Звідки їдемо?</label>
@@ -92,15 +97,15 @@
                     Змінити ціну
                 </button>
             </div>
-            <div class="button-setting">
-                <button class="button" id="method_pay" value="Налічні">
-                    <i class="fas fa-money-bill-wave button-icon" id="payIco"></i>
+            <div class="button-setting" style="justify-content: flex-start">
+                <button class="button" id="method_pay" value="Карта">
+                    <i class="fa-regular fa-credit-card button-icon" id="payIco"></i>
                 </button>
             </div>
             <div class="order">
                 <button class="order-button">Замовити</button>
             </div>
-            <div class="button-setting">
+            <div class="button-setting" style="justify-content: flex-end">
                 <button class="button" id="other" value="cash">
                     <i class="fa-solid fa-sliders button-icon"></i>
                 </button>

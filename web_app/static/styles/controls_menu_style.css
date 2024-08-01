@@ -1,12 +1,13 @@
 .controls {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     background-color: var(--tg-theme-bg-color);
     color: var(--tg-theme-text-color);
     row-gap: 5%;
     column-gap: 1%;
     height: 250px;
     padding: 25px;
+    box-shadow: 0px 0px 20px var(--tg-theme-secondary-bg-color);
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     z-index: 4;
@@ -17,15 +18,17 @@
 }
 
 #input-group-from {
-    grid-column: span 3;
-}
-
-#input-group-to {
     grid-column: span 4;
 }
 
+#input-group-to {
+    grid-column: span 6;
+}
+
 #input-group-entrance {
-    grid-column: span 1;
+    grid-column: span 2;
+    width: 95%;
+    margin-left: 5%;
 }
 
 .input-group {
@@ -34,7 +37,7 @@
 }
 
 .input-icon {
-    height: 2.8vh;
+
     width: 4vw;
     object-fit: contain;
     position: absolute;
@@ -58,7 +61,7 @@
 
 .list-group {
     padding: 0;
-    grid-column: span 2;
+    grid-column: span 3;
     width: 100%;
     height: 100%;
 }
@@ -71,12 +74,26 @@
 .list-group select {
     width: 100%;
     height: 100%;
-    padding: 0;
     font-size: 16px;
     background-color: var(--tg-theme-secondary-bg-color);
     color: var(--tg-theme-text-color);
     border: none;
     border-radius: 15px;
+    outline: none;
+    text-align: center;
+    appearance: none;
+}
+
+.list-group select option {
+    background-color: var(--tg-theme-secondary-bg-color);
+    color: var(--tg-theme-text-color);
+    padding: 10px;
+    border-bottom: 1px solid var(--tg-theme-hint-color);
+    border-radius: 15px; 
+}
+
+.list-group:after {
+    text-align: center;
 }
 
 .input-group input {
@@ -97,7 +114,7 @@
 
 .button-edit-price {
     justify-content: space-between;
-    grid-column: span 2;
+    grid-column: span 3;
     width: 100%;
     height: 100%;
 }
@@ -133,12 +150,12 @@
     height: 100%;
     border-radius: 20px;
 
-    display: flex
+    display: flex;
 }
 
 .button-setting button {
     border-radius: 20px;
-    width: 70%;
+    width: 100%;
 }
 
 .button-setting img {
@@ -148,20 +165,16 @@
 
 .order {
     text-align: center;
-    grid-column: span 2;
+    grid-column: span 4;
 }
 
 .order-button {
-    width: 100%;
+    width: 90%;
     height: 100%;
     font-size: 20px;
-    background-color: var(--tg-theme-button-color);
-    color: var(--tg-theme-button-text-color);
+    background-color: #edd300;
+    color: black;
     border: none;
     cursor: pointer;
     border-radius: 15px;
-}
-
-.order-button:hover {
-    background-color: #e6c800;
 }

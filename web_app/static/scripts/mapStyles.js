@@ -74,7 +74,7 @@ function applyThemeToStyle(telegramThemeParams) {
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -83,7 +83,7 @@ function applyThemeToStyle(telegramThemeParams) {
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -92,7 +92,7 @@ function applyThemeToStyle(telegramThemeParams) {
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -110,7 +110,7 @@ function applyThemeToStyle(telegramThemeParams) {
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -119,13 +119,34 @@ function applyThemeToStyle(telegramThemeParams) {
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
     {
         "featureType": "poi.sports_complex",
         "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": telegramThemeParams.hint_color
+            },
+            {
+                "saturation": "-100"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text.stroke",
         "stylers": [
             {
                 "visibility": "off"

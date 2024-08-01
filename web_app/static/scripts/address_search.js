@@ -55,6 +55,7 @@ window.addEventListener('load', requestUserLocation);
 function openAddressModal(inputId) {
     currentInputId = inputId;
     addressModal.style.display = "block";
+    addressModal.classList.add('slide-up');
     searchInput.value = '';
     suggestions.innerHTML = '';
     searchInput.focus();
