@@ -4,4 +4,9 @@
 Адреса прибуття: {{ data.get("shipping_address") }} {{ data.get("shipping_number") }}, {{ data.get('shipping_city') }}
 Метод оплати: {{ data.get('payment_method') }}
 
+{% if data.get('comment') != None or data.get('comment') == '' %}
+{{ data.get('comment') }}
+
+{% endif %}
+
 Сума: {{ data.get('cost') }}

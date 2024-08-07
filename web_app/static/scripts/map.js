@@ -6,13 +6,18 @@ let directionsService;
 let directionsRenderer;
 
 function initMap() {
-    const telegramThemeParams = tg.themeParams;
-    console.log(telegramThemeParams)
+    const telegramTheme = tg.colorScheme;
+
+    const lightMapId = 'a9689db6e76bfab8';
+    const darkMapId = 'f5690bdfcc14e2c3';
+
+    const isDarkMode = telegramTheme === 'dark';
+    const mapId = isDarkMode ? darkMapId : lightMapId;
 
     const mapOptions = {
         center: { lat: 50.4501, lng: 30.5234 },
         zoom: 18,
-        styles: applyThemeToStyle(telegramThemeParams),
+        mapId: mapId,
         disableDefaultUI: true,
     };
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -78,11 +83,20 @@ function calculatePriceOrder(distance, duration) {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                const orderButton = document.getElementById('output-cost');
-                orderButton.style.display = "flex";
-                orderButton.classList.add('slide-right');
-                orderButton.textContent = `${data} грн`;
-                orderButton.value = data;
+                const outputCost = document.getElementById('output-cost');
+                outputCost.style.display = "flex";
+                outputCost.classList.add('slide-right');
+
+                outputCost.dataset.costRoad = data;
+                if (!outputCost.dataset.costServices) {
+                    outputCost.value = outputCost.dataset.costRoad
+                }
+                else {
+                    outputCost.value = parseFloat(outputCost.dataset.costRoad) + parseFloat(outputCost.dataset.costServices)
+                }
+
+                document.getElementById('output-cost').textContent = `${document.getElementById('output-cost').value} грн`;
+
             }
         })
         .catch(error => {

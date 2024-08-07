@@ -82,7 +82,7 @@ async def driver_in_place(callback: types.CallbackQuery, state: FSMContext):
 
     msg = await bot.send_message(order_data.get('user_chat_id'), text='Водій уже прибув 🎉')
     msg_order_notification.append(msg.message_id)
-    msg = await bot.send_message(order_data.get('user_chat_id'), text='Якщо очікування превисить 3хв тоді '
+    msg = await bot.send_message(order_data.get('user_chat_id'), text='Якщо очікування превисить 3 хв тоді '
                                                                       'кожна наступна хв буде коштувати 3 грн '
                                                                       '❗️')
     msg_order_notification.append(msg.message_id)
@@ -97,7 +97,7 @@ async def driver_in_place(callback: types.CallbackQuery, state: FSMContext):
 
 
 async def sure_cancel_order(callback: types.CallbackQuery, state: FSMContext):
-    await callback.message.answer('Ви впевнені що бажаєте скасуваити замолення', reply_markup=yes_no_kb)
+    await callback.message.answer('Ви впевнені що бажаєте скасувати замовлення', reply_markup=yes_no_kb)
     await state.set_state(OrderDriver.waiting_cancel_order)
 
 
@@ -116,8 +116,8 @@ async def cancel_order(message: types.Message, state: FSMContext):
     res = await refund_payment(order_data.get('id'))
     print(f"INFO: refund money -> {res.get('status')}")
 
-    await bot.send_message(passenger_id, 'Водій скасував замолення 🚫')
-    await message.answer('Замолення скасовано 🚫')
+    await bot.send_message(passenger_id, 'Водій скасував замовлення 🚫')
+    await message.answer('Замовлення скасовано 🚫')
 
     await driver_cabinet_menu(state, message=message)
 
@@ -216,6 +216,6 @@ async def send_message_to_passenger(message: types.Message, state: FSMContext):
 
 
 async def open_order_menu(message: types.Message, state: FSMContext):
-    await message.answer('Меню замолення', reply_markup=ReplyKeyboardRemove())
+    await message.answer('Меню замовлення', reply_markup=ReplyKeyboardRemove())
 
     await state.set_state(OrderTaxi.waiting_menu_order)

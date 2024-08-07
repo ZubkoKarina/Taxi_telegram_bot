@@ -128,6 +128,10 @@ class HttpOrder(HttpClient):
         return await HttpClient.post(data=data, service=HttpOrder.BASE_URL, path=path)
 
     @staticmethod
+    async def request_get(path: str):
+        return await HttpClient.get(service=HttpOrder.BASE_URL, path=path)
+
+    @staticmethod
     async def create_order(data: dict):
         return await HttpOrder.request('/createOrder', data)
 
@@ -162,3 +166,7 @@ class HttpOrder(HttpClient):
     @staticmethod
     async def cancel_order(data: dict):
         return await HttpOrder.request('/deleteOrder', data)
+
+    @staticmethod
+    async def get_additional_services():
+        return await HttpOrder.request_get('/additional_services')

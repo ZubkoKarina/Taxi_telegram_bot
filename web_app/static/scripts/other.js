@@ -15,6 +15,33 @@ function loadTaxiClasses() {
         });
 }
 
+function loadAdditionalServices() {
+    fetch('/additional_services')
+        .then(response => response.json())
+        .then(data => {
+            const additionalServicesList = document.querySelector('.additional-services');
+            data.forEach(item => {
+                const li = document.createElement('li');
+
+                const button = document.createElement('button');
+                button.value = item.name;
+                button.innerHTML = `${item.name}<br><small>+${item.cost} ₴</small>`;
+                button.dataset.cost = item.cost;
+                button.addEventListener('click', function() {
+                    button.classList.toggle('selected');
+                });
+
+                li.appendChild(button);
+                additionalServicesList.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading additional services:', error);
+        });
+}
+
+
+window.addEventListener('load', loadAdditionalServices);
 window.addEventListener('load', loadTaxiClasses);
 
 document.getElementById('method_pay').addEventListener('click', function() {
@@ -75,14 +102,60 @@ document.getElementById('savePriceButton').addEventListener('click', function() 
 document.getElementById('other').addEventListener('click', function() {
     const addressModal = document.getElementById("otherSetting");
     addressModal.style.display = "block";
-    addressModal.classList.add('fade-in');
 
-    const modalContent = document.querySelector('.other-setting-content');
-    modalContent.classList.add('slide-up');
+    addressModal.classList.add('slide-up');
 });
 
-document.getElementById('saveSettingButton').addEventListener('click', function() {
-    const addressModal = document.getElementById("otherSetting");
+function updatePrice(button) {
+    const outputCostElement = document.getElementById('output-cost');
+    const outputCost = parseFloat(outputCostElement.value) || 0;
+    const serviceCost = parseFloat(button.dataset.cost);
+    alert(serviceCost)
 
-    addressModal.style.display = "none";
+    let totalCost = outputCost;
+
+    if (!outputCostElement.dataset.costRoad) {
+        totalCost = serviceCost;
+    } else {
+        totalCost = parseFloat(outputCostElement.dataset.costRoad) + serviceCost;
+    }
+
+    outputCostElement.dataset.costServices = serviceCost;
+    outputCostElement.value = totalCost;
+    outputCostElement.textContent = `${totalCost} грн`;
+}
+
+
+document.getElementById('saveSettingButton').addEventListener('click', function() {
+    const selectedServices = [];
+    let additionalCost = 0;
+    const outputCostElement = document.getElementById('output-cost');
+    const outputCost = parseFloat(outputCostElement.value) || 0;
+
+    document.querySelectorAll('.additional-services button.selected').forEach(button => {
+        selectedServices.push(button.value + '❗️\n');
+        additionalCost += parseFloat(button.dataset.cost);
+    });
+
+    const comment_text = document.getElementById('comment').value;
+    let full_comment = selectedServices + 'Коментарій: ' + comment_text;
+
+    console.log('Збережені налаштування:', full_comment);
+
+    let totalCost = outputCost;
+
+    if (!outputCostElement.dataset.costRoad) {
+        totalCost = additionalCost;
+    } else {
+        totalCost = parseFloat(outputCostElement.dataset.costRoad) + additionalCost;
+    }
+
+    outputCostElement.dataset.costServices = additionalCost;
+    outputCostElement.value = totalCost;
+    outputCostElement.textContent = `${totalCost} грн`;
+
+    settingModal = document.getElementById('otherSetting')
+
+    settingModal.dataset.comment = full_comment
+    settingModal.style.display = 'none';
 });

@@ -78,9 +78,6 @@ async def create_order(order_data: dict):
     list_to_dict = order_data.get('addressTo').split(",")
 
     print(f"INFO: order data -> {order_data}")
-    if order_data.get('otherSetting') is not None:
-        is_other_setting = any(value is True for value in order_data.get('otherSetting').values())
-        order_data['isOtherSetting'] = is_other_setting
 
     order_data["from_dict"] = {
         "street": list_from_dict[0],
@@ -105,7 +102,7 @@ async def create_order(order_data: dict):
         "arrival_city": list_to_dict[2],
         "arrival_number": list_to_dict[1],
         "payment_method": order_data.get('payMethod'),
-        "comment": "some",
+        "comment": order_data.get('comment'),
         "user_chat_id": chat_id,
         "cost": (float(order_data.get('price'))),
     })
@@ -301,7 +298,7 @@ async def take_price(message: types.Message, state: FSMContext):
 
 async def callback_message_to_driver(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(OrderTaxi.waiting_message_to_driver)
-    await callback.message.answer('Надішліть мені повідомлення і я його перешлю водія.', reply_markup=back_kb)
+    await callback.message.answer('Надішліть мені повідомлення і я його перешлю водію.', reply_markup=back_kb)
 
 
 async def send_message_to_driver(message: types.Message, state: FSMContext):
@@ -324,7 +321,7 @@ async def sure_cancel_order(message: types.Message, state: FSMContext):
             price = order_data.get('price')
             await message.answer(f'Кошти з замолення будуть повренені частково ({price / 2} грн.)❗️')
 
-    await message.answer('Ви впевнені що бажаєте скасуваити замолення', reply_markup=yes_no_kb)
+    await message.answer('Ви впевнені що бажаєте скасувати замовлення', reply_markup=yes_no_kb)
     await state.set_state(OrderTaxi.waiting_cancel_order)
 
 
@@ -344,7 +341,7 @@ async def cancel_order(message: types.Message, state: FSMContext):
         driver_id = order_data.get('driver_chat_id')
         driver_state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=driver_id,
                                                                      user_id=driver_id, bot_id=bot.id))
-        await bot.send_message('Пасажир скасував замолення 🚫')
+        await bot.send_message('Пасажир скасував замовлення 🚫')
 
         price = order_data.get('price')
         if order_data.get('payMethod') == 'Карта':
@@ -363,12 +360,12 @@ async def cancel_order(message: types.Message, state: FSMContext):
         res = await refund_payment(order_data.get('id'))
         print(f"INFO: refund money -> {res.get('status')}")
 
-    await message.answer('Замолення скасовано 🚫')
+    await message.answer('Замовлення скасовано 🚫')
 
     await open_menu(message, state)
 
 
 async def open_order_menu(message: types.Message, state: FSMContext):
-    await message.answer('Меню замолення', reply_markup=order_menu_kb)
+    await message.answer('Меню замовлення', reply_markup=order_menu_kb)
 
     await state.set_state(OrderTaxi.waiting_menu_order)

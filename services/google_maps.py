@@ -1,5 +1,6 @@
 import googlemaps
 from data.config import API_KEY_GOOGLE_MAP
+import requests
 
 gmaps = googlemaps.Client(key=API_KEY_GOOGLE_MAP)
 
@@ -22,3 +23,17 @@ async def find_city(city: str, region: str):
         return place_result['results'][0]['name']
 
 
+def find_places_by_name(place: str, location: set):
+    place_result = gmaps.geocode(f'{place}', language='uk')
+    if place_result:
+        print(place_result)
+        for place in place_result[0]['address_components']:
+            if 'street_number' in place['types']:
+                print(f'Street Number: {place["long_name"]}')
+            if 'route' in place['types']:
+                print(f"Street Name: {place['long_name']}")
+            if 'locality' in place['types']:
+                print(f"City: {place['long_name']}")
+
+
+find_places_by_name('просект Відродження 28, Луцьк, Волинська область, Україна, 43000', (0, 0))

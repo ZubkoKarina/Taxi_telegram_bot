@@ -60,11 +60,18 @@ async def get_order_price(distance: int, duration: int, taxi_class):
     return price_data.get('cost')
 
 
+@web_app.get('/additional_services')
+async def get_additional_services():
+    response = await HttpOrder.get_additional_services()
+    return response.get('response_data').get('data')
+
+
 @web_app.post("/send_order_data")
 async def send_order_data(request: Request):
     order_data = await request.json()
     await create_order(order_data)
     return JSONResponse(content={"message": "Order data received successfully"})
+
 
 @web_app.post("/callback")
 async def liqpay_callback(request: Request):
@@ -83,8 +90,6 @@ async def liqpay_callback(request: Request):
     return JSONResponse(content={"status": "failure"})
 
 
-
 @web_app.get('/log')
 async def get_api_key(message: str):
     print(f"INFO: {message}")
-
