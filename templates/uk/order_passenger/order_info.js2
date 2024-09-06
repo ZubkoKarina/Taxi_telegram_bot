@@ -1,0 +1,12 @@
+Замовлення сформовано ✅
+
+Вибраний клас: {{ data.get('taxiClass').get('name') }}
+Адреса вітправки: {{ data.get('from_dict').get("street") }} {{ data.get('from_dict').get("house") }}, {{ data.get('from_dict').get("city") }}
+Адреса прибуття: {{ data.get('to_dict').get("street") }} {{ data.get('to_dict').get("house") }}, {{ data.get('to_dict').get("city") }}
+Метод оплати: {{ data.get('payMethod') }}
+
+{% if data.get('comment') != None or data.get('comment') == '' %}
+{{ data.get('comment') }}
+{% endif %}
+
+До оплати: {{ data.get('price') }}

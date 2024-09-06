@@ -1,0 +1,9 @@
+Name: {{data.get('name')}}!
+
+Car: {{ data.get('car').get('car_name') }} {{ data.get('car').get('car_color') }} {{data.get('car').get('car_number')}}
+City: {{ data.get('city') }}
+Region: {{ data.get('region') }}
+Status: {{ data.get('status').get('status') }}
+Rating: {{ data.get('rate') }}
+
+Balance: {{data.get('wallet')}}

@@ -1,7 +1,0 @@
-Водій вже у дорозі ✅
-
-Імя: {{ data.get('name') }}!
-Автомобіль: {{data.get('car').get('car_name')}} {{ data.get('car').get('color') }}
-Номер авто: {{data.get('car').get('car_number')}}
-
-Прибуде через: {{ data.get('order_data').get('arrival_time') }}

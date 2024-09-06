@@ -11,6 +11,7 @@ class EditUserInfo(StatesGroup):
     waiting_name = State()
     waiting_region = State()
     waiting_city = State()
+    waiting_language = State()
 
 
 class OtherFun(StatesGroup):
@@ -43,10 +44,22 @@ class CreateDriver(StatesGroup):
     waiting_car_number_of_seats = State()
     waiting_car_color = State()
 
-    waiting_passport_photo = State()
+    waiting_front_passport_photo = State()
+    waiting_back_passport_photo = State()
+
     waiting_license_photo = State()
     waiting_insurance_photo = State()
+
     waiting_car_photo = State()
+    waiting_front_car_photo = State()
+    waiting_back_car_photo = State()
+    waiting_left_car_photo = State()
+    waiting_right_car_photo = State()
+
+    waiting_front_row_car_photo = State()
+    waiting_back_row_car_photo = State()
+
+    waiting_comment = State()
 
     waiting_accept = State()
 

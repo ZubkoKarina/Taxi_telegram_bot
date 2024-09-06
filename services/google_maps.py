@@ -18,22 +18,37 @@ async def find_region(region: str):
 
 
 async def find_city(city: str, region: str):
-    place_result = gmaps.places(f'{city}, {region}', location="ua", language='uk')
+    place_result = gmaps.geocode(f'{city}, {region}, Україна', language='uk')
     if place_result:
-        return place_result['results'][0]['name']
+
+        for place in place_result[0]['address_components']:
+            if 'locality' in place['types']:
+                return place['long_name']
 
 
-def find_places_by_name(place: str, location: set):
+async def geocode_place_by_name(place: str):
+    geocode_place = {}
     place_result = gmaps.geocode(f'{place}', language='uk')
     if place_result:
-        print(place_result)
+        geocode_place['place_id'] = place_result[0]['place_id']
+        geocode_place['location'] = place_result[0]['geometry']['location']
         for place in place_result[0]['address_components']:
             if 'street_number' in place['types']:
-                print(f'Street Number: {place["long_name"]}')
+                geocode_place['house'] = place["long_name"]
             if 'route' in place['types']:
-                print(f"Street Name: {place['long_name']}")
+                geocode_place['street'] = place['long_name']
             if 'locality' in place['types']:
-                print(f"City: {place['long_name']}")
+                geocode_place['city'] = place['long_name']
+            if 'administrative_area_level_1' in place['types']:
+                geocode_place['region'] = place['long_name']
+        return geocode_place
+    else:
+        return None
 
 
-find_places_by_name('просект Відродження 28, Луцьк, Волинська область, Україна, 43000', (0, 0))
+async def geocode_place_by_geo(geo: set):
+    result = gmaps.reverse_geocode(geo)
+    if result:
+        return {"place": result['formatted_address'], "place_id": result['place_id']}
+    else:
+        return None

@@ -1,0 +1,8 @@
+Заказ ❗️
+
+Имя: *{{ data.get('passenger_name').split(' ')[1] }}*
+Адрес отправки: {{ data.get("shipping_address") }} {{ data.get("shipping_number") }}, {{ data.get('shipping_city') }}
+Адрес прибытия: {{ data.get("shipping_address") }} {{ data.get("shipping_number") }}, {{ data.get('shipping_city') }}
+
+Способ оплаты: {{ data.get('payment_method') }}
+Сумма: {{ data.get('cost') }}

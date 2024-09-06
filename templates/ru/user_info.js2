@@ -1,0 +1,6 @@
+Ваши данные
+
+Имя: {{data.get('name')}}
+Номер телефона: {{data.get('phone_number')}}
+Область: {{ data.get('region') }}
+Город: {{ data.get('city') }}

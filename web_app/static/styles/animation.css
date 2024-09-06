@@ -1,4 +1,7 @@
-/* CSS for background fade-in animation */
+:root {
+    --main-color: #EB8D00;
+}
+
 @keyframes fadeIn {
     from {
         background: rgba(0, 0, 0, 0);
@@ -67,4 +70,61 @@
 .slide-down {
     animation: slideDown 0.5s ease-out forwards;
 }
+
+/* Active animation */
+@keyframes ehPAbtU60pY2_ts__ts {
+  0% {transform: translate(21.5px, 51.48412px) scale(1, 1.325794);}
+  100% {transform: translate(21.5px, 51.48412px) scale(1, 0.525922);}
+}
+
+@keyframes ehPAbtU60pY5_c_o {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.marker-icon.active #ehPAbtU60pY2_ts {
+  animation: ehPAbtU60pY2_ts__ts 400ms linear 1 forwards;
+}
+
+.marker-icon.active #ehPAbtU60pY5 {
+  animation: ehPAbtU60pY5_c_o 400ms linear 1 forwards;
+}
+
+/* Deactive animation */
+@keyframes eSFB4GN6XpZ2_ts__ts {
+  0% {transform: translate(21.5px, 51.48412px) scale(1, 0.525922);}
+  100% {transform: translate(21.5px, 51.48412px) scale(1, 1.325794);}
+}
+
+@keyframes eSFB4GN6XpZ5_c_o {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.marker-icon.deactive #eSFB4GN6XpZ2_ts {
+  animation: eSFB4GN6XpZ2_ts__ts 400ms linear 1 forwards;
+}
+
+.marker-icon.deactive #eSFB4GN6XpZ5 {
+  animation: eSFB4GN6XpZ5_c_o 400ms linear 1 forwards;
+}
+
+@keyframes shine {
+    0% {
+        left: -75%;
+    }
+    100% {
+        left: 125%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 

@@ -1,0 +1,9 @@
+#{{ data.get('id') }}
+
+Shipping address: {{ data.get('shipping_address') }} {{ data.get('shipping_number') }}, {{ data.get('shipping_city') }}
+Arrival address: {{ data.get('arrival_address') }} {{ data.get('arrival_number') }}, {{ data.get('arrival_city') }}
+Comment: {{ data.get('comment') }}
+Date: {{ data.get('created_at') }}
+
+Payment method: {{ data.get('payment_method') }}
+Amount: {{ data.get('cost') }}

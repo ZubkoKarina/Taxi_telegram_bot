@@ -1,0 +1,11 @@
+Your details
+
+Full Name: {{ data.get('full_name') }}
+
+Region: {{ data.get('region') }}
+City: {{ data.get('city') }}
+
+Car: {{ data.get('car_name') }}
+Car number: {{ data.get('car_number') }}
+Car color: {{ data.get('car_color') }}
+Number of seats: {{ data.get('car_number_of_seats') }}

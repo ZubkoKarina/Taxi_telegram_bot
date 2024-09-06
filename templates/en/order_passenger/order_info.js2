@@ -1,0 +1,12 @@
+Order created ✅
+
+Selected class: {{ data.get('taxiClass').get('name') }}
+Shipping address: {{ data.get('from_dict').get("street") }} {{ data.get('from_dict').get("house") }}, {{ data.get('from_dict').get("city") }}
+Arrival address: {{ data.get('to_dict').get("street") }} {{ data.get('to_dict').get("house") }}, {{ data.get('to_dict').get("city") }}
+Payment method: {{ data.get('payMethod') }}
+
+{% if data.get('comment') != None or data.get('comment') == '' %}
+{{ data.get('comment') }}
+
+{% endif %}
+To be paid: {{ data.get('price') }}

@@ -1,0 +1,6 @@
+Добро пожаловать, {{data.get('name')}}!
+
+Автомобиль: {{data.get('car').get('car_name')}} {{data.get('car').get('car_number')}}
+Статус: {{data.get('status').get('status')}}
+
+Баланс: {{data.get('wallet')}}

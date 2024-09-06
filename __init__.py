@@ -57,14 +57,16 @@ async def run_uvicorn():
     await server.serve()
 
 
-async def main() -> None:
+def main() -> None:
     loop = asyncio.new_event_loop()
+
+    dp = Dispatcher(storage=redis_storage)
 
     setup_aiogram(dp)
 
-    # dp.startup.register(on_startup)
+    dp.startup.register(on_startup)
 
-    # loop.run_until_complete(delete_updates(bot))
+    loop.run_until_complete(delete_updates(bot))
 
     app = web.Application()
 
@@ -74,19 +76,15 @@ async def main() -> None:
         secret_token=WEBHOOK_SECRET_TOKEN,
     )
 
-    # webhook_requests_handler.register(app, path=WEBHOOK_PATH)
+    webhook_requests_handler.register(app, path=WEBHOOK_PATH)
 
     setup_application(app, dp, bot=bot)
 
-    # web.run_app(app, host=WEBHOOK_LISTENING_HOST, port=WEBHOOK_LISTENING_PORT, loop=loop)
-    redis_cli = RedisClient()
-    # print(f'REDIS STATES: {redis_cli.get_all_states()}')
-    await asyncio.gather(
-        dp.start_polling(bot),
-        run_uvicorn()
-    )
+    loop.create_task(run_uvicorn())
+
+    web.run_app(app, host=WEBHOOK_LISTENING_HOST, port=WEBHOOK_LISTENING_PORT, loop=loop)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    asyncio.run(main())
+    main()

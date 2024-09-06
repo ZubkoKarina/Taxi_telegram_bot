@@ -170,3 +170,14 @@ class HttpOrder(HttpClient):
     @staticmethod
     async def get_additional_services():
         return await HttpOrder.request_get('/additional_services')
+
+
+class HttpOther(HttpClient):
+
+    @staticmethod
+    async def get_status_online_payment():
+        return await HttpClient.get(service=f'{API_URL}/online_payment', path='/online_payment')
+
+    @staticmethod
+    async def get_text_greeting():
+        return await HttpClient.get(service=f'{API_URL}/title', path='/title')

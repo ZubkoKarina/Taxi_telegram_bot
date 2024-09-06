@@ -1,0 +1,7 @@
+The driver is already on the way ✅
+
+Name: *{{ data.get('name').split(' ')[1] }}*
+Car: *{{data.get('car').get('car_name')}} {{ data.get('car').get('car_color') }}*
+Car number: *{{data.get('car').get('car_number')}}*
+
+Will arrive in: {{ data.get('order_data').get('arrival_time') }}

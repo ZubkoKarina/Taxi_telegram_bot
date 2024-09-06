@@ -2,14 +2,14 @@ from aiogram import Router, F
 from handlers.user.cabinet.other import handlers
 from handlers.common.helper import Handler
 from state.user import OtherFun
-from texts.keyboards import EDIT_NAME, OPEN_MENU, BECOME_PARTNER
+from texts import filter_text
 
 
 def prepare_router() -> Router:
 
     router = Router()
     message_list = [
-        Handler(handlers.open_menu, [OtherFun.waiting_other_fun, F.text == OPEN_MENU]),
+        Handler(handlers.open_menu, [OtherFun.waiting_other_fun, filter_text('OPEN_MENU')]),
         Handler(handlers.main_handlers, [OtherFun.waiting_other_fun, F.text]),
     ]
 

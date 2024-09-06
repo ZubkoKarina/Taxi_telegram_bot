@@ -28,3 +28,5 @@ API_URL: str = env.str('API_URL')
 API_KEY: str = env.str('API_KEY')
 
 API_KEY_GOOGLE_MAP: str = env.str('API_KEY_GOOGLE_MAPS')
+API_KEY_VISICOM: str = env.str('API_KEY_VISICOM')
+API_URL_VISICOM_DATA: str = env.str('API_URL_VISICOM_DATA')

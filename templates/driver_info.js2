@@ -1,9 +1,0 @@
-Імя: {{data.get('name')}}!
-
-Автомобіль: {{ data.get('car').get('car_name') }} {{ data.get('car').get('car_color') }} {{data.get('car').get('car_number')}}
-Місто: {{ data.get('city') }}
-Область: {{ data.get('region') }}
-Статус: {{ data.get('status').get('status') }}
-Рейтинг: {{ data.get('rate') }}
-
-Баланс: {{data.get('wallet')}}

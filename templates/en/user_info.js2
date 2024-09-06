@@ -1,0 +1,6 @@
+Your data
+
+Name: {{data.get('name')}}
+Phone number: {{data.get('phone_number')}}
+Region: {{ data.get('region') }}
+City: {{ data.get('city') }}

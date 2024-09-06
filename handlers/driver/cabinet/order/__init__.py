@@ -2,7 +2,7 @@ from aiogram import Router, F
 from handlers.driver.cabinet.order import handlers
 from handlers.common.helper import Handler, CallbackDataContainsKey
 from state.driver import OrderDriver, DriverCabinetStates
-from texts.keyboards import YES, NO, OPEN_MENU, BACK
+from texts import filter_text
 from handlers.user.cabinet.common import callback_open_menu
 
 
@@ -12,7 +12,7 @@ def prepare_router() -> Router:
     message_list = [
         Handler(
             handlers.open_order_menu,
-            [OrderDriver.waiting_message_to_passenger, F.text == BACK]
+            [OrderDriver.waiting_message_to_passenger, filter_text('BACK')]
         ),
         Handler(
             handlers.send_message_to_passenger,
@@ -20,11 +20,11 @@ def prepare_router() -> Router:
         ),
         Handler(
             handlers.cancel_order,
-            [OrderDriver.waiting_cancel_order, F.text == YES]
+            [OrderDriver.waiting_cancel_order, filter_text('YES')]
         ),
         Handler(
             handlers.open_order_menu,
-            [OrderDriver.waiting_cancel_order, F.text == NO]
+            [OrderDriver.waiting_cancel_order, filter_text('NO')]
         )
     ]
     callback_list = [
@@ -48,6 +48,12 @@ def prepare_router() -> Router:
         ),
         Handler(
             handlers.end_order, [F.data == 'driver_end_order']
+        ),
+        Handler(
+            handlers.choice_type_navigation, [F.data == 'open_navigation_to']
+        ),
+        Handler(
+            handlers.choice_type_navigation, [F.data == 'open_navigation_from']
         ),
         Handler(
             handlers.rate_passenger, [CallbackDataContainsKey('rate')]
