@@ -111,6 +111,8 @@ def get_place_geo(place_id: str, geometry: str = 'no'):
 def visicom_address_constructor(feature_collection):
 
     feature_collection_formatted = []
+    if len(feature_collection) == 0:
+        return None
     for item in feature_collection:
         properties = item.get('properties')
 

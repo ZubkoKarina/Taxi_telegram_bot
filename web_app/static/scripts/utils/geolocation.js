@@ -1,3 +1,5 @@
+const geoButton = document.getElementById('geo-location-button');
+
 function requestUserLocation() {
     if ("geolocation" in navigator) {
         console.log(navigator)
@@ -10,10 +12,13 @@ geoButton.addEventListener("click", requestUserLocation);
 
 
 function showPosition(position) {
+    clearAddress()
+    isListenMoveMap = true
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
-    document.getElementById('from_lat').value = lat;
-    document.getElementById('from_lng').value = lng;
+    let searchFromElement = document.getElementById('from')
+    searchFromElement.dataset.geo = JSON.stringify([lat, lng])
+    currentInputId = 'from'
 
     const data = ({
         lat: lat,
@@ -30,10 +35,9 @@ function showPosition(position) {
     .then(response => response.json())
     .then(data => {
         place = data
-        searchInputElement = document.getElementById('from')
-        searchInputElement.value = place.address;
-        searchInputElement.dataset.id = place.id
-        searchInputElement.dataset.address = place.address
+        searchFromElement.value = place.address;
+        searchFromElement.dataset.id = place.id
+        searchFromElement.dataset.address = place.address
         MoveMarker(false)
     });
 

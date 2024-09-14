@@ -10,9 +10,7 @@ from data.config import API_URL, API_KEY
 class HttpClient:
 
     @staticmethod
-    async def post(data: dict, **kwargs) -> dict[str, int | Any]:
-        encoded_data = json.dumps(data)
-
+    async def post(data: Any, **kwargs) -> dict[str, int | Any]:
         full_url = f'{kwargs.get("service")}{kwargs.get("path")}'
         print(f'ENDPOINT: {full_url}')
 
@@ -20,14 +18,17 @@ class HttpClient:
             "Accept": "application/json",
         }
 
-        # resource = requests.post(url=full_url, json=encoded_data, headers=headers)
-        # print(resource.content)
         async with aiohttp.ClientSession(headers=headers) as session:
-            print(f'DATA: {data}')
-            async with session.post(url=full_url, data=data) as resp:
-                response = await resp.json()
-                print(f'RESP RESULT: {response}')
-                return {'response_data': response, 'response_code': resp.status}
+            if isinstance(data, aiohttp.FormData):
+                print(data._fields)
+                async with session.post(url=full_url, data=data) as resp:
+                    response = await resp.json()
+            else:
+                async with session.post(url=full_url, data=data) as resp:
+                    response = await resp.json()
+
+            print(f'RESP RESULT: {response}')
+            return {'response_data': response, 'response_code': resp.status}
 
     @staticmethod
     async def get(**kwargs) -> dict[str, int | Any]:
@@ -132,7 +133,7 @@ class HttpOrder(HttpClient):
         return await HttpClient.get(service=HttpOrder.BASE_URL, path=path)
 
     @staticmethod
-    async def create_order(data: dict):
+    async def create_order(data):
         return await HttpOrder.request('/createOrder', data)
 
     @staticmethod
@@ -153,6 +154,13 @@ class HttpOrder(HttpClient):
 
     @staticmethod
     async def get_order_price(data: dict):
+        data = {
+            'feed_distance[0]': 0.1,
+            'trip_distance[0]': data.get('kilometers'),
+            'distance_from_end_point_to_point': 0.1,
+            'number_idle_minutes[0]': 1,
+            'car_type_id': data.get('car_type_id')
+        }
         return await HttpOrder.request('/cost_calculation', data)
 
     @staticmethod

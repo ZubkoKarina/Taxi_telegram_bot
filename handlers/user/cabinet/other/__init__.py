@@ -2,6 +2,7 @@ from aiogram import Router, F
 from handlers.user.cabinet.other import handlers
 from handlers.common.helper import Handler
 from state.user import OtherFun
+from aiogram.filters import Command
 from texts import filter_text
 
 
@@ -11,6 +12,7 @@ def prepare_router() -> Router:
     message_list = [
         Handler(handlers.open_menu, [OtherFun.waiting_other_fun, filter_text('OPEN_MENU')]),
         Handler(handlers.main_handlers, [OtherFun.waiting_other_fun, F.text]),
+        Handler(handlers.become_driver, [Command('partner')]),
     ]
 
     for message in message_list:

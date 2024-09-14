@@ -8,7 +8,7 @@ menu = InlineConstructor.create_kb(
     actions=[
         {
             'text': keyboards.DRIVER_ON_PLACE,
-            'callback_data': 'on_place'
+            'callback_data': 'driver_on_place'
         },
         {
             'text': keyboards.CHAT_WITH_PASSENGER,
@@ -57,7 +57,7 @@ arrival_time = InlineConstructor.create_kb(
 start = InlineConstructor.create_kb(
     actions=[{
         'text': keyboards.DRIVER_START_ORDER,
-        'callback_data': 'start_order'
+        'callback_data': 'driver_start_order'
         },
         {
             'text': keyboards.CHAT_WITH_PASSENGER,
@@ -83,7 +83,7 @@ end = InlineConstructor.create_kb(
     actions=[
         {
             'text': keyboards.DRIVER_END_ORDER,
-            'callback_data': 'end_order'
+            'callback_data': 'driver_end_order'
         },
         {
             'text': keyboards.OPEN_NAVIGATOR,

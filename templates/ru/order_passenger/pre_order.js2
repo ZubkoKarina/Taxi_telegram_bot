@@ -1,0 +1,14 @@
+Предыдущее заказ 🕥
+
+Адрес отправки: {{ data.get('start_point').get("address") }}
+{% for stopPoint in data.get('additional_point') %}
+Остановка: {{ stopPoint.get('address') }}
+{% endfor %}
+Адрес прибытия: {{ data.get('end_point').get("address") }}
+Способ оплаты: {{ data.get('payment_method') }}
+
+{% if data.get('comment') != None or data.get('comment') != 'None' %}
+{{ data.get('comment') }}
+
+{% endif %}
+Сумма: {{ data.get('price') }}

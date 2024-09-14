@@ -1,12 +1,15 @@
 Order created ✅
 
 Selected class: {{ data.get('taxiClass').get('name') }}
-Shipping address: {{ data.get('from_dict').get("street") }} {{ data.get('from_dict').get("house") }}, {{ data.get('from_dict').get("city") }}
-Arrival address: {{ data.get('to_dict').get("street") }} {{ data.get('to_dict').get("house") }}, {{ data.get('to_dict').get("city") }}
-Payment method: {{ data.get('payMethod') }}
+Shipping address: {{ data.get('start_point').get("address") }}
+{% for stopPoint in data.get('additional_point') %}
+Stop: {{ stopPoint.get('address') }}
+{% endfor %}
+Arrival address: {{ data.get('end_point').get("address") }}
+Payment method: {{ data.get('payment_method') }}
 
 {% if data.get('comment') != None or data.get('comment') == '' %}
 {{ data.get('comment') }}
 
 {% endif %}
-To be paid: {{ data.get('price') }}
+To be paid: {{ data.get('cost') }}

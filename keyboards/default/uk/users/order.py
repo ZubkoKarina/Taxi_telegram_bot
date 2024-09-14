@@ -26,9 +26,24 @@ search_driver = DefaultConstructor.create_kb(
 no_search_driver = DefaultConstructor.create_kb(
     actions=[
         keyboards.SEARCH_AGAIN,
-        keyboards.CHANGE_PRICE
+        keyboards.CHANGE_PRICE,
+        keyboards.OPEN_MENU
+    ],
+    schema=[2, 1]
+)
+
+pre_order = DefaultConstructor.create_kb(
+    actions=[
+        keyboards.ACCEPT,
+        keyboards.BACK
     ],
     schema=[1, 1]
 )
 
+menu_before_order = DefaultConstructor.create_kb(
+    actions=[
+        keyboards.YES,
+        keyboards.NO,
+        keyboards.PRE_ORDER
+    ], schema=[2, 1])
 

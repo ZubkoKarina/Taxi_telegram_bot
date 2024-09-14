@@ -13,6 +13,7 @@ def prepare_router() -> Router:
     router = Router()
     message_list = [
         Handler(handlers.save_name, [CreateDriver.waiting_name, ValidFullNameFilter()]),
+        Handler(handlers.save_name, [CreateDriver.waiting_name, ValidFullNameFilter()]),
         Handler(handlers.save_region, [CreateDriver.waiting_region, F.text]),
         Handler(handlers.save_city, [CreateDriver.waiting_city, F.text]),
         Handler(handlers.save_car_name, [CreateDriver.waiting_car_name, F.text]),

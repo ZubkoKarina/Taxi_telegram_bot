@@ -39,7 +39,6 @@ async def search_places(data: Request):
                                                categories_exclude=categories_exclude)
     address_list = visicom.visicom_address_constructor(result_autocomplete)
 
-    print(address_list)
     return address_list
 
 

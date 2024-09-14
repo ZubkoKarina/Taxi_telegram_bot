@@ -1,4 +1,4 @@
-document.getElementById('method_pay').addEventListener('click', function() {
+document.getElementById('payment-method-button').addEventListener('click', function() {
     const button = this;
     const ico = document.getElementById('payIco');
 
@@ -13,16 +13,16 @@ document.getElementById('method_pay').addEventListener('click', function() {
     }
 });
 
-document.getElementById('change_cost').addEventListener('click', function() {
+document.getElementById('change-price-button').addEventListener('click', function() {
     const price = parseFloat(document.getElementById('output-cost').value);
 
-    const addressModal = document.getElementById("changePrice");
+    const addressModal = document.getElementById("price-modal");
     addressModal.style.display = "block";
     addressModal.classList.add('fade-in');
 
     const modalContent = document.querySelector('.price-modal-content');
     modalContent.classList.add('slide-up');
-    const input_change_price = document.getElementById('changePriceInput');
+    const input_change_price = document.getElementById('price-slider');
     const output_price = document.getElementById('outputPrice');
 
     output_price.textContent = price + ' ₴';
@@ -31,26 +31,26 @@ document.getElementById('change_cost').addEventListener('click', function() {
     input_change_price.max = price * 2;
 });
 
-document.getElementById('changePriceInput').addEventListener('input', function() {
-    const changePriceInput = document.getElementById("changePriceInput");
+document.getElementById('price-slider').addEventListener('input', function() {
+    const changePriceInput = document.getElementById("price-slider");
     const output_price = document.getElementById('outputPrice');
 
     output_price.textContent = changePriceInput.value + ' ₴';
 });
 
-document.getElementById('savePriceButton').addEventListener('click', function() {
-    const changePriceInput = document.getElementById("changePriceInput");
+document.getElementById('confirm-price-button').addEventListener('click', function() {
+    const changePriceInput = document.getElementById("price-slider");
     const newPrice = changePriceInput.value;
 
     document.getElementById('output-cost').value = newPrice;
     document.getElementById('output-cost').textContent = `${newPrice} грн`;
 
-    const addressModal = document.getElementById("changePrice");
+    const addressModal = document.getElementById("price-modal");
     addressModal.style.display = "none";
 });
 
-document.getElementById('bt_additional_service').addEventListener('click', function() {
-    const addressModal = document.getElementById("otherSetting");
+document.getElementById('additional-services-button').addEventListener('click', function() {
+    const addressModal = document.getElementById("additional-settings-modal");
     addressModal.style.display = "block";
 
     addressModal.classList.add('slide-up');
@@ -76,7 +76,7 @@ function updatePrice(button) {
 }
 
 
-document.getElementById('saveSettingButton').addEventListener('click', function() {
+document.getElementById('confirm-settings-button').addEventListener('click', function() {
     const selectedServices = [];
     let additionalCost = 0;
     const outputCostElement = document.getElementById('output-cost');
@@ -104,21 +104,29 @@ document.getElementById('saveSettingButton').addEventListener('click', function(
     outputCostElement.value = totalCost;
     outputCostElement.textContent = `${totalCost} грн`;
 
-    settingModal = document.getElementById('otherSetting')
+    settingModal = document.getElementById('additional-settings-modal')
 
     settingModal.dataset.comment = full_comment
-    settingModal.style.display = 'none';
+
+    settingModal.classList.remove('slide-up')
+    settingModal.classList.add('folding-down')
+    setTimeout(() => {
+        settingModal.style.display = 'none';
+        settingModal.classList.remove('folding-down')
+    }, 200);
 });
 
-document.getElementById('bt_comment').addEventListener('click', function() {
-    const Modal = document.getElementById("commentModal");
+document.getElementById('comment-button').addEventListener('click', function() {
+    const Modal = document.getElementById("comment-modal");
+    const content = document.querySelector(".comment-content");
     Modal.style.display = "block";
 
-    addressModal.classList.add('slide-up');
+    content.classList.add('slide-up')
+    Modal.classList.add('fade-in');
 });
 
 
-document.getElementById('saveCommentButton').addEventListener('click', function() {
+document.getElementById('save-comment-button').addEventListener('click', function() {
     const selectedServices = [];
     let additionalCost = 0;
     const outputCostElement = document.getElementById('output-cost');
@@ -146,9 +154,26 @@ document.getElementById('saveCommentButton').addEventListener('click', function(
     outputCostElement.value = totalCost;
     outputCostElement.textContent = `${totalCost} грн`;
 
-    Modal = document.getElementById('commentModal')
+    const Modal = document.getElementById('comment-modal')
+    const content = document.querySelector(".comment-content");
 
     Modal.dataset.comment = full_comment
-    Modal.style.display = 'none';
+
+    content.classList.remove('slide-up')
+    Modal.classList.remove('fade-in');
+    content.classList.add('folding-down')
+    Modal.classList.add('fade-out');
+    setTimeout(() => {
+        Modal.style.display = 'none';
+        content.classList.remove('folding-down')
+        Modal.classList.remove('fade-out');
+    }, 200);
 });
 
+document.querySelectorAll('input[type="text"]').forEach(input => {
+    input.addEventListener('focus', function() {
+        setTimeout(() => {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100); // Невелика затримка для появи клавіатури
+    });
+});

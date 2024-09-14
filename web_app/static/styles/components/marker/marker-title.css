@@ -1,0 +1,51 @@
+#marker-info-window {
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#custom-info-window {
+    display: flex;
+    height: 30px;
+}
+
+.tittle-marker-number {
+    color: var(--main-color);
+    border: none;
+    border-radius: 6px;
+    padding-left: 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#tittle-marker-address {
+    word-wrap: break-word;
+    white-space: normal;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+#delete-marker-button {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    height: 100%;
+    pointer-events: auto; /* Дозволяє кліки по кнопці */
+}
+
+#delete-marker-button:hover {
+    background-color: darkred;
+}

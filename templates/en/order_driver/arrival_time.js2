@@ -1,2 +1,2 @@
 Arrival time at the address:
-{{ data.get("shipping_address") }} {{ data.get("shipping_number") }}, {{ data.get('shipping_city') }}
+{{ data.get('start_point').get("address") }}

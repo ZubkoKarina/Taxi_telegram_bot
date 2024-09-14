@@ -4,7 +4,7 @@ function loadTaxiClasses() {
     fetch('/get-taxi-class')
         .then(response => response.json())
         .then(data => {
-            const container = document.getElementById('select_class_taxi');
+            const container = document.getElementById('select-class-taxi');
             if (!container) {
                 console.error('Container not found');
                 return;
@@ -30,7 +30,7 @@ function loadTaxiClasses() {
                 block.appendChild(img);
 
                 const info = document.createElement('span');
-                info.id = 'info_taxi_class';
+                info.id = 'info-taxi-class';
                 info.innerHTML = `${item.name}<br>${item.cost} ₴`;
                 block.appendChild(info);
 
@@ -39,12 +39,11 @@ function loadTaxiClasses() {
                     block.classList.add('selected');
                     const selectedTaxiClassId = block.dataset.id;
                     console.log('Selected taxi class ID:', selectedTaxiClassId);
-                    calculateAndDisplayRoute()
+                    routeConstruction()
                 });
 
                 container.appendChild(block);
 
-                // Зробити перший елемент активним за замовчуванням
                 if (index === 0) {
                     block.classList.add('selected');
                 }
@@ -83,8 +82,7 @@ function loadAdditionalServices() {
 }
 
 function getUserCity() {
-    console.log(tg.initDataUnsafe);
-    const chat_id = tg.initDataUnsafe.user.id;
+    const chat_id = 986086683;
     return fetch(`/get-user-city?chat_id=${chat_id}`)
         .then(response => response.text())
         .catch(error => {

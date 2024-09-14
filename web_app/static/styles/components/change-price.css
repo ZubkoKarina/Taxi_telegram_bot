@@ -1,0 +1,61 @@
+:root {
+    --main-color: #EB8D00;
+}
+
+#price-modal {
+    z-index: 99999;
+    width: 100%;
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0, 0.7);
+    height: 100%;
+}
+
+.price-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 90%;
+    bottom: 0px;
+    height: 200px;
+    position: fixed;
+    margin-top: 100%;
+    padding: 5%;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    overflow: auto;
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+#confirm-price-button {
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.change-price-text {
+    font-size: 23px;
+    color: var(--tg-theme-text-color);
+}
+
+#price-slider {
+    width: 100%;
+    margin: 0;
+    height: 6px;
+    border-radius: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: var(--tg-theme-secondary-bg-color);
+    color: #edd300;
+}
+
+
+
+

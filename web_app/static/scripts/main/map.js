@@ -35,8 +35,6 @@ getUserCity().then(city => {
     });
 });
 
-
-
 function initMap() {
     if (!userCityCoordinates) {
         console.error("User city coordinates are not set.");
@@ -49,7 +47,7 @@ function initMap() {
     const darkMapId = 'f5690bdfcc14e2c3';
 
     const isDarkMode = telegramTheme === 'dark';
-    const mapId = isDarkMode ? darkMapId : lightMapId;
+    const mapId = 'a9689db6e76bfab8';
 
     const mapOptions = {
         center: new google.maps.LatLng(userCityCoordinates.lat, userCityCoordinates.lng),
@@ -64,7 +62,7 @@ function initMap() {
         map: map,
         suppressMarkers: true,
         polylineOptions: {
-            strokeColor: '#00EDC5',
+            strokeColor: '#EB8D00',
             strokeOpacity: 1,
             strokeWeight: 3
         }
@@ -94,19 +92,33 @@ function geocodeAddress(placeId, isDestination, callback) {
     });
 }
 
-function calculatePriceOrder(distance, duration) {
+function calculatePriceOrder(feed_distance, trip_distance, distance_from_end_point_to_point) {
     const taxiClassBlockActive = document.querySelector('.block-taxi-class.selected');
-    console.log(taxiClassBlockActive)
-    taxiClass = taxiClassBlockActive.dataset.id
+    const taxiClass = taxiClassBlockActive.dataset.id;
 
-    fetch(`/get-order-price?distance=${distance}&taxi_class=${taxiClass}&duration=${duration}`)
+    const requestBody = {
+        feed_distance: feed_distance,
+        trip_distance: trip_distance,
+        distance_from_end_point_to_point: distance_from_end_point_to_point,
+        number_idle_minutes: { "0": 0, "1": 0, "2": 0 },
+        car_type_id: parseInt(taxiClass),
+        is_intercity: false
+    };
+
+    fetch('https://taxiuniversal.com.ua/api/order/cost_calculation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+    })
         .then(response => response.json())
         .then(data => {
             if (data) {
                 const outputCost = document.getElementById('output-cost');
-
-
-                outputCost.dataset.costRoad = data;
+                outputCost.dataset.costRoad = data.data.cost;
+                console.log(data.variable)
+                outputCost.dataset.variable = JSON.stringify(data.variable);
                 if (!outputCost.dataset.costServices) {
                     outputCost.value = outputCost.dataset.costRoad;
                 } else {
@@ -114,7 +126,7 @@ function calculatePriceOrder(distance, duration) {
                 }
 
                 document.getElementById('output-cost').textContent = `${document.getElementById('output-cost').value} ₴`;
-                document.getElementById('output-km').textContent = Math.round(distance / 1000) + 'км.'
+//                document.getElementById('output-km').textContent = Math.round(trip_distance["0"] / 1000) + ' км.';  // Беремо першу відстань для відображення
             }
         })
         .catch(error => {
@@ -122,65 +134,55 @@ function calculatePriceOrder(distance, duration) {
         });
 }
 
-function calculateAndDisplayRoute() {
-    const fromLat = parseFloat(document.getElementById('from_lat').value);
-    const fromLng = parseFloat(document.getElementById('from_lng').value);
-    const toLat = parseFloat(document.getElementById('to_lat').value);
-    const toLng = parseFloat(document.getElementById('to_lng').value);
-    const centerMarkerDiv = document.getElementById('main_marker');
-    if (centerMarkerDiv) {
-        centerMarkerDiv.remove()
-    }
 
-    if (isNaN(fromLat) || isNaN(fromLng) || isNaN(toLat) || isNaN(toLng)) {
-        alert("Please ensure both origin and destination addresses are set correctly.");
+function routeConstruction() {
+    if (markers.length < 2) {
+        alert("Необхідно принаймні дві точки для побудови маршруту.");
         return;
     }
 
-    const start = new google.maps.LatLng(fromLat, fromLng);
-    const end = new google.maps.LatLng(toLat, toLng);
+    const origin = markers[0].getPosition();
+    const destination = markers[1].getPosition();
 
-    const request = {
-        origin: start,
-        destination: end,
-        travelMode: 'DRIVING'
-    };
+    const waypoints = markers.slice(2).map(marker => ({
+        location: marker.getPosition(),
+        stopover: true
+    }));
 
-    directionsService.route(request, function(result, status) {
-        if (status === 'OK') {
-            console.log(result);
-            directionsRenderer.setDirections(result);
+    directionsService.route(
+        {
+            origin: origin,
+            destination: destination,
+            waypoints: waypoints,
+            optimizeWaypoints: false,
+            travelMode: google.maps.TravelMode.DRIVING
+        },
+        (response, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsRenderer.setDirections(response);
 
-            const route = result.routes[0];
-            const leg = route.legs[0];
+                let tripDistance = {};
+                let feedDistance;
+                const legs = response.routes[0].legs;
+                console.log(response.routes)
 
-            const distance = leg.distance.value;
-            const duration = leg.duration.value;
+                const compareLatLng = new google.maps.LatLng(49.65202915025116, 30.97800902799662);
 
-            // Створення маркерів для початкової і кінцевої точок
-            const fromMarker = new google.maps.Marker({
-                position: leg.start_location,
-                map: map,
-                icon: '../static/images/from-marker.svg'
-            });
-            const toMarker = new google.maps.Marker({
-                position: leg.end_location,
-                map: map,
-                icon: '../static/images/to-marker.svg'
-            });
+                feedDistance = google.maps.geometry.spherical.computeDistanceBetween(origin, compareLatLng) / 1000;
+                distance_from_end_point_to_point = google.maps.geometry.spherical.computeDistanceBetween(origin, destination) / 1000
 
-            // Додавання маркерів у масив
-            markers.push(fromMarker, toMarker);
+                legs.forEach((leg, index) => {
+                    tripDistance[index] = leg.distance.value / 1000;
+                });
 
-            console.log('Відстань:', distance);
-            console.log('Час подорожі:', duration);
-
-            calculatePriceOrder(distance, duration);
-        } else {
-            alert('Directions request failed due to ' + status);
+                calculatePriceOrder(feedDistance, tripDistance, distance_from_end_point_to_point);
+            } else {
+                window.alert("Не вдалося побудувати маршрут: " + status);
+            }
         }
-    });
+    );
 }
+
 
 window.addEventListener('load', requestUserLocation);
 

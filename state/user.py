@@ -32,6 +32,8 @@ class OrderTaxi(StatesGroup):
 
     waiting_cancel_order = State()
 
+    waiting_create_pre_order = State()
+
 
 class CreateDriver(StatesGroup):
     waiting_name = State()

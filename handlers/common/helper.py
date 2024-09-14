@@ -83,7 +83,7 @@ async def independent_message(msg_text: str, reply_markup: Optional = None, **kw
 async def get_drivers(region: str):
     resp = await HttpDriver.get_active_drivers(data={'region': region})
     drivers_resp = resp.get('response_data').get('data')
-    drivers = []
+    drivers = [[], [], [], [], []]
 
     for driver in drivers_resp:
         chat_id = driver.get('chat_id')
@@ -91,21 +91,25 @@ async def get_drivers(region: str):
         driver_data = resp.get('response_data').get('data')
         name = driver_data.get('name')
         car = driver_data.get('car')
+        rate = driver_data.get('rate')
 
         driver_state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=chat_id, user_id=chat_id, bot_id=bot.id))
         driver_state_data = await driver_state.get_data()
         geo = driver_state_data.get("geo")
-        lang_code = driver_state_data.get('lang_code')
+        user_language = driver_state_data.get('user_language')
 
         driver_info = {
             'chat_id': chat_id,
             'name': name,
             'car': car,
             'geo': geo,
-            'lang_code': lang_code,
+            'user_language': user_language,
+            'rate': rate
         }
-        drivers.append(driver_info)
-
+        for n in [0, 1, 2, 3, 4, 5]:
+            if  n+1 > rate >= n:
+                drivers[n-1].append(driver_info)
+    print(f'INFO DRIVER {drivers}')
     return drivers
 
 

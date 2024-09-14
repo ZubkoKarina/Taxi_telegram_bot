@@ -54,3 +54,5 @@ SKIP = 'Skip 🚫'
 PAY = 'Pay 💳'
 
 SHARE_CHATBOT = 'Share Chatbot 🤝️'
+
+PRE_ORDER = 'Pre-order 🕤'

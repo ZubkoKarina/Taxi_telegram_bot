@@ -152,11 +152,11 @@ async def start_order(callback: types.CallbackQuery, state: FSMContext):
 
         await bot.send_message(passenger_id, f'Ціну збільшено на {(elapsed_time * 3)} за довге очікування ❗️')
 
-    msg = await callback.message.answer(user_text_manager.asking.START_TAXI_ORDER)
+    msg = await callback.message.answer(user_text_manager.asking.TRIP_STARTED)
     msg_order_notification.append(msg.message_id)
     msg_order_notification.append(callback.message.message_id)
     #
-    msg = await bot.send_message(order_data.get('user_chat_id'), text=user_text_manager.asking.START_TAXI_ORDER,
+    msg = await bot.send_message(order_data.get('user_chat_id'), text=user_text_manager.asking.TRIP_STARTED,
                                  reply_markup=ReplyKeyboardRemove())
     msg_order_notification.append(msg.message_id)
     await state.update_data(msg_order_notification=msg_order_notification)
@@ -215,6 +215,10 @@ async def rate_passenger(callback: types.CallbackQuery, state: FSMContext):
 
 
 async def start_message_to_passenger(callback: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    user_text_manager: TextManager = get_text_manager(data.get('user_language'))
+    user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
+
     await callback.message.answer(user_text_manager.asking.SEND_MESSAGE_TO_PASSENGER,
                                   reply_markup=user_kb_manager.default.back)
 
@@ -233,6 +237,10 @@ async def send_message_to_passenger(message: types.Message, state: FSMContext):
 
 
 async def open_order_menu(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    user_text_manager: TextManager = get_text_manager(data.get('user_language'))
+    user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
+
     await message.answer(user_text_manager.asking.ORDER_MENU, reply_markup=ReplyKeyboardRemove())
 
     await state.set_state(OrderTaxi.waiting_menu_order)
@@ -257,3 +265,6 @@ async def choice_type_navigation(callback: types.CallbackQuery, state: FSMContex
     choice_type_navigation_kb = user_kb_manager.inline.navigation.generation_buttons_navigation(location=geocode_place.get('location'))
 
     await callback.message.answer(user_text_manager.asking.NAVIGATION_METHOD_CHOICE, reply_markup=choice_type_navigation_kb)
+
+# async def test(callback: types.CallbackQuery, state: FSMContext):
+#     print(callback.data)

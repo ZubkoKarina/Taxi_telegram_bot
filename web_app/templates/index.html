@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="../static/styles/control_containers/container_selection_address.css">
-    <link rel="stylesheet" href="../static/styles/control_containers/container_main_menu.css">
-    <link rel="stylesheet" href="../static/styles/main_styles.css">
-    <link rel="stylesheet" href="../static/styles/address_search.css">
-    <link rel="stylesheet" href="../static/styles/other_style.css">
-    <link rel="stylesheet" href="../static/styles/other_setting_style.css">
-    <link rel="stylesheet" href="../static/styles/comment_style.css">
-    <link rel="stylesheet" href="../static/styles/animation.css">
+    <link rel="stylesheet" href="../static/styles/components/additional-service.css">
+    <link rel="stylesheet" href="../static/styles/components/container-main-menu.css">
+    <link rel="stylesheet" href="../static/styles/components/map.css">
+    <link rel="stylesheet" href="../static/styles/components/address-search.css">
+    <link rel="stylesheet" href="../static/styles/components/change-price.css">
+    <link rel="stylesheet" href="../static/styles/components/comment.css">
+    <link rel="stylesheet" href="../static/styles/components/notification.css">
+    <link rel="stylesheet" href="../static/styles/components/container-selection-address.css">
+    <link rel="stylesheet" href="../static/styles/animations/animation.css">
+    <link rel="stylesheet" href="../static/styles/components/marker/marker-title.css">
+    <link rel="stylesheet" href="../static/styles/components/marker/pin.css">
+    <link rel="stylesheet" href="../static/styles/shared/buttons.css">
+    <link rel="stylesheet" href="../static/styles/base/base.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <title>Taxi Service</title>
@@ -23,32 +28,31 @@
         </div>
         <div class="message">
             <div class="title">Оповіщення</div>
-            <div class="body" id="text-notification"></div>
+            <div class="notification-body" id="notification-message"></div>
         </div>
     </div>
-    <div id="addressModal" class="modal">
-        <div class="modal-content">
-            <div class="search-block">
-                <input type="text" id="searchInput" placeholder="Введіть адресу">
+    <div id="address-search-modal" class="modal">
+        <div id="address-search-block">
+            <div class="address-search-content" id="address-search-content">
+                <input type="text" id="address-search-input" placeholder="Введіть адресу">
                 <button class="bt-search-address"><i class="bi bi-geo"></i>Обрати на мапі</button>
-<!--                <button class="bt-search-address"><i class="bi bi-clock-history"></i>Недавні</button>-->
             </div>
             <ul id="suggestions"></ul>
         </div>
     </div>
-    <div id="search-place-by-marker">
+    <div id="place-confirmation-block">
         <span class="other-setting-text">-</span>
-        <button id="savePlaceButton">Підтвердити</button>
+        <button id="confirm-place-button">Підтвердити</button>
     </div>
-    <div id="changePrice" class="changePriceModal">
+    <div id="price-modal" class="price-modal">
         <div class="price-modal-content">
             <span class="change-price-text">Вартість поїздки</span>
             <span class="change-price-text" id="outputPrice">0 ₴</span>
-            <input type="range" step="10" id="changePriceInput">
-            <button id="savePriceButton">Зберегти</button>
+            <input type="range" step="10" id="price-slider">
+            <button id="confirm-price-button">Зберегти</button>
         </div>
     </div>
-    <div id="otherSetting" class="settingModal">
+    <div id="additional-settings-modal" class="settingModal">
         <div class='header-block-other-settings'>
             <h1 class="other-setting-text">Додаткові налаштування</h1>
         </div>
@@ -56,89 +60,97 @@
             <ul class="additional-services">
             </ul>
             <div>
-                <button id="saveSettingButton">Зберегти</button>
+                <button id="confirm-settings-button">Зберегти</button>
             </div>
         </div>
     </div>
-    <div id="commentModal">
+    <div id="comment-modal">
         <div class="comment-content">
             <div class='header-block-comment'>
                 <h1 class="comment-header-text">Введіть уточнення для водія</h1>
             </div>
             <div>
-                <input type="text" placeholder="  Коментар" id="comment">
-                <button id="saveCommentButton">Зберегти</button>
+                <input type="text" placeholder="  Коментар" id="comment" maxlength="150">
+                <button id="save-comment-button">Зберегти</button>
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="map-container">
         <div class="map" id="map"></div>
-        <button class="geo-block" id="user-geo">
+    </div>
+    <div id="address-selection-container">
+        <button class="geo-location-button" id="geo-location-button">
             <i class="fa-solid fa-location-crosshairs"></i>
         </button>
+        <div id="selection-address-block-menu">
+            <span>Куди їдемо?</span>
+            <div class="input-group" id="input-group-from">
+                <label for="from">Звідки їдемо?</label>
+                <i class="fa-regular fa-circle-dot input-icon"></i>
+                <input type="text" id="from" placeholder="Звідки їдемо?" autocomplete="off">
+            </div>
+            <div class="input-group" id="input-group-entrance">
+                <label for="entrance_from">Під'їзд</label>
+                <input type="text" id="entrance_from" placeholder="Під'їзд" autocomplete="off">
+            </div>
+            <div class="input-group" id="input-group-to">
+                <label for="to">Куди їдемо?</label>
+                <i class="fas fa-arrow-right input-icon"></i>
+                <input type="text" id="to" placeholder="Куди їдемо?" autocomplete="off">
+            </div>
+            <button id="add-stop-button">
+                <i class="fa-solid fa-plus"></i>
+                Додати зупинку
+            </button>
+            <button id="continue-button">
+                <i class="fa-regular fa-circle-right"></i>
+                Далі
+            </button>
+        </div>
     </div>
-    <div id="container_selection_address">
-        <span>Куди їдемо?</span>
-        <div class="input-group" id="input-group-from">
-            <label for="from">Звідки їдемо?</label>
-            <i class="fa-regular fa-circle-dot input-icon"></i>
-            <input type="text" id="from" placeholder="Звідки їдемо?" autocomplete="off">
-            <input type="hidden" id="from_lat">
-            <input type="hidden" id="from_lng">
-        </div>
-        <div class="input-group" id="input-group-entrance">
-            <label for="from">Під'їзд</label>
-            <input type="text" id="entrance_from" placeholder="Під'їзд" autocomplete="off">
-        </div>
-        <div class="input-group" id="input-group-to">
-            <label for="to">Куди їдемо?</label>
-            <i class="fas fa-arrow-right input-icon"></i>
-            <input type="text" id="to" placeholder="Куди їдемо?" autocomplete="off">
-            <input type="hidden" id="to_lat">
-            <input type="hidden" id="to_lng">
-        </div>
-    </div>
-    <div id="container_main_menu">
+    <div id="main-menu-container">
         <div id="container-output-cost-km">
-            <div id="output-km">12 км.</div>
             <div id="output-cost">190 ₴</div>
-
         </div>
-        <div id="container_settings_buttons">
-            <button class="settings_buttons" id="method_pay" value="Карта">
+        <div id="container-settings-buttons">
+            <button class="settings-buttons" id="payment-method-button" value="Карта">
                 <i class="bi bi-credit-card-2-front" id="payIco"></i>
                 <br><span>Карта</span>
             </button>
-            <button class="settings_buttons" id="bt_comment" value="Карта" style="font-size: 9px">
+            <button class="settings-buttons" id="comment-button" value="Карта" style="font-size: 9px">
                 <i class="bi bi-chat-dots"></i>
                 Коментар
             </button>
-            <button class="settings_buttons" id="bt_additional_service" value="Послугі">
+            <button class="settings-buttons" id="additional-services-button" value="Послугі">
                 <i class="bi bi-list"></i>
                 Послуги
             </button>
         </div>
-        <button class="button_changes" id="change_address">
+        <button class="button-changes" id="change-address-button">
             <i class="bi bi-geo"></i>
             Змінити адресу
         </button>
-        <button class="button_changes" id="change_cost">
+        <button class="button-changes" id="change-price-button">
             <i class="bi bi-pencil-square"></i>
             Змінити ціну
         </button>
-        <div id="select_class_taxi">
-        </div>
-        <button class="main_button" id="accept_order">Замовити</button>
+        <div id="select-class-taxi"></div>
+        <button class="main-button" id="place-order-button">Замовити</button>
     </div>
-    <script src="../static/scripts/services/tg_web_scripts.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&libraries=places&callback=initMap"></script>
+    <script src="../static/scripts/services/tgWebService.js"></script>
     <script src="../static/scripts/services/http.js"></script>
     <script src="../static/scripts/main/map.js"></script>
-    <script src="../static/scripts/main/address_search.js"></script>
-    <script src="../static/scripts/main/place_marker_manual.js"></script>
-    <script src="../static/scripts/utils/additional_setting.js"></script>
-    <script src="../static/scripts/utils/open_modals.js"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&libraries=places&callback=initMap"></script>
+    <script src="../static/scripts/main/addressSearch.js"></script>
+    <script src="../static/scripts/main/addressSearchByPin.js"></script>
+    <script src="../static/scripts/utils/additionalSetting.js"></script>
     <script src="../static/scripts/utils/geolocation.js"></script>
+    <script src="../static/scripts/utils/markerTittle.js"></script>
+    <script src="../static/scripts/utils/marker.js"></script>
 
+    <script src="../static/scripts/utils/modals/addressSearchModal.js"></script>
+    <script src="../static/scripts/utils/modals/addressSelectModal.js"></script>
+    <script src="../static/scripts/utils/modals/mainMenuModal.js"></script>
+    <script src="../static/scripts/utils/modals/pickupPointModal.js"></script>
 </body>
 </html>

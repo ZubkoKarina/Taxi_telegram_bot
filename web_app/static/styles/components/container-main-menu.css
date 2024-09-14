@@ -3,7 +3,7 @@
 }
 
 
-#container_main_menu {
+#main-menu-container {
     display: none;
     grid-template-columns: repeat(10, 1fr);
     background-color: var(--tg-theme-bg-color);
@@ -62,7 +62,7 @@
     background-color: var(--main-color);
 }
 
-#container_settings_buttons {
+#container-settings-buttons {
     grid-column: span 5;
 
     display: flex;
@@ -71,7 +71,7 @@
     height: 50px;
 }
 
-.settings_buttons {
+.settings-buttons {
     height: 100%;
     width: 52px;
 
@@ -84,12 +84,12 @@
     color: var(--tg-theme-hint-color);
 }
 
-#container_settings_buttons i {
+#container-settings-buttons i {
     font-size: 25px;
     margin-bottom: 1px;
 }
 
-.button_changes {
+.button-changes {
     grid-column: span 5;
 
     height: 50px;
@@ -101,7 +101,7 @@
     font-size: 17px;
 }
 
-#select_class_taxi {
+#select-class-taxi {
     grid-column: span 10;
 
     height: 50px;
@@ -110,7 +110,7 @@
     display: flex;
 }
 
-.main_button {
+.main-button {
     position: relative;
     grid-column: span 10;
     border-radius: 15px;
@@ -124,7 +124,7 @@
     overflow: hidden;
 }
 
-.main_button::before {
+.main-button::before {
     content: "";
     position: absolute;
     top: 0;
@@ -137,7 +137,7 @@
     animation: shine 2s infinite;
 }
 
-#select_class_taxi {
+#select-class-taxi {
     grid-column: span 10;
     height: 50px;
     overflow-x: scroll;
@@ -190,7 +190,7 @@
     fill: var(--tg-theme-hint-color);
 }
 
-#info_taxi_class {
+#info-taxi-class {
     position: relative;
     right: 30px;
     font-size: 14.5px;
@@ -198,6 +198,6 @@
     line-height: 18px;
 }
 
-#method_pay {
+#payment-method-button {
     border: 1.5px solid var(--main-color);
 }

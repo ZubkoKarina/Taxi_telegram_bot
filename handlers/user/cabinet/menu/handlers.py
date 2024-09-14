@@ -26,7 +26,8 @@ async def main_handlers(message: types.Message, state: FSMContext):
         await state.set_state(EditUserInfo.waiting_edit_info)
     elif bt_text == user_text_manager.keyboards.ORDER_TAXI:
         city = data.get("city")
-        await message.answer(text=user_text_manager.asking.REQUEST_DRIVER_CONFIRMATION.format(city = city), reply_markup=user_kb_manager.default.yes_no)
+        await message.answer(text=user_text_manager.asking.REQUEST_DRIVER_CONFIRMATION.format(city = city),
+                             reply_markup=user_kb_manager.default.users.menu_before_order)
         await state.set_state(OrderTaxi.waiting_accept_city)
     elif bt_text == user_text_manager.keyboards.HISTORY_ORDER:
         await message.answer(text=user_text_manager.asking.ORDER_HISTORY_INFO, reply_markup=ReplyKeyboardRemove())

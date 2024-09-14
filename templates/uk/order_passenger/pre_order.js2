@@ -1,0 +1,14 @@
+Попереднє замовлення 🕥
+
+Адреса вітправки: {{ data.get('start_point').get("address") }}
+{% for stopPoint in data.get('additional_point') %}
+Зупинка: {{ stopPoint.get('address') }}
+{% endfor %}
+Адреса прибуття: {{ data.get('end_point').get("address") }}
+Метод оплати: {{ data.get('payment_method') }}
+
+{% if data.get('comment') != None or data.get('comment') != 'None' %}
+{{ data.get('comment') }}
+{% endif %}
+
+Сума: {{ data.get('cost') }}

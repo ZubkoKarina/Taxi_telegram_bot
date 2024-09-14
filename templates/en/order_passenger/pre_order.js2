@@ -1,0 +1,14 @@
+Pre-order ✅
+
+Shipping address: {{ data.get('start_point').get("address") }}
+{% for stopPoint in data.get('additional_point') %}
+Stop: {{ stopPoint.get('address') }}
+{% endfor %}
+Arrival address: {{ data.get('end_point').get("address") }}
+Payment method: {{ data.get('payment_method') }}
+
+{% if data.get('comment') != None or data.get('comment') != 'None' %}
+{{ data.get('comment') }}
+
+{% endif %}
+Cost: {{ data.get('price') }}

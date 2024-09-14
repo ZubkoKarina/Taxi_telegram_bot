@@ -1,0 +1,10 @@
+body button {
+    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    transition: transform 0.1s ease; /* Додаємо плавний перехід */
+}
+
+body button:active {
+    transform: scale(0.9); /* Зменшення кнопки при натисканні */
+}
