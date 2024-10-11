@@ -1,11 +1,14 @@
 Замовлення ❗️
 
 Ім'я: *{{ data.get('passenger_name').split(' ')[1] }}*
-Адреса вітправки: {{ data.get('start_point').get("address") }}
+Адреса відправки: *{{ data.get('start_point').get("address") }}*
+{% if data.get('entrance') %}
+Під'їзд: {{ data.get('entrance') }}
+{% endif %}
 {% for stopPoint in data.get('additional_point') %}
-Зупинка: {{ stopPoint.get('address') }}
+Зупинка: *{{ stopPoint.get('address') }}*
 {% endfor %}
-Адреса прибуття: {{ data.get('end_point').get("address") }}
+Адреса прибуття: *{{ data.get('end_point').get("address") }}*
 
 Метод оплати: {{ data.get('payment_method') }}
-Сума: {{ data.get('cost') }}
+Сума: *{{ data.get('cost') }}*

@@ -1,5 +1,6 @@
 let userCityCoordinates = null;
 let userCityId = null
+let userRegionId = null
 let map;
 let markers = [];
 let geocoder;
@@ -28,6 +29,7 @@ getUserCity().then(city => {
             lng: data.geo.lng,
         };
         userCityId = data.id;
+        userRegionId = data.region_id;
         initMap();
     })
     .catch(error => {
@@ -47,7 +49,8 @@ function initMap() {
     const darkMapId = 'f5690bdfcc14e2c3';
 
     const isDarkMode = telegramTheme === 'dark';
-    const mapId = 'a9689db6e76bfab8';
+    const mapId = isDarkMode ? darkMapId : lightMapId;
+//    const mapId = 'a9689db6e76bfab8'
 
     const mapOptions = {
         center: new google.maps.LatLng(userCityCoordinates.lat, userCityCoordinates.lng),
@@ -104,6 +107,7 @@ function calculatePriceOrder(feed_distance, trip_distance, distance_from_end_poi
         car_type_id: parseInt(taxiClass),
         is_intercity: false
     };
+    console.log(requestBody)
 
     fetch('https://taxiuniversal.com.ua/api/order/cost_calculation', {
         method: 'POST',
@@ -125,7 +129,8 @@ function calculatePriceOrder(feed_distance, trip_distance, distance_from_end_poi
                     outputCost.value = parseFloat(outputCost.dataset.costRoad) + parseFloat(outputCost.dataset.costServices);
                 }
 
-                document.getElementById('output-cost').textContent = `${document.getElementById('output-cost').value} ₴`;
+                document.getElementById('output-cost-text').textContent = `${outputCost.value} ₴`;
+                document.getElementById('output-cost-text').classList.add('visible');
 //                document.getElementById('output-km').textContent = Math.round(trip_distance["0"] / 1000) + ' км.';  // Беремо першу відстань для відображення
             }
         })
@@ -162,26 +167,49 @@ function routeConstruction() {
                 directionsRenderer.setDirections(response);
 
                 let tripDistance = {};
-                let feedDistance;
                 const legs = response.routes[0].legs;
-                console.log(response.routes)
-
-                const compareLatLng = new google.maps.LatLng(49.65202915025116, 30.97800902799662);
-
-                feedDistance = google.maps.geometry.spherical.computeDistanceBetween(origin, compareLatLng) / 1000;
-                distance_from_end_point_to_point = google.maps.geometry.spherical.computeDistanceBetween(origin, destination) / 1000
 
                 legs.forEach((leg, index) => {
                     tripDistance[index] = leg.distance.value / 1000;
                 });
 
-                calculatePriceOrder(feedDistance, tripDistance, distance_from_end_point_to_point);
+                const compareLatLng = new google.maps.LatLng(49.65202915025116, 30.97800902799662);
+
+                computeDistanceAlongRoad(origin, compareLatLng, (feedDistance) => {
+                    computeDistanceAlongRoad(compareLatLng, destination, (distance_from_end_point_to_point) => {
+                        calculatePriceOrder(feedDistance, tripDistance, distance_from_end_point_to_point);
+                    });
+                });
+
             } else {
                 window.alert("Не вдалося побудувати маршрут: " + status);
             }
         }
     );
 }
+
+function computeDistanceAlongRoad(pointA, pointB, callback) {
+    const service = new google.maps.DirectionsService();
+
+    service.route(
+        {
+            origin: pointA,
+            destination: pointB,
+            travelMode: google.maps.TravelMode.DRIVING
+        },
+        (response, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+                const route = response.routes[0];
+                const distance = route.legs.reduce((total, leg) => total + leg.distance.value, 0) / 1000;
+                callback(distance);
+            } else {
+                console.error('Запит маршруту не вдався через ' + status);
+                callback(null);
+            }
+        }
+    );
+}
+
 
 
 window.addEventListener('load', requestUserLocation);

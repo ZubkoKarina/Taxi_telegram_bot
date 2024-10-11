@@ -1,0 +1,5 @@
+SOS 🆘
+{{ data.get('comment') }}
+
+Номер телефона: {{ data.get('phone_number') }}
+Местонахождение: {{ data.get('place') }}

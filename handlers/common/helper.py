@@ -8,7 +8,7 @@ from state.driver import DriverCabinetStates
 from keyboards import KeyboardManager, get_kb_manager
 from utils.template_engine import render_template
 from services.redis import RedisClient
-from services.http_client import HttpDriver
+from services.http_client import HttpDriver, HttpUser
 from aiogram.fsm.context import FSMContext, StorageKey
 from aiogram.filters import BaseFilter
 from aiogram.types import CallbackQuery
@@ -40,11 +40,19 @@ class CallbackDataContainsKey(BaseFilter):
 async def user_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
     await state.set_state(UserCabinetStates.waiting_menu)
     data = await state.get_data()
+
+    message: types.Message = kwargs.get('message') if kwargs.get('message') else data.get('chat_id')
+    chat_id = message.chat.id
+
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
 
-    print(f'USER DATA: {await state.get_data()}')
+    response = await HttpUser.get_user_info({'chat_id': int(chat_id)})
+    user_data = response.get('response_data').get('data')
 
+    print(f'USER DATA: {user_data}')
+
+    await state.set_data({**user_data, 'user_language': data.get('user_language'), 'chat_id': chat_id})
     return await independent_message(
         msg_text=user_text_manager.asking.MENU, reply_markup=user_kb_manager.default.users.menu, **kwargs
     )
@@ -53,16 +61,28 @@ async def user_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
 async def driver_cabinet_menu(state: FSMContext, **kwargs: object) -> object:
     await state.set_state(DriverCabinetStates.waiting_menu)
     data = await state.get_data()
+
+    message: types.Message = kwargs.get('message')
+    if not message:
+        chat_id = kwargs.get('chat_id')
+    else:
+        chat_id = message.chat.id
+
+    response = await HttpDriver.get_driver_info({'chat_id': int(chat_id)})
+    user_data = response.get('response_data').get('data')
+
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
 
+
     menu_kb = user_kb_manager.default.driver.menu
-    if data.get('status').get('id') == 2:
+    if user_data.get('status').get('id') == 2:
         menu_kb = user_kb_manager.default.driver.inactive_menu
 
     print(f'DRIVER DATA: {data}')
-    template = render_template("authorization_driver.js2", data=data, lang_code=data.get('user_language'))
+    template = render_template("authorization_driver.js2", data=user_data, lang_code=data.get('user_language'))
 
+    await state.set_data({**user_data, 'user_language': data.get('user_language'), 'chat_id': chat_id, 'geo': data.get('geo', None)})
     return await independent_message(
         msg_text=template, reply_markup=menu_kb, **kwargs
     )
@@ -83,7 +103,7 @@ async def independent_message(msg_text: str, reply_markup: Optional = None, **kw
 async def get_drivers(region: str):
     resp = await HttpDriver.get_active_drivers(data={'region': region})
     drivers_resp = resp.get('response_data').get('data')
-    drivers = [[], [], [], [], []]
+    drivers = []
 
     for driver in drivers_resp:
         chat_id = driver.get('chat_id')
@@ -92,6 +112,7 @@ async def get_drivers(region: str):
         name = driver_data.get('name')
         car = driver_data.get('car')
         rate = driver_data.get('rate')
+        priority = driver_data.get('priority')
 
         driver_state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=chat_id, user_id=chat_id, bot_id=bot.id))
         driver_state_data = await driver_state.get_data()
@@ -104,13 +125,40 @@ async def get_drivers(region: str):
             'car': car,
             'geo': geo,
             'user_language': user_language,
-            'rate': rate
+            'rate': rate,
+            'priority': priority,
         }
-        for n in [0, 1, 2, 3, 4, 5]:
-            if  n+1 > rate >= n:
-                drivers[n-1].append(driver_info)
+        drivers.append(driver_info)
     print(f'INFO DRIVER {drivers}')
     return drivers
+
+
+async def sort_drivers(drivers: list):
+    sorted_drivers = []
+    count_driver = len(drivers)
+
+    max_priority = 0
+    for driver in drivers:
+        if max_priority < driver.get('priority'):
+            max_priority = driver.get('priority')
+
+    for num_priority in range(max_priority):
+        driver_by_priority = []
+        for driver in drivers:
+            if driver.get('priority') - 1 == num_priority:
+                driver_by_priority.append(driver)
+        sorted_drivers.append(driver_by_priority)
+
+    for num_priority in range(max_priority):
+        driver_by_rating = [[], [], [], [], []]
+        for driver in sorted_drivers[num_priority]:
+            driver_by_rating[int(driver.get('rate')) * -1].append(driver)
+        sorted_drivers[num_priority] = driver_by_rating
+
+    for i in range(len(sorted_drivers)):
+        print(f'priority #{i}: {sorted_drivers[i]}')
+
+    return {'sorted_drivers': sorted_drivers, 'count_driver': count_driver}
 
 
 async def mass_notification_deletion(list_chat_id, list_msg_id):
@@ -121,3 +169,5 @@ async def mass_notification_deletion(list_chat_id, list_msg_id):
             except Exception as ex:
                 pass
     return
+
+

@@ -38,15 +38,15 @@
 }
 
 #comment {
-    height: 100px;
+    min-height: 70px;
     width: 100%;
     font-size: 15px;
     background-color: var(--tg-theme-secondary-bg-color);
     color: var(--tg-theme-hint-color);
     border: none;
-    margin-bottom: 20px;
     border-radius: 10px;
-    text-align: top;
+    resize: none;
+    padding-top: 10px;
 }
 
 #save-comment-button {
@@ -64,4 +64,13 @@
     font-size: 20px;
     margin: 0;
     color: var(--tg-theme-text-color);
+}
+
+.comment-billet-text {
+    border: 0;
+    background: var(--main-color);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin: 2.5px;
 }

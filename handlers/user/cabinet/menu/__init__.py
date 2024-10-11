@@ -10,6 +10,7 @@ def prepare_router() -> Router:
     router = Router()
     message_list = [
         Handler(handlers.main_handlers, [UserCabinetStates.waiting_menu, F.text]),
+        Handler(handlers.pass_fun, [UserCabinetStates.waiting_history_order, F.text]),
     ]
 
     inline_list = [

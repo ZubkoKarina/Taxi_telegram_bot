@@ -1,14 +1,23 @@
+{% if data.get('planned_order') == None %}
 Order ❗️
+{% endif %}
+{% if data.get('planned_order') != None %}
+Planned order ❗️
+{% endif %}
 
-Shipping address: {{ data.get('start_point').get("address") }}
+Send address: {{ data.get('start_point').get("address") }}
 {% for stopPoint in data.get('additional_point') %}
 Stop: {{ stopPoint.get('address') }}
 {% endfor %}
 Arrival address: {{ data.get('end_point').get("address") }}
 
-{% if data.get('comment') != None or data.get('comment') == '' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
-{% endif %}
 
+{% endif %}
+{% if data.get('planned_order') != None %}
+Date sent: {{ data.get('planned_order').get('date') }} {{ data.get('planned_order').get('time') }}
+
+{% endif %}
 Payment method: {{ data.get('payment_method') }}
-Amount: {{ data.get('cost') }}
+In the amount of: {{ data.get('cost') }}

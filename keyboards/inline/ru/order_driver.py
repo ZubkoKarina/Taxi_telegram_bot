@@ -19,6 +19,10 @@ menu = InlineConstructor.create_kb(
             'callback_data': 'open_navigation_from'
         },
         {
+            'text': keyboards.REPLACE_COST,
+            'callback_data': 'replace_cost'
+        },
+        {
             'text': keyboards.SOS,
             'callback_data': 'sos'
         },
@@ -26,7 +30,7 @@ menu = InlineConstructor.create_kb(
             'text': keyboards.CANCEL_ORDER,
             'callback_data': 'cancel_order'
         }],
-    schema=[1, 2, 2]
+    schema=[1, 2, 1, 2]
 )
 
 arrival_time = InlineConstructor.create_kb(
@@ -68,6 +72,10 @@ start = InlineConstructor.create_kb(
             'callback_data': 'open_navigation_to'
         },
         {
+            'text': keyboards.REPLACE_COST,
+            'callback_data': 'replace_cost'
+        },
+        {
             'text': keyboards.SOS,
             'callback_data': 'sos'
         },
@@ -76,7 +84,7 @@ start = InlineConstructor.create_kb(
             'callback_data': 'cancel_order'
         },
     ],
-    schema=[1, 2, 2]
+    schema=[1, 2, 1, 2]
 )
 
 end = InlineConstructor.create_kb(
@@ -84,6 +92,10 @@ end = InlineConstructor.create_kb(
         {
             'text': keyboards.DRIVER_END_ORDER,
             'callback_data': 'driver_end_order'
+        },
+        {
+            'text': keyboards.REPLACE_COST,
+            'callback_data': 'replace_cost'
         },
         {
             'text': keyboards.OPEN_NAVIGATOR,
@@ -94,7 +106,59 @@ end = InlineConstructor.create_kb(
             'callback_data': 'sos'
         },
     ],
-    schema=[1, 2]
+    schema=[1, 1, 2]
+)
+
+end_with_additional_point = InlineConstructor.create_kb(
+    actions=[
+        {
+            'text': keyboards.DRIVER_END_ORDER,
+            'callback_data': 'driver_end_order'
+        },
+        {
+            'text': keyboards.ADDITIONAL_POINT,
+            'callback_data': 'additional_point'
+        },
+        {
+            'text': keyboards.OPEN_NAVIGATOR,
+            'callback_data': 'open_navigation_to'
+        },
+        {
+            'text': keyboards.SOS,
+            'callback_data': 'sos'
+        },
+        {
+            'text': keyboards.REPLACE_COST,
+            'callback_data': 'replace_cost'
+        },
+    ],
+    schema=[1, 2, 2]
+)
+
+end_with_off_timer = InlineConstructor.create_kb(
+    actions=[
+        {
+            'text': keyboards.DRIVER_END_ORDER,
+            'callback_data': 'driver_end_order'
+        },
+        {
+            'text': keyboards.OFF_TIMER,
+            'callback_data': 'end_additional_point'
+        },
+        {
+            'text': keyboards.OPEN_NAVIGATOR,
+            'callback_data': 'open_navigation_to'
+        },
+        {
+            'text': keyboards.REPLACE_COST,
+            'callback_data': 'replace_cost'
+        },
+        {
+            'text': keyboards.SOS,
+            'callback_data': 'sos'
+        },
+    ],
+    schema=[1, 2, 2]
 )
 
 reply_message_to_passenger = InlineConstructor.create_kb(

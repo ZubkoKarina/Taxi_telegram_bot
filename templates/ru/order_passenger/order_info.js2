@@ -1,15 +1,18 @@
 Заказ сформирован ✅
 
-Выбранный класс: {{ data.get('taxiClass').get('name') }}
-Адрес отправки: {{ data.get('start_point').get("address") }}
+Выбранный класс: {{ data.get('car_type_name') }}
+Адрес отправки: *{{ data.get('start_point').get("address") }}*
+{% if data.get('entrance') %}
+Подъезд: *{{ data.get('entrance') }}*
+{% endif %}
 {% for stopPoint in data.get('additional_point') %}
-Остановка: {{ stopPoint.get('address') }}
+Остановка: *{{ stopPoint.get('address') }}*
 {% endfor %}
-Адрес прибытия: {{ data.get('end_point').get("address") }}
-Способ оплаты: {{ data.get('payment_method') }}
+Адрес прибытия: *{{ data.get('end_point').get("address") }}*
+Способ оплаты: *{{ data.get('payment_method') }}*
 
-{% if data.get('comment') != None or data.get('comment') == '' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
 
 {% endif %}
-До оплаты: {{ data.get('cost') }}
+К оплате: *{{ data.get('cost') }} грн *

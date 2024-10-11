@@ -4,4 +4,5 @@
 Автомобиль: *{{data.get('car').get('car_name')}} {{ data.get('car').get('car_color') }}*
 Номер авто: *{{data.get('car').get('car_number')}}*
 
-Прибудет через: {{ data.get('order_data').get('arrival_time') }}
+Прибудет через: {{ data.get('arrival_time') }}
+Безкоштовний час очікування: 3 хв.

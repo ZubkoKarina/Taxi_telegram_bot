@@ -23,7 +23,7 @@
     height: 50px;
     font-size: 20px;
     background-color: var(--main-color);
-    color: black;
+    color: white;
     border: none;
     cursor: pointer;
     border-radius: 10px;
@@ -34,7 +34,7 @@
     position: absolute;
     top: 47.5%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -225%);
     width: 30px;
     height: 30px;
     pointer-events: none;

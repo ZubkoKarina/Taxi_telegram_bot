@@ -1,4 +1,5 @@
 const geoButton = document.getElementById('geo-location-button');
+let markerUserGeo = null
 
 function requestUserLocation() {
     if ("geolocation" in navigator) {
@@ -19,6 +20,17 @@ function showPosition(position) {
     let searchFromElement = document.getElementById('from')
     searchFromElement.dataset.geo = JSON.stringify([lat, lng])
     currentInputId = 'from'
+
+    markerUserGeo = new google.maps.Marker({
+        position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+        map: map,
+        icon: {
+            url: '../static/images/user-geo.svg',
+            scaledSize: new google.maps.Size(60, 60)
+        },
+    });
+
+    renderDriversInMap([lat, lng])
 
     const data = ({
         lat: lat,

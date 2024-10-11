@@ -25,9 +25,31 @@ def prepare_router() -> Router:
         Handler(
             handlers.open_order_menu,
             [OrderDriver.waiting_cancel_order, filter_text('NO')]
-        )
+        ),
+        Handler(
+            handlers.send_sos,
+            [OrderDriver.waiting_sos_comment, F.text]
+        ),
+        Handler(
+            handlers.take_replace_cost,
+            [OrderDriver.waiting_replace_cost, F.text]
+        ),
+        Handler(
+            handlers.take_status_replace_cost,
+            [OrderDriver.waiting_accept_replace_cost, filter_text('YES')]
+        ),
+        Handler(
+            handlers.take_status_replace_cost,
+            [OrderDriver.waiting_accept_replace_cost, filter_text('NO')]
+        ),
     ]
     callback_list = [
+        Handler(
+            handlers.start_planned_order, [CallbackDataContainsKey('is_planned')]
+        ),
+        Handler(
+            handlers.cancel_planned_order, [CallbackDataContainsKey('cancel_planned_order')]
+        ),
         Handler(
             handlers.accept_order, [CallbackDataContainsKey('id')]
         ),
@@ -60,6 +82,18 @@ def prepare_router() -> Router:
         ),
         Handler(
             handlers.start_message_to_passenger, [F.data == 'chat_with_passenger']
+        ),
+        Handler(
+            handlers.sos, [F.data == 'sos']
+        ),
+        Handler(
+            handlers.wait_replace_cost, [F.data == 'replace_cost']
+        ),
+        Handler(
+            handlers.additional_point_wait, [F.data == 'additional_point']
+        ),
+        Handler(
+            handlers.end_additional_point_wait, [F.data == 'end_additional_point']
         ),
     ]
 

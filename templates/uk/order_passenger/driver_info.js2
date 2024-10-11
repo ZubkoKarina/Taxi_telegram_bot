@@ -4,4 +4,4 @@
 Автомобіль: *{{data.get('car').get('car_name')}} {{ data.get('car').get('car_color') }}*
 Номер авто: *{{data.get('car').get('car_number')}}*
 
-Прибуде через: {{ data.get('order_data').get('arrival_time') }}
+Прибуде через: {{ data.get('arrival_time') }}

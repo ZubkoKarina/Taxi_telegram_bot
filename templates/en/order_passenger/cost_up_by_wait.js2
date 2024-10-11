@@ -1,0 +1,6 @@
+Waiting time exceeded 3 min price increased by {{ data.get('cost_wait') }}
+
+Total waiting time: *{{ data.get('time_wait_passenger') }} min. *
+Paid waiting time: *{{ data.get('pay_time_wait_passenger') }} min. *
+The cost of waiting: *{{ data.get('price_wait') }} UAH. *
+The total cost of the order, including downtime: *{{ data.get('new_cost') }} UAH. *

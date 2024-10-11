@@ -1,8 +1,9 @@
-<svg id="deactive-marker" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 78" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+<svg id="deactive-marker" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 86" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <ellipse id="shadow-ellipse" cx="21.5" cy="77.5" rx="21.5" ry="8.5" fill="#BEBEBE" fill-opacity="0.5"/>
+  <ellipse cx="21.5" cy="76" rx="3.5" ry="2" fill="#AEAEAE"/>
   <g id="eSFB4GN6XpZ2_ts" transform="translate(21.5,51.48412) scale(1,0.525922)">
     <rect width="7" height="40" rx="3.5" ry="3.5" transform="translate(-3.5,-20)" fill="#FF9900"/>
   </g>
   <circle r="21.5" transform="translate(21.5 21.5)" fill="#FF9900"/>
   <path d="M26,22c0,2.2091-1.7909,4-4,4s-4-1.7909-4-4s1.7909-4,4-4s4,1.7909,4,4Z" fill="#3e3e3e"/>
-  <ellipse id="eSFB4GN6XpZ5" rx="3.5" ry="2.330343" transform="matrix(1 0 0 0.75976 21.5 75.669657)" opacity="1" fill="#d2dbed" stroke-width="0"/>
 </svg>

@@ -1,11 +1,11 @@
 Заказ ❗️
 
 Имя: *{{ data.get('passenger_name').split(' ')[1] }}*
-Адрес отправки: {{ data.get('start_point').get("address") }}
+Адрес отправки: *{{ data.get('start_point').get("address") }}*
 {% for stopPoint in data.get('additional_point') %}
-Остановка: {{ stopPoint.get('address') }}
+Остановка: *{{ stopPoint.get('address') }}*
 {% endfor %}
-Адрес прибытия: {{ data.get('end_point').get("address") }}
+Адрес прибытия: *{{ data.get('end_point').get("address") }}*
 
 Способ оплаты: {{ data.get('payment_method') }}
-Сумма: {{ data.get('cost') }}
+Сумма:* {{ data.get('cost') }} грн*

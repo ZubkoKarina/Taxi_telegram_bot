@@ -77,18 +77,26 @@
   100% {transform: translate(21.5px, 51.48412px) scale(1, 0.525922);}
 }
 
-@keyframes ehPAbtU60pY5_c_o {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
+@keyframes resize_shadow_marker {
+  0% {
+    transform: scale(1, 1);
+    transform-origin: center bottom;
+  }
+  100% {
+    transform: scale(0.8, 0.8);
+    transform-origin: center bottom;
+  }
 }
 
 .marker-icon.active #ehPAbtU60pY2_ts {
-  animation: ehPAbtU60pY2_ts__ts 400ms linear 1 forwards;
+  animation: ehPAbtU60pY2_ts__ts 250ms linear 1 forwards;
 }
 
-.marker-icon.active #ehPAbtU60pY5 {
-  animation: ehPAbtU60pY5_c_o 400ms linear 1 forwards;
+.marker-icon.active #shadow-ellipse {
+  animation: resize_shadow_marker 250ms linear 1 forwards;
 }
+
+
 
 /* Deactive animation */
 @keyframes eSFB4GN6XpZ2_ts__ts {
@@ -96,18 +104,26 @@
   100% {transform: translate(21.5px, 51.48412px) scale(1, 1.325794);}
 }
 
-@keyframes eSFB4GN6XpZ5_c_o {
-  0% {opacity: 1;}
-  100% {opacity: 0;}
+@keyframes resize_shadow_marker_reverse {
+  0% {
+    transform: scale(0.8, 0.8);
+    transform-origin: center bottom;
+  }
+  100% {
+    transform: scale(1, 1);
+    transform-origin: center bottom;
+  }
 }
 
 .marker-icon.deactive #eSFB4GN6XpZ2_ts {
-  animation: eSFB4GN6XpZ2_ts__ts 400ms linear 1 forwards;
+  animation: eSFB4GN6XpZ2_ts__ts 250ms linear 1 forwards;
 }
 
-.marker-icon.deactive #eSFB4GN6XpZ5 {
-  animation: eSFB4GN6XpZ5_c_o 400ms linear 1 forwards;
+.marker-icon.deactive #shadow-ellipse {
+  animation: resize_shadow_marker_reverse 250ms linear 1 forwards alternate;
 }
+
+
 
 @keyframes shine {
     0% {
@@ -128,7 +144,11 @@
 }
 
 .folding-down {
-    animation: foldingDown 0.2s ease-out forwards;
+    animation: foldingDown 0.1s ease-out forwards;
+}
+
+#output-cost-text.visible {
+    opacity: 1;
 }
 
 

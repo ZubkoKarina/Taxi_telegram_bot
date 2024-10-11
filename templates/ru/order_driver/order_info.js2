@@ -1,14 +1,23 @@
+{% if data.get('planned_order') == None %}
 Заказ ❗️
-
-Адрес отправки: {{ data.get('start_point').get("address") }}
-{% for stopPoint in data.get('additional_point') %}
-Остановка: {{ stopPoint.get('address') }}
-{% endfor %}
-Адрес прибытия: {{ data.get('end_point').get("address") }}
-
-{% if data.get('comment') != None or data.get('comment') == '' %}
-{{ data.get('comment') }}
+{% endif %}
+{% if data.get('planned_order') != None %}
+📅 Предварительный заказ ⏰
 {% endif %}
 
-Способ оплаты: {{ data.get('payMethod') }}
-На сумму: {{ data.get('cost') }}
+Адрес отправки: *{{ data.get('start_point').get("address") }}*
+{% for stopPoint in data.get('additional_point') %}
+Остановка: *{{ stopPoint.get('address') }}*
+{% endfor %}
+Адрес прибытия: *{{ data.get('end_point').get("address") }}*
+
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
+{{ data.get('comment') }}
+
+{% endif %}
+{% if data.get('planned_order') != None %}
+Дата отправления: *{{ data.get('planned_order').get('date') }} {{ data.get('planned_order').get('time') }}*
+
+{% endif %}
+Метод оплаты: {{data.get('payment_method')}}
+На сумму: *{{ data.get('cost') }} грн *

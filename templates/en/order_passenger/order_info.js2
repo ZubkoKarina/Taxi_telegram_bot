@@ -1,6 +1,6 @@
 Order created ✅
 
-Selected class: {{ data.get('taxiClass').get('name') }}
+Selected class: {{ data.get('car_type_name') }}
 Shipping address: {{ data.get('start_point').get("address") }}
 {% for stopPoint in data.get('additional_point') %}
 Stop: {{ stopPoint.get('address') }}
@@ -8,8 +8,8 @@ Stop: {{ stopPoint.get('address') }}
 Arrival address: {{ data.get('end_point').get("address") }}
 Payment method: {{ data.get('payment_method') }}
 
-{% if data.get('comment') != None or data.get('comment') == '' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
 
 {% endif %}
-To be paid: {{ data.get('cost') }}
+To be paid: {{ data.get('cost') }} грн

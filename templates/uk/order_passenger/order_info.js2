@@ -1,15 +1,18 @@
 Замовлення сформовано ✅
 
-Вибраний клас: {{ data.get('taxiClass').get('name') }}
-Адреса вітправки: {{ data.get('start_point').get("address") }}
+Вибраний клас: {{ data.get('car_type_name') }}
+Адреса відправки: *{{ data.get('start_point').get("address") }}*
+{% if data.get('entrance') %}
+Під'їзд: *{{ data.get('entrance') }}*
+{% endif %}
 {% for stopPoint in data.get('additional_point') %}
-Зупинка: {{ stopPoint.get('address') }}
+Зупинка: *{{ stopPoint.get('address') }}*
 {% endfor %}
-Адреса прибуття: {{ data.get('end_point').get("address") }}
+Адреса прибуття: *{{ data.get('end_point').get("address") }}*
 Метод оплати: {{ data.get('payment_method') }}
 
-{% if data.get('comment') != None or data.get('comment') == '' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
-{% endif %}
 
-До оплати: {{ data.get('cost') }}
+{% endif %}
+До оплати: *{{ data.get('cost') }} грн *

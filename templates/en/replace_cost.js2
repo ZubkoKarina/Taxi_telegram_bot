@@ -1,0 +1,6 @@
+📢 Request to recalculate the cost of the trip.
+Please confirm the price change:
+💰 Old price: {{ data.get('old_cost') }} UAH.
+🆕 New price: {{ data.get('new_cost') }} UAH.
+
+Do you agree to the price change?

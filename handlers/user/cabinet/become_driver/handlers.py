@@ -13,6 +13,7 @@ from data.config import WEB_APP_ADDRESS
 from handlers.common.helper import Handler, user_cabinet_menu
 from keyboards import KeyboardManager, get_kb_manager
 from texts import TextManager, get_text_manager
+from services.visicom import search_settlement
 
 
 async def save_name(message: types.Message, state: FSMContext):
@@ -50,7 +51,10 @@ async def save_city(message: types.Message, state: FSMContext):
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
     region = data.get('region')
-    city = await find_city(not_formatted_city, region)
+    city = search_settlement(not_formatted_city, region)
+    if city == 'DUPLICATE':
+        return message.answer(user_text_manager.asking.DUPLICATE_SETTLEMENT)
+
     if city is None:
         await message.answer(user_text_manager.asking.CITY_NOT_FOUND)
         await message.answer(user_text_manager.asking.CITY)
@@ -167,23 +171,23 @@ async def save_insurance_photo(message: types.Message, state: FSMContext):
 
     await bot.download(message.photo[-1], destination=f"{os.getcwd()}/media/{insurance_photo}")
 
-    await message.answer(user_text_manager.asking.SEND_CAR_PHOTO)
-    await state.set_state(CreateDriver.waiting_car_photo)
-
-
-async def save_car_photo(message: types.Message, state: FSMContext):
-    data = await state.get_data()
-    user_text_manager: TextManager = get_text_manager(data.get('user_language'))
-    user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
-
-    car_photo = f"{message.photo[-1].file_id}.jpg"
-
-    await state.update_data(carPhoto=car_photo)
-
-    await bot.download(message.photo[-1], destination=f"{os.getcwd()}/media/{car_photo}")
-
     await message.answer(user_text_manager.asking.SEND_FRONT_CAR_PHOTO)
     await state.set_state(CreateDriver.waiting_front_car_photo)
+
+
+# async def save_car_photo(message: types.Message, state: FSMContext):
+#     data = await state.get_data()
+#     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
+#     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
+#
+#     car_photo = f"{message.photo[-1].file_id}.jpg"
+#
+#     await state.update_data(carPhoto=car_photo)
+#
+#     await bot.download(message.photo[-1], destination=f"{os.getcwd()}/media/{car_photo}")
+#
+#     await message.answer(user_text_manager.asking.SEND_FRONT_CAR_PHOTO)
+#     await state.set_state(CreateDriver.waiting_front_car_photo)
 
 
 async def save_front_car_photo(message: types.Message, state: FSMContext):
@@ -322,7 +326,6 @@ async def confirm_request(message: types.Message, state: FSMContext):
         "rate": "5",
         "passport_1": f"{WEB_APP_ADDRESS}/media/{data.get('frontPassportPhoto')}",
         "passport_2": f"{WEB_APP_ADDRESS}/media/{data.get('backPassportPhoto')}",
-        "car": f"{WEB_APP_ADDRESS}/media/{data.get('carPhoto')}",
         "license": f"{WEB_APP_ADDRESS}/media/{data.get('licensePhoto')}",
         "insurance": f"{WEB_APP_ADDRESS}/media/{data.get('insurancePhoto')}",
         "front_photo": f"{WEB_APP_ADDRESS}/media/{data.get('frontCarPhoto')}",

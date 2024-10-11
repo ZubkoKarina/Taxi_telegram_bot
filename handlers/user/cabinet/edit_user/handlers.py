@@ -9,6 +9,7 @@ from state.user import EditUserInfo
 from utils.template_engine import render_template
 from aiogram.types import ReplyKeyboardRemove
 from services.google_maps import find_city, find_region
+from services.visicom import search_settlement
 from keyboards import KeyboardManager, get_kb_manager
 from texts import TextManager, get_text_manager
 
@@ -39,7 +40,9 @@ async def confirm_city(message: types.Message, state: FSMContext):
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
     region = data.get('region')
-    city = await find_city(not_formatted_city, region)
+    city = search_settlement(not_formatted_city, region)
+    if city == 'DUPLICATE':
+        return message.answer(user_text_manager.asking.DUPLICATE_SETTLEMENT)
 
     chat_id = message.chat.id
     if city is None:

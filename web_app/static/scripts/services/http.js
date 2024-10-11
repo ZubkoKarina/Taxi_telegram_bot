@@ -13,7 +13,7 @@ function loadTaxiClasses() {
             data.forEach((item, index) => {
                 const block = document.createElement('div');
                 block.className = 'block-taxi-class';
-                block.dataset.id = item.id; // Збереження id класу таксі в атрибуті даних
+                block.dataset.id = item.id;
                 block.dataset.name = item.name;
 
                 const svg = `
@@ -66,8 +66,8 @@ function loadAdditionalServices() {
 
                 const button = document.createElement('button');
                 button.value = item.name;
-                button.innerHTML = `${item.name}<br><small>+${item.cost} ₴</small>`;
-                button.dataset.cost = item.cost;
+                button.innerHTML = `${item.name}<br><small>+${item.cost_of_kilometer} ₴</small>`;
+                button.dataset.cost = item.cost_of_kilometer;
                 button.addEventListener('click', function() {
                     button.classList.toggle('selected');
                 });
@@ -82,7 +82,8 @@ function loadAdditionalServices() {
 }
 
 function getUserCity() {
-    const chat_id = 986086683;
+    const chat_id = tg.initDataUnsafe.user.id;
+//    const chat_id = 986086683;
     return fetch(`/get-user-city?chat_id=${chat_id}`)
         .then(response => response.text())
         .catch(error => {
@@ -101,6 +102,25 @@ function geocodeCity(city, callback) {
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
+    });
+}
+
+function getDriversNearby(nearby) {
+    return fetch('/get-driver-nearby', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: tg.initDataUnsafe.user.id,
+//            chat_id: 986086683,
+            nearby: nearby
+        })
+    })
+    .then(response => response.json())
+    .catch(error => {
+        console.error('Error:', error);
+        return [];
     });
 }
 

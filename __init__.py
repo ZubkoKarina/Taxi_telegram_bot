@@ -6,6 +6,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiohttp import web
 from services.redis import redis_storage
 from services.redis import RedisClient
+from services.job_scheduler import scheduler
 from web_app.web_app import web_app
 import uvicorn
 
@@ -20,13 +21,15 @@ from data.config import (
     WEB_APP_HOST,
     WEB_APP_PORT
 )
-from handlers import start, user
+from handlers import start, user, driver, prepare_router as other_prepare_router
 from bot import bot, dp
 
 
 def setup_handlers(dp: Dispatcher) -> None:
     dp.include_router(start.prepare_router())
     dp.include_router(user.prepare_router())
+    dp.include_router(driver.prepare_router())
+    dp.include_router(other_prepare_router())
 
 
 def setup_middlewares(dp: Dispatcher) -> None:
@@ -59,6 +62,7 @@ async def run_uvicorn():
 
 def main() -> None:
     loop = asyncio.new_event_loop()
+    scheduler.start()
 
     dp = Dispatcher(storage=redis_storage)
 

@@ -1,0 +1,5 @@
+We remind you that you have a scheduled trip in 30 minutes.
+Please be there on time to ensure a comfortable service for the passenger.
+Trip details:
+Shipping time: {{ data.get('time_order') }}
+Landing place: {{ data.get('start_point').get("address") }}

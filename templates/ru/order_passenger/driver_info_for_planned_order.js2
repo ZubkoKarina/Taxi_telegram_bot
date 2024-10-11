@@ -1,0 +1,5 @@
+Водитель уже в пути прибудет в заданное время ✅
+
+Имя: *{{ data.get('name').split(' ')[1] }}*
+Автомобиль: *{{data.get('car').get('car_name')}} {{ data.get('car').get('car_color') }}*
+Номер авто: *{{data.get('car').get('car_number')}}*

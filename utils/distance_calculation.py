@@ -1,7 +1,7 @@
 import math
 
 
-def haversine(first_point: list, second_point: list):
+def haversine(first_point: list, second_point: list) -> float:
     R = 6371.0
 
     dlat = math.radians(float(second_point[0]) - float(first_point[0]))

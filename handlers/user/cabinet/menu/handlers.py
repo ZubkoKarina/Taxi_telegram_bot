@@ -12,6 +12,8 @@ from bot import bot
 from texts import TextManager, get_text_manager
 from data.config import BOT_URL
 from keyboards import KeyboardManager, get_kb_manager
+from handlers.start.handlers import greeting
+from handlers.common.ending_route import ask_raw_message
 
 
 async def main_handlers(message: types.Message, state: FSMContext):
@@ -25,20 +27,21 @@ async def main_handlers(message: types.Message, state: FSMContext):
         await message.answer(text=template, reply_markup=user_kb_manager.default.users.edit_user)
         await state.set_state(EditUserInfo.waiting_edit_info)
     elif bt_text == user_text_manager.keyboards.ORDER_TAXI:
-        city = data.get("city")
-        await message.answer(text=user_text_manager.asking.REQUEST_DRIVER_CONFIRMATION.format(city = city),
-                             reply_markup=user_kb_manager.default.users.menu_before_order)
-        await state.set_state(OrderTaxi.waiting_accept_city)
+        await message.answer(text=user_text_manager.asking.ORDER_MENU, reply_markup=user_kb_manager.default.users.menu_before_order)
+        await state.set_state(OrderTaxi.waiting_type_order)
     elif bt_text == user_text_manager.keyboards.HISTORY_ORDER:
         await message.answer(text=user_text_manager.asking.ORDER_HISTORY_INFO, reply_markup=ReplyKeyboardRemove())
         await message.answer(text=user_text_manager.asking.CHOOSE_ORDER, reply_markup=user_kb_manager.inline.history_order.choose_order)
         await state.set_state(UserCabinetStates.waiting_history_order)
     elif bt_text == user_text_manager.keyboards.OTHER:
         await message.answer(text=user_text_manager.asking.OTHER_INFO, reply_markup=user_kb_manager.default.users.other)
-
         await state.set_state(OtherFun.waiting_other_fun)
     elif bt_text == user_text_manager.keyboards.SHARE_CHATBOT:
-        await message.answer(user_text_manager.asking.SHARE_LINK.format(BOT_URL=BOT_URL))
+        await message.answer(user_text_manager.asking.SHARE_LINK, reply_markup=user_kb_manager.inline.share_bot.share_chatbot)
+    elif bt_text == user_text_manager.keyboards.RELOAD:
+        await greeting(message, state)
+    else:
+        await ask_raw_message(message, state)
 
 
 async def show_history_order(callback: types.CallbackQuery, state: FSMContext):
@@ -46,7 +49,7 @@ async def show_history_order(callback: types.CallbackQuery, state: FSMContext):
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
 
-    response = await HttpOrder.get_driver_order(data={'chat_id': data.get('chat_id')})
+    response = await HttpOrder.get_user_order(data={'chat_id': data.get('chat_id')})
     orders = response.get('response_data').get('data')
 
     if len(orders) == 0:
@@ -75,6 +78,9 @@ async def show_history_order(callback: types.CallbackQuery, state: FSMContext):
         callback, data=orders, render_func=render_func
     )
 
+
+async def pass_fun(message: types.Message, state: FSMContext) -> None:
+    pass
 
 
 

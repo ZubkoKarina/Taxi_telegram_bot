@@ -15,7 +15,7 @@ searchInput.addEventListener('input', function() {
         let list_address = [];
         const query = this.value;
         const data = {
-            city_id: userCityId,
+            near_id: userRegionId,
             query: query
         };
 
@@ -23,6 +23,11 @@ searchInput.addEventListener('input', function() {
             return;
         }
         suggestions.innerHTML = '';
+        const defaultLi = document.createElement('li');
+        defaultLi.innerHTML = "Якщо вашої адреси немає у списку, будь ласка, оберіть місце на карті, і ми з радістю побудуємо маршрут до обраної точки.";
+        defaultLi.style.textAlign = "center";
+        defaultLi.style.fontSize = "13px";
+        suggestions.appendChild(defaultLi);
 
         fetch('/search_places', {
             method: 'POST',
@@ -38,6 +43,16 @@ searchInput.addEventListener('input', function() {
                 const li = document.createElement('li');
                 li.innerHTML = `${address.name}<br><small>${address.description}</small>`;
                 li.onclick = () => {
+                    const isSettlement = address.categories === 'adm_settlement'
+                    if (isSettlement) {
+
+                        const searchInputElement = document.getElementById(currentInputId);
+                        searchInputElement.dataset.geo = JSON.stringify(address.geo)
+                        isListenMoveMap = true
+                        MoveMarker(true)
+                        map.setZoom(14)
+                        return
+                    }
 
                     const isStreet = address.categories === 'adr_street';
                     if (isStreet) {
@@ -46,8 +61,11 @@ searchInput.addEventListener('input', function() {
 
                         closeSearchAddressModal()
                         handleAddressSelection(address, currentInputId === 'from');
-                        openSelectionAddress()
-
+                        if (currentInputId === 'add-stop-button') {
+                            openSelectionAddressFull()
+                        } else {
+                            openSelectionAddress()
+                        }
                     }
                 }
                 suggestions.appendChild(li);
@@ -84,8 +102,11 @@ function outputAddressNumbers(street_id) {
             li.onclick = () => {
                 closeSearchAddressModal()
                 handleAddressSelection(address, currentInputId === 'from');
-                openSelectionAddress()
-
+                if (currentInputId === 'add-stop-button') {
+                    openSelectionAddressFull()
+                } else {
+                    openSelectionAddress()
+                }
             }
             suggestions.appendChild(li);
         });
@@ -97,9 +118,11 @@ function outputAddressNumbers(street_id) {
 
 function handleAddressSelection(address, isAddressFrom) {
     const searchInputElement = document.getElementById(currentInputId);
+
+    console.log(currentInputId)
     geocodeAddress(address.id, isAddressFrom, (location) => {
         if (currentInputId == 'from' || currentInputId == 'to') {
-            searchInputElement.value = address.address;
+            searchInputElement.querySelector('span').innerText = address.address;
             searchInputElement.dataset.id = address.id
             searchInputElement.dataset.address = address.address
             searchInputElement.dataset.geo = JSON.stringify([location.lat, location.lng])
@@ -119,6 +142,8 @@ function handleAddressSelection(address, isAddressFrom) {
             if (markers.length != 0) {
                 clearAddress()
             }
+            isListenMoveMap = true
+            renderDriversInMap([location.lat, location.lng])
             MoveMarker(false);
         }
         map.setZoom(18)
@@ -131,8 +156,8 @@ function clearAddress() {
     const toElement = document.getElementById('to');
     const additionalAddressElement = document.getElementById('add-stop-button');
 
-    fromElement.value = '';
-    toElement.value = '';
+    toElement.querySelector('span').innerText = 'Куди їдемо?';
+    fromElement.querySelector('span').innerText = 'Звідки їдемо?';
     if (additionalAddressElement.value) {
         additionalAddressElement.value = '';
     }

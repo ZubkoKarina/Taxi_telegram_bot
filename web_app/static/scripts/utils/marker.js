@@ -32,6 +32,12 @@ function placeMarker(lat, lng) {
         addTittle(marker_from);
         openSelectionAddressFull()
     }
+    if (currentInputId === 'to' && markers.length > 1) {
+        markers[1].setMap(null);
+        if (markers[1].infoWindow) {
+            markers[1].infoWindow.onRemove();
+        }
+    }
 
     const marker = new google.maps.Marker({
         position: { lat: lat, lng: lng },
@@ -50,3 +56,4 @@ function placeMarker(lat, lng) {
     });
     map.fitBounds(bounds);
 }
+

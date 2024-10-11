@@ -9,7 +9,8 @@ menu = DefaultConstructor.create_kb(
         keyboards.INFO,
         keyboards.HISTORY_ORDER,
         keyboards.SETTING,
-    ], schema=[2, 2])
+        keyboards.PLANNED_ORDER_LIST
+    ], schema=[1, 2, 2])
 
 
 inactive_menu = DefaultConstructor.create_kb(
@@ -18,6 +19,7 @@ inactive_menu = DefaultConstructor.create_kb(
         keyboards.INFO,
         keyboards.HISTORY_ORDER,
         keyboards.SETTING,
-    ], schema=[2, 2])
+        keyboards.PLANNED_ORDER_LIST
+    ], schema=[1, 2, 2])
 
 

@@ -1,9 +1,15 @@
 #{{ data.get('id') }}
 
-Адрес отправки: {{ data.get('shipping_address') }} {{ data.get('shipping_number') }}, {{ data.get('shipping_city') }}
-Адрес прибытия: {{ data.get('arrival_address') }} {{ data.get('arrival_number') }}, {{ data.get('arrival_city') }}
-Комментарий: {{ data.get('comment') }}
+Адрес отправки: *{{ data.get('start_point').get("address") }}*
+{% for stopPoint in data.get('additional_point') %}
+Остановка: *{{ stopPoint.get('address') }}*
+{% endfor %}
+Адрес прибытия: *{{ data.get('end_point').get("address") }}*
 Дата: {{ data.get('created_at') }}
 
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
+{{ data.get('comment') }}
+
+{% endif %}
 Способ оплаты: {{ data.get('payment_method') }}
-На сумму: {{ data.get('cost') }}
+На сумму: *{{ data.get('cost') }} грн *

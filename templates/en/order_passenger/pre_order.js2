@@ -7,8 +7,8 @@ Stop: {{ stopPoint.get('address') }}
 Arrival address: {{ data.get('end_point').get("address") }}
 Payment method: {{ data.get('payment_method') }}
 
-{% if data.get('comment') != None or data.get('comment') != 'None' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
 
 {% endif %}
-Cost: {{ data.get('price') }}
+Cost: {{ data.get('cost') }} грн

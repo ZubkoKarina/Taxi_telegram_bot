@@ -19,6 +19,8 @@ class OtherFun(StatesGroup):
 
 
 class OrderTaxi(StatesGroup):
+    waiting_type_order = State()
+
     waiting_accept_city = State()
     waiting_new_city = State()
 
@@ -34,6 +36,16 @@ class OrderTaxi(StatesGroup):
 
     waiting_create_pre_order = State()
 
+    waiting_replace_cost = State()
+    waiting_accept_replace_cost = State()
+
+
+class PlannedOrderTaxi(StatesGroup):
+    waiting_date_order = State()
+    waiting_time_order = State()
+
+    waiting_accept_city = State()
+    waiting_new_city = State()
 
 class CreateDriver(StatesGroup):
     waiting_name = State()

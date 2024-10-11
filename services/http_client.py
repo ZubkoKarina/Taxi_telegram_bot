@@ -72,7 +72,6 @@ class HttpUser(HttpClient):
     async def rete_user(data: dict):
         return await HttpDriver.request('/insertRate', data)
 
-
 class HttpDriver(HttpClient):
     BASE_URL = f'{API_URL}/driver'
 
@@ -119,6 +118,10 @@ class HttpDriver(HttpClient):
     @staticmethod
     async def insert_driver_balance(data: dict):
         return await HttpDriver.request('/insertBalance', data)
+
+    @staticmethod
+    async def top_up_balance(data: dict):
+        return await HttpDriver.request('/replenishment', data)
 
 
 class HttpOrder(HttpClient):
@@ -176,12 +179,22 @@ class HttpOrder(HttpClient):
         return await HttpOrder.request('/deleteOrder', data)
 
     @staticmethod
+    async def cancel_order_by_driver(data: dict):
+        return await HttpOrder.request('/cansel_driver_order', data)
+
+    @staticmethod
     async def get_additional_services():
         return await HttpOrder.request_get('/additional_services')
 
+    @staticmethod
+    async def get_planned_order_for_driver(data: dict):
+        return await HttpOrder.request('/getDriverPlanedOrder', data)
+
+    @staticmethod
+    async def get_current_order(chat_id):
+        return await HttpOrder.request_get(f'/getCurentOrder?chat_id={chat_id}',)
 
 class HttpOther(HttpClient):
-
     @staticmethod
     async def get_status_online_payment():
         return await HttpClient.get(service=f'{API_URL}/online_payment', path='/online_payment')
@@ -189,3 +202,15 @@ class HttpOther(HttpClient):
     @staticmethod
     async def get_text_greeting():
         return await HttpClient.get(service=f'{API_URL}/title', path='/title')
+
+    @staticmethod
+    async def send_sos(data: dict):
+        return await HttpClient.post(service=f'{API_URL}/emergency', path='/create_emergency', data=data)
+
+    @staticmethod
+    async def get_status_fist_priority():
+        return await HttpClient.get(service=f'{API_URL}/first_prioryty', path='/first_prioryty')
+
+    @staticmethod
+    async def get_variable():
+        return await HttpClient.get(service=f'{API_URL}/variable', path='/variable')

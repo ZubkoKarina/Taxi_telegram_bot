@@ -24,11 +24,10 @@ async def accept_driver_application(chat_id):
     state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=chat_id, user_id=chat_id, bot_id=bot.id))
     data = await state.get_data()
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
-    user_kb_manager: KeyboardManager = get_kb_manager(data.get('user_language'))
 
     msg = await bot.send_message(chat_id=chat_id, text=user_text_manager.asking.ACCEPT_DRIVER_APPLICATION)
 
-    user_language = msg.from_user.language_code
+    user_language = data.get('user_language')
     response = await HttpDriver.get_driver_info({'chat_id': msg.chat.id})
     user_data = response.get('response_data').get('data')
     if response.get('response_code') == 200 and not user_data.get('is_banned'):
@@ -36,4 +35,16 @@ async def accept_driver_application(chat_id):
 
         await driver_cabinet_menu(state, message=msg)
         return
+
+async def cancel_driver_application(chat_id, comment: str):
+    state: FSMContext = FSMContext(dp.storage, StorageKey(chat_id=chat_id, user_id=chat_id, bot_id=bot.id))
+    data = await state.get_data()
+    user_text_manager: TextManager = get_text_manager(data.get('user_language'))
+
+    await bot.send_message(chat_id=chat_id, text=user_text_manager.asking.CANCEL_DRIVER_APPLICATION)
+    if comment is not None:
+        await bot.send_message(chat_id=chat_id, text=user_text_manager.asking.comment)
+    return
+
+
 

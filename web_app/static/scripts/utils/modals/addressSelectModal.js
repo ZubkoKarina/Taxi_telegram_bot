@@ -7,6 +7,7 @@ function openSelectionAddress() {
 
     const userGeo = document.getElementById('geo-location-button');
     userGeo.style.display = 'block';
+
     controlPanelSelection.classList.add('slide-up')
 }
 
@@ -15,6 +16,8 @@ function closeSelectionAddress() {
 
     controlPanelSelection.classList.add('folding-down')
     setTimeout(() => {
+            document.getElementById('add-stop-button').style.display = "none";
+            document.getElementById('continue-button').style.display = "none";
             controlPanelSelection.style.display = 'none';
             const userGeo = document.getElementById('geo-location-button');
             userGeo.style.display = 'none';

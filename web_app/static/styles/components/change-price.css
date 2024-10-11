@@ -14,7 +14,7 @@
 .price-modal-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     width: 90%;
     bottom: 0px;
     height: 200px;
@@ -40,8 +40,17 @@
 }
 
 .change-price-text {
-    font-size: 23px;
-    color: var(--tg-theme-text-color);
+    width: 100px;
+    border-radius: 10px;
+    text-align: center;
+    background: var(--main-color);
+    color: white;
+    padding: 3px;
+    font-size: 30px;
+}
+
+.change-price-title {
+    font-size: 25px;
 }
 
 #price-slider {
@@ -54,6 +63,8 @@
     appearance: none;
     background: var(--tg-theme-secondary-bg-color);
     color: #edd300;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 

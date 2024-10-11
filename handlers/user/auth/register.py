@@ -8,6 +8,7 @@ from handlers.common.helper import user_cabinet_menu
 from bot import bot
 from services.http_client import HttpUser
 from services.google_maps import find_city, find_region
+from services.visicom import search_settlement
 
 
 async def save_phone(message: types.Message, state: FSMContext):
@@ -52,7 +53,10 @@ async def save_city(message: types.Message, state: FSMContext):
     data = await state.get_data()
     user_text_manager: TextManager = get_text_manager(data.get('user_language'))
     region = data.get('region')
-    city = await find_city(not_formatted_city, region)
+    city = search_settlement(not_formatted_city, region)
+    if city == 'DUPLICATE':
+        return message.answer(user_text_manager.asking.DUPLICATE_SETTLEMENT)
+
     if city is None:
         await message.answer(user_text_manager.asking.CITY_NOT_FOUND)
         await message.answer(user_text_manager.asking.CITY)

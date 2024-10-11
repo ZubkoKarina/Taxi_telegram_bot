@@ -5,11 +5,13 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 import os
 from services.http_client import HttpUser, HttpOrder, HttpDriver, HttpOther
-from handlers.user.cabinet.order.handlers import create_order, accept_order
-from handlers.common import push_notification
+from utils.distance_calculation import haversine
+from handlers.user.cabinet.order.create_order import create_order, accept_order
+from handlers.common import push_notification, helper
 from services.liqpay import liqpay
 from data.config import LIQPAY_PRIVATE_KEY, LIQPAY_PUBLIC_KEY
 from services import visicom
+from state import state_manager
 
 web_app = FastAPI()
 
@@ -27,16 +29,21 @@ templates = Jinja2Templates(directory='web_app/templates')
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@web_app.get("/tracking", response_class=HTMLResponse)
+async def read_root(request: Request):
+    return templates.TemplateResponse("tracking.html", {"request": request})
+
 
 @web_app.post('/search_places')
 async def search_places(data: Request):
-    categories_exclude = 'adm_country,adm_district,adm_level1,adm_place,adm_settlement,hst_district,roa_road'
+    categories_exclude = 'adm_country,adm_district,adm_level1,adm_place,hst_district,roa_road'
 
     data = await data.json()
 
-    print(data.get('query'), data.get('city_id'))
-    result_autocomplete = visicom.autocomplete(query=data.get('query'), near_place_id=data.get('city_id'),
+    print(data.get('query'), data.get('near_id'))
+    result_autocomplete = visicom.autocomplete(query=data.get('query'), near_place_id=data.get('near_id'),
                                                categories_exclude=categories_exclude)
+    print(result_autocomplete)
     address_list = visicom.visicom_address_constructor(result_autocomplete)
 
     return address_list
@@ -148,6 +155,59 @@ async def liqpay_callback(request: Request):
     return JSONResponse(content={"status": "failure"})
 
 
+@web_app.get('/get-driver-location')
+async def get_driver_location(chat_id: int):
+    driver_geo = await state_manager.get_element_from_user_data(chat_id, 'geo')
+    print(driver_geo)
+    if driver_geo:
+        formated_driver_geo = {'lat': driver_geo[0], 'lng': driver_geo[1]}
+        return formated_driver_geo
+
+    return None
+
+
+@web_app.post('/get-driver-nearby')
+async def get_driver_location(data: Request):
+    data = await data.json()
+    chat_id = data.get('chat_id')
+    nearby = data.get('nearby')
+
+    response = await HttpUser.get_user_info(data={'chat_id': chat_id})
+    user_data = response.get('response_data').get('data')
+    region = user_data.get('region')
+
+    drivers = await helper.get_drivers(region)
+
+    nearby_drivers = []
+    for driver in drivers:
+        if driver.get('geo'):
+            distance = haversine(nearby, driver.get('geo'))
+            if distance > 10:
+                continue
+            nearby_drivers.append(driver)
+    return nearby_drivers
+
+
+@web_app.get('/get-order-info')
+async def get_driver_location(chat_id: int):
+    response = await HttpOrder.get_user_order(data={'chat_id': chat_id})
+    order_data = response.get('response_data').get('data')
+    order_data = order_data[-1]
+
+    driver_chat_id: int = order_data.get('driver_chat_id')
+    response = await HttpDriver.get_driver_info(data={'chat_id': driver_chat_id})
+    driver_data = response.get('response_data').get('data')
+
+    result_data = {
+        'driver_chat_id': driver_chat_id,
+        'car_name': f"{driver_data.get('car').get('car_name')}, {driver_data.get('car').get('car_color')}",
+        'car_number': driver_data.get('car').get('car_number'),
+        'start_point_geo': {"lat": float(order_data.get('start_point').get('geo_lat')), 'lng': float(order_data.get('start_point').get('geo_lng'))}
+    }
+
+    return result_data
+
+
 @web_app.get('/log')
 async def get_api_key(message: str):
     print(f"INFO: {message}")
@@ -158,4 +218,10 @@ async def accept_driver_application_notification(data: Request):
     data = await data.json()
 
     await push_notification.accept_driver_application(data.get('chat_id'))
+
+@web_app.post('/cancel_driver_application')
+async def accept_driver_application_notification(data: Request):
+    data = await data.json()
+
+    await push_notification.cancel_driver_application(data.get('chat_id'), data.get('comment'))
 

@@ -18,20 +18,21 @@ document.getElementById('place-order-button').addEventListener('click', () => {
     const price = document.getElementById('output-cost').value;
     const variable = document.getElementById('output-cost').dataset.variable;
     const comment = document.getElementById('additional-settings-modal').dataset.comment;
+    const entrance = document.getElementById('entrance').value;
 
     if (!dataFrom || !dataTo || !taxiClassId) {
         showNotification('Будь ласка, заповніть всі поля перед замовленням.');
         return;
     }
 
-    if (button_pay === 'Карта') {
+    if (button_pay === 'Онлайн') {
         fetch('/online_payment', {
             method: 'GET'
         })
         .then(response => response.json())
         .then(data => {
             if (!data) {
-                showNotification('Наразі оплата карткою не доступна');
+                showNotification('На жаль, наразі оплата онлайн недоступна, але ви можете перерахувати кошти на картку водія.');
                 return;
             } else {
                 sendOrderData({
@@ -56,6 +57,7 @@ document.getElementById('place-order-button').addEventListener('click', () => {
                     payment_method: button_pay,
                     cost: price,
                     comment: comment,
+                    entrance: entrance,
                     variable:  JSON.parse(variable)
                 });
             }
@@ -79,13 +81,12 @@ document.getElementById('place-order-button').addEventListener('click', () => {
                 address: dataTo.address
             },
             additional_point: stopList,
-            taxiClass: {
-                id: taxiClassId,
-                name: taxiClassName
-            },
+            car_type_id: taxiClassId,
+            car_type_name: taxiClassName,
             payment_method: button_pay,
             cost: price,
             comment: comment,
+            entrance: entrance,
             variable:  JSON.parse(variable)
         });
     }

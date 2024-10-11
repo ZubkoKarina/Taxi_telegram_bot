@@ -12,6 +12,7 @@ def prepare_router() -> Router:
     message_list = [
         Handler(handlers.access_to_line, [DriverCabinetStates.waiting_geo, F.location]),
         Handler(handlers.main_handlers, [DriverCabinetStates.waiting_menu, F.text]),
+        Handler(handlers.pass_fun, [DriverCabinetStates.waiting_history_order, F.text]),
     ]
     inline_list = [
         Handler(handlers.show_history_order, [DriverCabinetStates.waiting_history_order]),

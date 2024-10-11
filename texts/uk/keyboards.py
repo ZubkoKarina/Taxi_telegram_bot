@@ -8,7 +8,7 @@ OPEN_MENU = "Головне меню 🔙"
 TO_MENU = "До меню 🔙"
 BACK = "Назад 🔙"
 
-BECOME_PARTNER = 'Стати водієм 🚖'
+BECOME_PARTNER = 'Стати партнером 🚖'
 REPORT_ISSUE = 'Повідомити про проблему 🗣'
 ALL_TRUE = 'Все вірно ✅'
 
@@ -28,6 +28,8 @@ NAVIGATION_BY_WAZE = 'Відкрити через додаток WAZE'
 DRIVER_ON_PLACE = "Я на місці ❇️"
 DRIVER_START_ORDER = 'Почати поїздку ✅'
 DRIVER_END_ORDER = 'Завершити поїздку ❎'
+ADDITIONAL_POINT = 'Я прибув до проміжної точки ⏱'
+OFF_TIMER = 'Зупинити таймер, рухаємось далі ⏱'
 
 YES = "Так ✅"
 NO = "Ні 🚫"
@@ -54,5 +56,19 @@ SKIP = 'Пропустити 🚫'
 PAY = 'Оплатити 💳'
 
 SHARE_CHATBOT = 'Поділитися чат-ботом 🤝️'
+SHARE = 'Поділитися'
 
-PRE_ORDER = 'Попереднє замовлення 🕤'
+PRE_ORDER = 'Повторити останню подорож 🕤'
+TOP_UP = 'Поповнити баланс 💰'
+MONEY_TRANSFERRED = 'Кошти перераховано ✅'
+
+RELOAD = 'Перезавантажити бота 🔄'
+
+PLANNED_ORDER = 'Попереднє замовлення 📅'
+STANDARD_ORDER = 'Замовлення на зараз'
+PLANNED_ORDER_LIST = 'Заплановані поїздки 📅'
+PLANED_ORDER_START = "Розпочати поїздку ✅"
+
+TRACKING_DRIVER = 'Місцеперебування водія 📍'
+
+REPLACE_COST = 'Перерахунок тарифу 💱'

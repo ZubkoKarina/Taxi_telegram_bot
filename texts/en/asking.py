@@ -15,11 +15,13 @@ SEARCH_DRIVER = 'Searching for drivers 🔍'
 NOT_SEARCH_DRIVER = 'Unfortunately, there are no available drivers for your request. 😢'
 NOT_ACTIVE_DRIVER = 'There are currently no active drivers in your city 😢'
 WAIT_ACCEPT_ORDER = 'Driver found. Waiting for order confirmation from the driver...'
-NOT_ACCEPT_DRIVER = (
-    'Unfortunately, drivers are not accepting your order, '
-    'please change the taxi class or increase the trip cost. 😢'
-)
+NOT_ACCEPT_DRIVER = 'Unfortunately, drivers do not accept your order, we recommend increasing the cost of the trip. 😢'
 WAIT_COST = 'Enter a new COST (the new COST cannot be lower than the previous one) 💸'
+WAIT_REPLACE_COST = 'Enter the price you think is correct 💲'
+WAIT_ACCEPT_PASSENGER_REPLACE_COST = 'Waiting for confirmation from the passenger'
+WAIT_ACCEPT_DRIVER_REPLACE_COST = 'Waiting for confirmation from the driver'
+NO_ACCEPT_REPLACE_COST = 'Tariff recalculation was rejected 🚫'
+ACCEPT_REPLACE_COST = 'Tariff transferred ✅'
 
 TAKE_SUCCESSFUL = 'Order accepted ✅'
 
@@ -74,7 +76,7 @@ SEND_BACK_ROW_CAR_PHOTO = 'Send a photo from the back row of seats 💺'
 
 SUBMISSION_SUCCESS = 'The application has been sent, please wait for confirmation ✅'
 REQUEST_DRIVER_CONFIRMATION = 'Do you want to order a taxi in {city}?'
-SHARE_LINK = 'Here is the link for your friends 😊\n{BOT_URL}'
+SHARE_LINK = 'Click the button below to share the chatbot'
 CITY_ACCEPTED = 'City accepted ✅'
 START_TAXI_ORDER = 'To start ordering a taxi, click the button below. 👇'
 ORDER_DATA_RECEIVED = 'Data received, order is being processed...'
@@ -105,3 +107,41 @@ TRY_AGAIN = 'Try again'
 SEND_COMMENT = 'Send a comment 💬'
 
 ACCEPT_DRIVER_APPLICATION = 'Your application to become a driver has been reviewed and approved ✅'
+CANCEL_DRIVER_APPLICATION = 'The driver application was rejected 🚫'
+ON_TIMER = 'Wait timer is on'
+
+TOP_UP_BALANCE = 'To continue working, you need to top up the balance.\nGo to settings -> top up balance'
+FOR_TOP_UP_BALANCE = 'To top up the balance, transfer the funds according to the details, after that press the button below\n<b>4149499128195434</b>'
+
+TOP_UP_SUCCESSFUL = 'Balance replenished ✅'
+TO_UP_END = "According to this, the cash will be insured on the balance for 24 years"
+CARD_TRANSFER = 'Enter the card from which the transfer was made'
+AMOUNT_TRANSFER = 'Enter amount to transfer'
+
+SOS_COMMENT = 'Describe a situation that happened to you 💬'
+SOS_SEND = 'We have sent a message to drivers near you ✅'
+
+DUPLICATE_SETTLEMENT = 'We have found several us. items with this name, please enter next to your us. item district\nFor example: Vladyslavka Obukhivskyi district'
+PRE_ORDER_NOT_FOUND = 'Sorry, but you have no preorders'
+
+CANCEL_FAIL = 'Sorry, the order cannot be canceled, the driver is already on the way'
+ACCEPT_ORDER_FAIL = 'The order has already been taken by another driver 😢'
+
+ALERT_CANCEL_ORDER = ('The time since the order was accepted has exceeded 1 minute. Please note that '
+                    'if you cancel the order again, a penalty of 50 UAH will be applied. '
+                    'In case of a third cancellation, the account will be blocked. ⚠️')
+
+DATE_PLANNED_ORDER = 'Indicate on which date you plan your trip?\nFor example: 27.09.2024'
+TIME_PLANNED_ORDER = 'What time do you plan to travel?\nFor example: 17:24'
+PLANNED_ORDER_SUCCESSFUL = 'The trip is planned ✅'
+ALL_PLANNED_ORDERS = 'List of all active planned trips'
+NOTHING_PLANNED_ORDER = 'You have no trips planned'
+PLANNED_ORDER_START = 'Planned trip started ✅'
+
+FAIL_GEO_DRIVER = 'We could not get your current location. Please go offline and come back to refresh your data.'
+LIVE_LOCATION_DRIVER = 'You can view the driver`s location by clicking on the button above 🔝'
+
+RAW_MASSAGE = """
+It seems like you've sent something to the wrong place. Please check again and send it to the correct section. Thank you!
+If you are stuck at any stage, enter the /start command to restart the bot.
+"""

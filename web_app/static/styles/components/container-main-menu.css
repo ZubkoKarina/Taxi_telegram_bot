@@ -39,10 +39,15 @@
 
     background-color: var(--main-color);
     box-shadow: 2px 0px 10px #0000005c;
-    font-size: 25px;
+    font-size: 30px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+}
+
+#output-cost-text {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 #output-km {

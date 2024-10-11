@@ -42,8 +42,15 @@ pre_order = DefaultConstructor.create_kb(
 
 menu_before_order = DefaultConstructor.create_kb(
     actions=[
-        keyboards.YES,
-        keyboards.NO,
-        keyboards.PRE_ORDER
-    ], schema=[2, 1])
+        keyboards.STANDARD_ORDER,
+        keyboards.PLANNED_ORDER,
+        keyboards.OPEN_MENU,
+    ], schema=[1, 2])
+
+order_processing = DefaultConstructor.create_kb(
+    actions=[
+        keyboards.REPLACE_COST,
+    ],
+    schema=[1]
+)
 

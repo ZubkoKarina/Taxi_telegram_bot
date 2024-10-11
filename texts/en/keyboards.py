@@ -3,12 +3,12 @@ SHARE_CONTACT = "Share phone number"
 EDIT_NAME = "Change name"
 EDIT_CITY = "Change city"
 EDIT_REGION = "Change region"
-EDIT_LANGUAGE = 'Change Language'
+EDIT_LANGUAGE = 'Change language'
 OPEN_MENU = "Main menu 🔙"
 TO_MENU = "To menu 🔙"
 BACK = "Back 🔙"
 
-BECOME_PARTNER = 'Become a driver 🚖'
+BECOME_PARTNER = 'Become a partner 🚖'
 REPORT_ISSUE = 'Report an issue 🗣'
 ALL_TRUE = 'All correct ✅'
 
@@ -28,6 +28,8 @@ NAVIGATION_BY_WAZE = 'Open via WAZE app'
 DRIVER_ON_PLACE = "I am on the spot ❇️"
 DRIVER_START_ORDER = 'Start trip ✅'
 DRIVER_END_ORDER = 'End trip ❎'
+ADDITIONAL_POINT = 'I have arrived at an intermediate point ⏱'
+OFF_TIMER = 'Stop the timer, lets move on ⏱'
 
 YES = "Yes ✅"
 NO = "No 🚫"
@@ -54,5 +56,18 @@ SKIP = 'Skip 🚫'
 PAY = 'Pay 💳'
 
 SHARE_CHATBOT = 'Share Chatbot 🤝️'
+SHARE = 'Share'
 
-PRE_ORDER = 'Pre-order 🕤'
+PRE_ORDER = 'Repeat last trip 🕤'
+TOP_UP = 'Top up balance 💰'
+MONEY_TRANSFERRED = 'Money has been transferred ✅'
+
+RELOAD = 'Reload bot 🔄'
+PLANNED_ORDER = 'Pre-order 📅'
+STANDARD_ORDER = 'Order Now'
+PLANED_ORDER_START = "Start trip ✅"
+PLANNED_ORDER_LIST = 'Planned Trips 📅'
+
+TRACKING_DRIVER = 'Check out the water supply'
+
+REPLACE_COST = 'Tariff recalculation 💱'

@@ -7,7 +7,7 @@ if (FromInputElement) {
         closeSelectionAddress()
 
         setTimeout(() => {
-            openSearchAddressModal(e.target.id);
+            openSearchAddressModal('from');
         }, 200);
 
     });
@@ -16,7 +16,7 @@ if (ToInputElement) {
     ToInputElement.addEventListener('click', (e) => {
         closeSelectionAddress()
         setTimeout(() => {
-            openSearchAddressModal(e.target.id);
+            openSearchAddressModal('to');
         }, 200);
     });
 }
@@ -25,7 +25,7 @@ if (AdditionalAddressElement) {
     AdditionalAddressElement.addEventListener('click', (e) => {
         closeSelectionAddress()
         setTimeout(() => {
-            openSearchAddressModal(e.target.id);
+            openSearchAddressModal('add-stop-button');
         }, 200);
     });
 }
@@ -44,6 +44,7 @@ function openSearchAddressModal(inputId) {
     searchAddressModal.classList.add('fade-in');
 
     searchBlock.classList.add('slide-down');
+    console.log(inputId)
     currentInputId = inputId;
     searchAddressModal.style.display = "flex";
     searchInput.value = '';

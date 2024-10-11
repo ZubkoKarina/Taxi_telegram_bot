@@ -6,4 +6,4 @@ Region: {{ data.get('region') }}
 Status: {{ data.get('status').get('status') }}
 Rating: {{ data.get('rate') }}
 
-Balance: {{data.get('wallet')}}
+Balance: {{ data.get('wallet') }}

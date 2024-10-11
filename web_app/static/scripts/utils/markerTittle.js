@@ -67,12 +67,12 @@ function addTittle(marker) {
     }
     if (currentInputId === 'to') {
         number = '<i class="fa-solid fa-arrow-up-long"></i>';
-        address = searchInputElement.value;
+        address = searchInputElement.dataset.address;
     }
     if (markers.length == 1) {
         searchInputElement = document.getElementById('from');
         number = '<i class="fa-solid fa-arrow-down"></i>';
-        address = searchInputElement.value;
+        address = searchInputElement.dataset.address;
     }
 
     contentString = `

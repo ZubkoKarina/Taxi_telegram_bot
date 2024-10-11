@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/styles/components/tracking.css">
+    <link rel="stylesheet" href="../static/styles/base/base.css">
+</head>
+<body onload="initMap()">
+    <div class="map-container">
+        <div class="map" id="map"></div>
+    </div>
+    <div class="driver-info-block">
+        <img src="../static/images/taxi.png" class="taxi-img">
+        <div class="description-driver">
+            <span class="car-name"></span>
+            <span class="car-number"></span>
+        </div>
+    </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9eLhPVUyv4_MvrxSR_nt1xq-XNS9Nsyg&libraries=places&callback=initMap"></script>
+    <script src="../static/scripts/tracking/main.js"></script>
+</body>
+</html>

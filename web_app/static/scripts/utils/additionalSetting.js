@@ -6,7 +6,11 @@ document.getElementById('payment-method-button').addEventListener('click', funct
         button.value = 'Карта';
         ico.className = 'bi bi-credit-card-2-front';
         button.innerHTML = '<i class="bi bi-credit-card-2-front" id="payIco"></i><br>Карта';
-    } else {
+    } else if (button.value === 'Карта') {
+        button.value = 'Онлайн';
+        ico.className = 'fa-solid fa-earth-americas';
+        button.innerHTML = '<i class="fa-solid fa-earth-americas" id="payIco"></i><br>Онлайн';
+    } else if (button.value === 'Онлайн') {
         button.value = 'Готівка';
         ico.className = 'bi bi-cash';
         button.innerHTML = '<i class="bi bi-cash" id="payIco"></i><br>Готівка';
@@ -157,7 +161,9 @@ document.getElementById('save-comment-button').addEventListener('click', functio
     const Modal = document.getElementById('comment-modal')
     const content = document.querySelector(".comment-content");
 
-    Modal.dataset.comment = full_comment
+    settingModal = document.getElementById('additional-settings-modal')
+
+    settingModal.dataset.comment = full_comment
 
     content.classList.remove('slide-up')
     Modal.classList.remove('fade-in');
@@ -174,6 +180,24 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
     input.addEventListener('focus', function() {
         setTimeout(() => {
             input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100); // Невелика затримка для появи клавіатури
+        }, 100);
     });
+});
+
+function initializeCommentButtons() {
+    const commentButtons = document.querySelectorAll('.comment-billet-text');
+    const commentTextarea = document.getElementById('comment');
+    const buttonsContainer = document.getElementById('comment-buttons-container');
+
+    commentButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            let buttonText = button.textContent.trim();
+            buttonText = buttonText.replace(/\.\.\.$/, '');
+            commentTextarea.value += buttonText + ' ';
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCommentButtons();
 });

@@ -8,8 +8,8 @@ redis_storage = RedisStorage(
     redis=Redis(
         host=config.FSM_HOST,
         port=config.FSM_PORT,
-        password=config.FSM_PASSWORD,
         db=0,
+        password=config.FSM_PASSWORD
     ),
     key_builder=DefaultKeyBuilder(with_bot_id=True, with_destiny=True),
 )

@@ -24,7 +24,7 @@ def prepare_router() -> Router:
         Handler(handlers.save_back_passport_photo, [CreateDriver.waiting_back_passport_photo, F.photo]),
         Handler(handlers.save_license_photo, [CreateDriver.waiting_license_photo, F.photo]),
         Handler(handlers.save_insurance_photo, [CreateDriver.waiting_insurance_photo, F.photo]),
-        Handler(handlers.save_car_photo, [CreateDriver.waiting_car_photo, F.photo]),
+        # Handler(handlers.save_car_photo, [CreateDriver.waiting_car_photo, F.photo]),
         Handler(handlers.save_front_car_photo, [CreateDriver.waiting_front_car_photo, F.photo]),
         Handler(handlers.save_back_car_photo, [CreateDriver.waiting_back_car_photo, F.photo]),
         Handler(handlers.save_left_car_photo, [CreateDriver.waiting_left_car_photo, F.photo]),

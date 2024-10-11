@@ -5,6 +5,7 @@ from state.user import CreateDriver
 from handlers.common.helper import user_cabinet_menu
 import json
 from texts import TextManager, get_text_manager
+from handlers.common.ending_route import ask_raw_message
 
 
 async def main_handlers(message: types.Message, state: FSMContext):
@@ -16,6 +17,8 @@ async def main_handlers(message: types.Message, state: FSMContext):
         pass
     elif bt_text == user_text_manager.keyboards.BECOME_PARTNER:
         await become_driver(message, state)
+    else:
+        await ask_raw_message(message, state)
 
 
 async def open_menu(message: types.Message, state: FSMContext):

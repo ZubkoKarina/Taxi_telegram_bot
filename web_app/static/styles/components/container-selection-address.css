@@ -26,6 +26,7 @@
     align-content: flex-end;
     align-items: flex-end;
     z-index: 2;
+    width: 100%;
 }
 
 #selection-address-block-menu {
@@ -45,7 +46,7 @@
     position: relative;
 }
 
-#address-selection-container span {
+#address-selection-container-title {
     grid-column: span 10;
     text-align: center;
     border-bottom: 3px solid var(--main-color);
@@ -55,58 +56,34 @@
     color: var(--tg-theme-text-color);
 }
 
-#input-group-from {
+#from {
     grid-column: span 8;
 }
 
-#input-group-to {
+#to {
     grid-column: span 10;
 }
 
-#input-group-entrance {
+#entrance {
     grid-column: span 2;
-    width: 100%;
     margin-left: 5%;
-}
+    border: 0;
+    font-size: 15px;
 
-#input-group-entrance input {
-    padding: 0;
     text-align: center;
 }
 
-.input-group {
+.block-select-address {
     display: flex;
     min-height: 56px;
     align-items: center;
+    color: #707579;
+    background: var(--tg-theme-secondary-bg-color);
+    border-radius: 12px;
 }
 
-.input-icon {
-    width: 4vw;
-    object-fit: contain;
-    position: absolute;
-    padding-right: 2vw;
-    padding-left: 2vw;
-    color: var(--tg-theme-hint-color);
-}
-
-.input-group label {
-    display: none;
-}
-
-.input-group input {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    padding-left: 8vw;
-    font-size: 16px;
-    background-color: var(--tg-theme-secondary-bg-color);
-    color: var(--tg-theme-hint-color);
-    border: none;
-    border-radius: 15px;
-}
-
-.input-group input::placeholder {
-    color: var(--tg-theme-hint-color);
+.block-select-address i {
+    margin: 10px;
 }
 
 #add-stop-button {

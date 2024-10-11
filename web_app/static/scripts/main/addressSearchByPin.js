@@ -1,4 +1,4 @@
-let isListenMoveMap = true
+let isListenMoveMap = false
 let addressToSave = null
 const blockMap = document.getElementById('map');
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         searchInputElement = document.getElementById(currentInputId)
         if (currentInputId == 'from' || currentInputId == 'to') {
-            searchInputElement.value = addressToSave.address;
+            searchInputElement.querySelector('span').innerText = addressToSave.address;
             searchInputElement.dataset.id = addressToSave.id
             searchInputElement.dataset.address = addressToSave.address
             searchInputElement.dataset.geo = JSON.stringify(addressToSave.geo)
@@ -43,8 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
             placeMarker(addressToSave.geo[0], addressToSave.geo[1])
         }
 
-        closeAddressSearchByPinModal();
-        openSelectionAddress();
+
+        if (markers.length >= 2) {
+            closeAddressSearchByPinModal();
+            openSelectionAddressFull();
+        } else {
+            closeAddressSearchByPinModal();
+            openSelectionAddress();
+        }
 
         if (currentInputId === 'to' || currentInputId === 'add-stop-button') {
             isListenMoveMap = false
@@ -53,27 +59,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
+let moveTimeout = null;
 
 function MoveMarker(isFullFunction) {
     const pinDiv = document.getElementById('main-marker');
-    const controlPanel = document.getElementById('container-main-menu')
+    const controlPanel = document.getElementById('container-main-menu');
 
     if (pinDiv) {
-        pinDiv.remove()
-    }
-//    if (controlPanel.style.display === 'flex'){
-//        return
-//    }
-    map.setZoom(17)
-    if (isFullFunction) {
-        closeSearchAddressModal()
-        openAddressSearchByPinModal()
+        pinDiv.remove();
     }
 
-    searchFromElement = document.getElementById(currentInputId)
+    map.setZoom(17);
+    if (isFullFunction) {
+        closeSearchAddressModal();
+        openAddressSearchByPinModal();
+    }
+
+    searchFromElement = document.getElementById(currentInputId);
     if (!searchFromElement.dataset.geo) {
-        searchFromElement = document.getElementById('from')
+        searchFromElement = document.getElementById('from');
     }
     if (searchFromElement.dataset.geo) {
         const geoData = JSON.parse(searchFromElement.dataset.geo);
@@ -82,7 +86,6 @@ function MoveMarker(isFullFunction) {
         map.setCenter(new google.maps.LatLng(lat_marker, lng_marker));
     }
 
-    // Fetch the SVG files
     Promise.all([
         fetch('../static/images/map-pin-active.svg').then(response => response.text()),
         fetch('../static/images/map-pin-deactive.svg').then(response => response.text())
@@ -90,31 +93,34 @@ function MoveMarker(isFullFunction) {
     .then(([activeSvg, deactiveSvg]) => {
         const pinDiv = document.createElement('div');
         pinDiv.classList.add('pin');
-        pinDiv.id = 'main-marker'
+        pinDiv.id = 'main-marker';
         pinDiv.classList.add('marker-icon');
-        pinDiv.innerHTML = deactiveSvg; // Default to deactive
+        pinDiv.innerHTML = deactiveSvg;
         pinDiv.classList.add('deactive');
         blockMap.appendChild(pinDiv);
 
-        console.log(isListenMoveMap)
-
-
-        // Add event listener for starting drag
         map.addListener('dragstart', function () {
             if (!isListenMoveMap) {
-                return
+                return;
             }
-            pinDiv.innerHTML = activeSvg;
-            pinDiv.classList.remove('deactive');
-            pinDiv.classList.add('active');
+//            pinDiv.innerHTML = activeSvg;
+            if (pinDiv.classList.contains('deactive')) {
+                pinDiv.classList.remove('deactive');
+                pinDiv.classList.add('active');
+                pinDiv.innerHTML = activeSvg;
+            }
+
+            if (moveTimeout) {
+                clearTimeout(moveTimeout);
+            }
         });
 
-        // Add event listener for stopping drag
         map.addListener('idle', function () {
             if (!isListenMoveMap) {
-                return
+                return;
             }
-            setTimeout(function () {
+
+            moveTimeout = setTimeout(function () {
                 pinDiv.innerHTML = deactiveSvg;
                 pinDiv.classList.remove('active');
                 pinDiv.classList.add('deactive');
@@ -123,7 +129,11 @@ function MoveMarker(isFullFunction) {
                 let lat = center.lat();
                 let lng = center.lng();
                 getAddressByGeo(lat, lng);
-            }, 1000);
+                if (currentInputId == 'from') {
+                    renderDriversInMap([center.lat(), center.lng()])
+                }
+
+            }, 500);
         });
 
     })
@@ -131,6 +141,7 @@ function MoveMarker(isFullFunction) {
         console.error('Error loading SVG icons:', error);
     });
 }
+
 
 function getAddressByGeo(lat, lng) {
 
@@ -153,7 +164,7 @@ function getAddressByGeo(lat, lng) {
         document.querySelector(".other-setting-text").innerHTML = addressToSave.name;
         if (currentInputId == 'from') {
             searchInputElement = document.getElementById('from')
-            searchInputElement.value = addressToSave.address;
+            searchInputElement.querySelector('span').innerText = addressToSave.address;
             searchInputElement.dataset.id = addressToSave.id
             searchInputElement.dataset.address = addressToSave.address
             searchInputElement.dataset.geo = JSON.stringify([lat, lng])

@@ -1,15 +1,23 @@
+{% if data.get('planned_order') == None %}
 Замовлення ❗️
+{% endif %}
+{% if data.get('planned_order') != None %}
+📅 Попереднє замовлення ⏰
+{% endif %}
 
-Адреса вітправки: {{ data.get('start_point').get("address") }}
+Адреса відправки: *{{ data.get('start_point').get("address") }}*
 {% for stopPoint in data.get('additional_point') %}
-Зупинка: {{ stopPoint.get('address') }}
+Зупинка: *{{ stopPoint.get('address') }}*
 {% endfor %}
-Адреса прибуття: {{ data.get('end_point').get("address") }}
+Адреса прибуття: *{{ data.get('end_point').get("address") }}*
 
-{% if data.get('comment') != None or data.get('comment') == '' %}
+{% if data.get('comment') != None and data.get('comment') != 'None' %}
 {{ data.get('comment') }}
 
 {% endif %}
+{% if data.get('planned_order') != None %}
+Дата відправлення: *{{ data.get('planned_order').get('date') }} {{ data.get('planned_order').get('time') }}*
 
+{% endif %}
 Метод оплати: {{ data.get('payment_method') }}
-На суму: {{ data.get('cost') }}
+На суму: *{{ data.get('cost') }} грн *

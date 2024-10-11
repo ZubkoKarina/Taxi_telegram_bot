@@ -15,6 +15,7 @@ menu = DefaultConstructor.create_kb(
         keyboards.SETTING,
         keyboards.SHARE_CHATBOT,
         keyboards.OTHER,
-    ], schema=[1, 2, 2])
+        keyboards.RELOAD
+    ], schema=[1, 2, 2, 1])
 
 
